@@ -18,7 +18,7 @@ description: Generate standardized documents with structured templates.
 
 - [Developer Guide](./developer-guide.md) - How to develop applications that use DMS API:    
 - [DevHub](https://developer.gov.bc.ca)  
-- [WARG](https://warg-master-idcqvl-dev.pathfinder.gov.bc.ca) - A showcase app for DGEN (coming soon). Here you can try out the DGEN capabilities   
+- [DGEN](https://dgen.pathfinder.gov.bc.ca) - A showcase app for DGEN (coming soon). Here you can try out the DGEN capabilities   
 - [nr-document-management-showcase](https://bcgov.github.io/nr-document-management-showcase) - GitHub Repo  
 - [nr-messaging-service-showcase](https://bcgov.github.io/nr-messaging-service-showcase) - GitHub Repo  
 - [README](../readme.md)
