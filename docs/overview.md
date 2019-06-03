@@ -16,18 +16,15 @@ description: Generate standardized documents with structured templates.
 
 ### Getting Started
 
-[Learn more about the DMS API](https://www.github.com/bcgov/dgen-sc/readme.md)  
-
-[Check the DevHub for other NRM Common Services](https://developer.gov.bc.ca)
-
-[Try out the capabilities](https://dgen-sc.pathfinder.gov.bc.ca)
-
-Learn how to build your own application that connects to dms: [DGEN-SC on Github](https://github.com/bcgov/dgen-sc)
+- [Developer Guide](./developer-guide.md) - How to develop applications that use DMS API:    
+- [DevHub](https://developer.gov.bc.ca)  
+- [DGEN](https://dgen.pathfinder.gov.bc.ca) - A showcase app for DGEN (coming soon). Here you can try out the DGEN capabilities   
+- [nr-document-management-showcase](https://bcgov.github.io/nr-document-management-showcase) - GitHub Repo  
+- [nr-messaging-service-showcase](https://bcgov.github.io/nr-messaging-service-showcase) - GitHub Repo  
+- [README](../readme.md)
 
 ## Resources
 
-[Open API definition](https://apistore.nrs.gov.bc.ca/store/apis/info?provider=admin&version=v1&name=dgen-api)
-
+[Open API definition](https://apistore.nrs.gov.bc.ca/store/apis/info?provider=admin&version=v1&name=dgen-api)  
 [Documentation for the DGEN API](https://apps.nrs.gov.bc.ca/int/confluence/display/DO/dgen-api)  
-
-[DGEN User's Guide](https://apps.nrs.gov.bc.ca/int/confluence/pages/viewpage.action?pageId=27066822)
+[DGEN User's Guide](https://apps.nrs.gov.bc.ca/int/confluence/pages/viewpage.action?pageId=27066822)  
