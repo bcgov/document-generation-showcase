@@ -1,0 +1,33 @@
+{
+  "frontend": {
+    "keycloak": {
+      "realm": "98r0z7rz",
+      "serverUrl": "https://sso-dev.pathfinder.gov.bc.ca/auth",
+      "scope": "openid vue-kc"
+    },
+    "apiPath": "/api/v1",
+    "basePath" : "/app"
+  },
+  "keycloak": {
+    "realm": "98r0z7rz",
+    "serverUrl": "https://sso-dev.pathfinder.gov.bc.ca/auth",
+    "clientId": "dgrsc"
+  },
+  "server": {
+    "logLevel": "info",
+    "morganFormat": "dev",
+    "port": "8888",
+    "hostUrl": "http://localhost:8888",
+    "bodyLimit": "30mb",
+    "apiPath": "/api/v1"
+  },
+  "services": {
+    "cdogs": {
+      "clientId": "DGRSC_SERVICE_CLIENT",
+      "clientSecret": "set in custom environment variables...",
+      "tokenUrl": "set in custom environment variables...",
+      "apiUrl": "set in custom environment variables..."
+    }
+  }
+}
+
