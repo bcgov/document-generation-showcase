@@ -13,7 +13,14 @@ routes.get('/', wrap(function (req, res) {
   });
 }));
 
-routes.get('/health', keycloak.protect(), wrap(async function (req, res, next) {
+function protector(token) {
+  const hasUser = token.hasRole('dgrsc:user');
+  // eslint-disable-next-line no-console
+  console.log(`token.hasRole('dgrsc:user') = ${hasUser}`);
+  return hasUser ;
+}
+
+routes.get('/health', keycloak.protect(protector), wrap(async function (req, res, next) {
   await healthCheck(req, res, next);
 }));
 

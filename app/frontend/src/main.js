@@ -36,8 +36,7 @@ configService.load(CONFIG_URL)
       config: {
         url: config.keycloak.serverUrl,
         realm: config.keycloak.realm,
-        clientId: config.keycloak.clientId,
-        scope: config.keycloak.scope
+        clientId: config.keycloak.clientId
       },
 
       onReady: (keycloak) => {

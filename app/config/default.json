@@ -3,17 +3,18 @@
     "keycloak": {
       "realm": "98r0z7rz",
       "serverUrl": "https://sso-dev.pathfinder.gov.bc.ca/auth",
-      "scope": "openid vue-kc"
+      "clientId": "dgrsc-frontend",
+      "scope": "openid profile email dgrsc"
     },
     "apiPath": "/api/v1",
     "basePath" : "/app"
   },
-  "keycloak": {
-    "realm": "98r0z7rz",
-    "serverUrl": "https://sso-dev.pathfinder.gov.bc.ca/auth",
-    "clientId": "dgrsc"
-  },
   "server": {
+    "keycloak": {
+      "realm": "98r0z7rz",
+      "serverUrl": "https://sso-dev.pathfinder.gov.bc.ca/auth",
+      "clientId": "dgrsc"
+    },
     "logLevel": "info",
     "morganFormat": "dev",
     "port": "8888",
