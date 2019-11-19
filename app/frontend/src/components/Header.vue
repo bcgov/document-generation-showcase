@@ -47,8 +47,7 @@ export default {
     login() {
       const basePath = this.$configService.get('basePath');
       const redirectUri = `${location.origin}${basePath}`;
-      const keycloak = this.$configService.get('keycloak');
-      const loginUrl = this.$keycloak.createLoginUrl({redirectUri: redirectUri, scope: keycloak.scope});
+      const loginUrl = this.$keycloak.createLoginUrl({redirectUri: redirectUri});
       window.location.replace(loginUrl);
     },
     logout() {

@@ -34,7 +34,7 @@ log.verbose(utils.prettyStringify(config));
 // Use Keycloak OIDC Middleware
 app.use(keycloak.middleware());
 
-const apiPath = config.get('server.apiPath');
+const apiPath = `${config.get('server.basePath')}${config.get('server.apiPath')}`;
 app.use(apiPath, apiRoutes);
 
 // start of handling static files - the frontend app.

@@ -3,8 +3,7 @@
     "keycloak": {
       "clientId": "FRONTEND_KC_CLIENTID",
       "realm": "FRONTEND_KC_REALM",
-      "serverUrl": "FRONTEND_KC_SERVERURL",
-      "scope": "FRONTEND_KC_SCOPE"
+      "serverUrl": "FRONTEND_KC_SERVERURL"
     },
     "apiPath": "FRONTEND_APIPATH",
     "basePath": "FRONTEND_BASEPATH"
@@ -16,19 +15,20 @@
       "realm": "SERVER_KC_REALM",
       "serverUrl": "SERVER_KC_SERVERURL"
     },
+    "apiPath": "SERVER_APIPATH",
+    "basePath": "SERVER_BASEPATH",
+    "bodyLimit": "SERVER_BODYLIMIT",
+    "hostUrl": "SERVER_HOST_URL",
     "logLevel": "SERVER_LOGLEVEL",
     "morganFormat": "SERVER_MORGANFORMAT",
-    "port": "SERVER_PORT",
-    "hostUrl": "SERVER_HOST_URL",
-    "bodyLimit": "SERVER_BODYLIMIT",
-    "apiPath": "SERVER_APIPATH"
+    "port": "SERVER_PORT"
   },
   "services": {
     "cdogs": {
-      "clientId": "CDOGS_CLIENT_ID",
-      "clientSecret": "CDOGS_CLIENT_SECRET",
-      "tokenUrl": "CDOGS_TOKEN_URL",
-      "apiUrl": "CDOGS_API_URL"
+      "apiUrl": "CDOGS_APIURL",
+      "clientId": "CDOGS_CLIENTID",
+      "clientSecret": "CDOGS_CLIENTSECRET",
+      "tokenUrl": "CDOGS_TOKENURL"
     }
   }
 }
