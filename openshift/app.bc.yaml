@@ -38,7 +38,7 @@ objects:
         app: "${APP_NAME}-${JOB_NAME}"
       name: "${APP_NAME}-${JOB_NAME}-app"
     spec:
-      completionDeadlineSeconds: 1200
+      completionDeadlineSeconds: 600
       failedBuildsHistoryLimit: 5
       nodeSelector: null
       output:
