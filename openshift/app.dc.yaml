@@ -1,0 +1,195 @@
+---
+apiVersion: v1
+kind: Template
+labels:
+  template: "${APP_NAME}-${JOB_NAME}-app-dc"
+metadata:
+  name: "${APP_NAME}-${JOB_NAME}-app-dc"
+objects:
+
+  - kind: NetworkSecurityPolicy
+    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
+    metadata:
+      name: int-cluster-k8s-api-comms
+      labels:
+        app: "${APP_NAME}-${JOB_NAME}"
+    spec:
+      description: |
+        Allow pods to talk to the internal api so deployments work.
+        This only needs to be specified once per environment.
+      source:
+        - - $namespace=${NAMESPACE}
+      destination:
+        - - int:network=internal-cluster-api-endpoint
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: "${APP_NAME}-${JOB_NAME}"
+      name: "${APP_NAME}-${JOB_NAME}-app"
+    spec:
+      ports:
+        - name: 8888-tcp
+          port: 8888
+          protocol: TCP
+          targetPort: 8888
+      selector:
+        app: "${APP_NAME}-${JOB_NAME}"
+        deploymentconfig: "${APP_NAME}-${JOB_NAME}-app"
+      sessionAffinity: None
+      type: ClusterIP
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      labels:
+        app: "${APP_NAME}-${JOB_NAME}"
+      name: "${APP_NAME}-${JOB_NAME}-app"
+    spec:
+      host: "${ROUTE_HOST}"
+      path: "${ROUTE_PATH}"
+      port:
+        targetPort: 8888-tcp
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
+      to:
+        kind: Service
+        name: "${APP_NAME}-${JOB_NAME}-app"
+        weight: 100
+      wildcardPolicy: None
+
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      labels:
+        app: "${APP_NAME}-${JOB_NAME}"
+      name: "${APP_NAME}-${JOB_NAME}-app"
+    spec:
+      replicas: 1
+      revisionHistoryLimit: 10
+      selector:
+        app: "${APP_NAME}-${JOB_NAME}"
+        deploymentconfig: "${APP_NAME}-${JOB_NAME}-app"
+      strategy:
+        activeDeadlineSeconds: 21600
+        resources: {}
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
+      template:
+        metadata:
+          labels:
+            app: "${APP_NAME}-${JOB_NAME}"
+            deploymentconfig: "${APP_NAME}-${JOB_NAME}-app"
+        spec:
+          containers:
+            - image: "docker-registry.default.svc:5000/${NAMESPACE}/${APP_NAME}-${JOB_NAME}-app:latest"
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: "${ROUTE_PATH}"
+                  port: 8888
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 60
+                successThreshold: 1
+                timeoutSeconds: 5
+              name: "${APP_NAME}-${JOB_NAME}-app"
+              ports:
+                - containerPort: 8888
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: "${ROUTE_PATH}"
+                  port: 8888
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 5
+              resources:
+                requests:
+                  cpu: "${CPU_REQUEST}"
+                  memory: "${MEMORY_REQUEST}"
+                limits:
+                  cpu: "${CPU_LIMIT}"
+                  memory: "${MEMORY_LIMIT}"
+              env:
+              - name: FRONTEND_BASEPATH
+                value: ${ROUTE_PATH}
+              - name: SERVER_BASEPATH
+                value: ${ROUTE_PATH}
+              - name: SERVER_HOST_URL
+                value: "https://${ROUTE_HOST}${ROUTE_PATH}"
+              - name: CDOGS_CLIENTID
+                valueFrom:
+                  secretKeyRef:
+                    key: username
+                    name: "cdogs-client"
+              - name: CDOGS_CLIENTSECRET
+                valueFrom:
+                  secretKeyRef:
+                    key: password
+                    name: "cdogs-client"
+              - name: SERVER_KC_CLIENTID
+                valueFrom:
+                  secretKeyRef:
+                    key: username
+                    name: "app-client"
+              - name: SERVER_KC_CLIENTSECRET
+                valueFrom:
+                  secretKeyRef:
+                    key: password
+                    name: "app-client"
+              envFrom:
+                - configMapRef:
+                    name: "app-config"
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+      test: false
+
+parameters:
+  - name: APP_NAME
+    description: Application name
+    required: true
+  - name: JOB_NAME
+    description: Job identifier (i.e. 'pr-5' OR 'master')
+    required: true
+  - name: NAMESPACE
+    description: OpenShift namespace containing our image to deploy (ex. idcqvl-dev)
+    required: true
+  - name: ROUTE_HOST
+    description: Configure the route host
+    required: true
+  - name: ROUTE_PATH
+    description: Configure the route path (ex. /pr-5 or /app), also used for FRONTEND_BASEPATH
+    required: true
+  - name: SERVER_APIPATH
+    description: base path to the node api wrapper, should match in app-config
+    required: true
+    value: "/api/v1"
+  - name: CPU_REQUEST
+    description: Requested CPU per pod (in millicores ex. 500m)
+    required: true
+    value: 1000m
+  - name: MEMORY_REQUEST
+    description: Requested Memory per pod (in gigabytes Gi or megabytes Mi ex. 500Mi)
+    required: true
+    value: 2Gi
+  - name: CPU_LIMIT
+    description: Limit Peak CPU per pod (in millicores ex. 1000m)
+    required: true
+    value: 2000m
+  - name: MEMORY_LIMIT
+    description: Limit Peak Memory per pod (in gigabytes Gi or megabytes Mi ex. 2Gi)
+    required: true
+    value: 4Gi

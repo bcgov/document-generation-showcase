@@ -1,0 +1,93 @@
+---
+apiVersion: v1
+kind: Template
+labels:
+  template: "${APP_NAME}-${JOB_NAME}-app-bc-template"
+metadata:
+  name: "${APP_NAME}-${JOB_NAME}-app-bc"
+objects:
+
+  - kind: NetworkSecurityPolicy
+    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
+    metadata:
+      name: egress-internet
+      labels:
+        app: "${APP_NAME}-${JOB_NAME}"
+    spec:
+      description: |
+        Allow the builds to access the internet.
+        This only needs to be specified once per environment.
+      source:
+        - - $namespace=${NAMESPACE}
+      destination:
+        - - ext:network=any
+
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      labels:
+        app: "${APP_NAME}-${JOB_NAME}"
+      name: "${APP_NAME}-${JOB_NAME}-app"
+    spec:
+      lookupPolicy:
+        local: false
+  - apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    metadata:
+      labels:
+        app: "${APP_NAME}-${JOB_NAME}"
+      name: "${APP_NAME}-${JOB_NAME}-app"
+    spec:
+      completionDeadlineSeconds: 600
+      failedBuildsHistoryLimit: 5
+      nodeSelector: null
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "${APP_NAME}-${JOB_NAME}-app:latest"
+      postCommit: {}
+      resources:
+        requests:
+          cpu: 2000m
+          memory: 4Gi
+        limits:
+          cpu: 4000m
+          memory: 8Gi
+      runPolicy: Serial
+      source:
+        contextDir: /app
+        git:
+          ref: "${SOURCE_REPO_REF}"
+          uri: "${SOURCE_REPO_URL}"
+        type: Git
+        dockerfile: |-
+          FROM mhart/alpine-node:10
+          WORKDIR /opt/app-root/src
+          COPY . .
+          RUN npm run app:ci
+          RUN npm run app:build
+          EXPOSE 8888
+          CMD ["npm", "run", "start"]
+      strategy:
+        dockerStrategy: {}
+        type: Docker
+      successfulBuildsHistoryLimit: 5
+parameters:
+  - name: APP_NAME
+    description: Application name
+    required: true
+  - name: JOB_NAME
+    description: Job identifier (i.e. 'pr-5' OR 'master')
+    required: true
+  - name: NAMESPACE
+    description: OpenShift namespace containing our image to deploy (ex. idcqvl-dev)
+    required: true
+  - name: REPO_NAME
+    description: Application repository name
+    required: true
+  - name: SOURCE_REPO_REF
+    description: Git Pull Request Reference (i.e. 'pull/CHANGE_ID/head')
+    required: true
+  - name: SOURCE_REPO_URL
+    description: Git Repository URL
+    required: true
