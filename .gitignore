@@ -5,6 +5,8 @@ dist
 coverage
 
 # local env files
+local.*
+local-*.*
 .env.local
 .env.*.local
 
@@ -22,3 +24,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+# output of shell command
+runtime-config.json

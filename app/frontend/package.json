@@ -13,10 +13,12 @@
   "scripts": {
     "serve": "node_modules/.bin/vue-cli-service serve",
     "build": "node_modules/.bin/vue-cli-service build",
+    "test": "npm run test:unit",
     "test:unit": "node_modules/.bin/vue-cli-service test:unit",
-    "lint": "node_modules/.bin/vue-cli-service lint . --ignore-pattern 'node_modules' src/**/*.{js,vue}",
+    "lint": "node_modules/.bin/vue-cli-service lint . --no-fix --ext .js,vue",
+    "lint:fix": "node_modules/.bin/vue-cli-service lint . --fix --ext .js,vue",
+    "pretest": "npm run lint",
     "clean": "rm -rf coverage && rm -rf dist && rm -rf node_modules",
-    "lint:fix": "node_modules/.bin/vue-cli-service lint . --ignore-pattern 'node_modules' src/**/*.{js,vue} --fix",
     "rebuild": "npm run clean && npm run build",
     "reinstall": "npm run clean && npm install"
   },

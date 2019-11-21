@@ -64,8 +64,8 @@ objects:
           FROM mhart/alpine-node:10
           WORKDIR /opt/app-root/src
           COPY . .
-          RUN npm run app:ci
-          RUN npm run app:build
+          RUN npm run all:ci
+          RUN npm run all:build
           EXPOSE 8888
           CMD ["npm", "run", "start"]
       strategy:
