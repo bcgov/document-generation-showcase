@@ -61,11 +61,12 @@ objects:
           uri: "${SOURCE_REPO_URL}"
         type: Git
         dockerfile: |-
-          FROM mhart/alpine-node:10
+          FROM mhart/alpine-node:12
           WORKDIR /opt/app-root/src
           COPY . .
-          RUN npm run all:ci
-          RUN npm run all:build
+          RUN npm run all:ci \
+           && npm run all:build \
+           && npm run frontend:purge
           EXPOSE 8888
           CMD ["npm", "run", "start"]
       strategy:

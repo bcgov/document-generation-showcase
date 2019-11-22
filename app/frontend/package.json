@@ -18,9 +18,10 @@
     "lint": "node_modules/.bin/vue-cli-service lint . --no-fix --ext .js,vue",
     "lint:fix": "node_modules/.bin/vue-cli-service lint . --fix --ext .js,vue",
     "pretest": "npm run lint",
-    "clean": "rm -rf coverage && rm -rf dist && rm -rf node_modules",
+    "clean": "rm -rf coverage dist",
+    "purge": "rm -rf node_modules",
     "rebuild": "npm run clean && npm run build",
-    "reinstall": "npm run clean && npm install"
+    "reinstall": "npm run purge && npm install"
   },
   "dependencies": {
     "axios": "^0.19.0",
