@@ -1,3 +1,4 @@
+const compression = require('compression');
 const config = require('config');
 const cors = require('cors');
 const express = require('express');
@@ -15,20 +16,25 @@ const state = {
 };
 
 const app = express();
-
-app.use(express.json({limit: config.get('server.bodyLimit')}));
-app.use(express.urlencoded({extended: true}));
+app.use(compression());
+app.use(express.json({ limit: config.get('server.bodyLimit') }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 app.options('*', cors());
 
-app.use(morgan(config.get('server.morganFormat')));
-
+// Logging Setup
 log.level = config.get('server.logLevel');
-log.addLevel('debug', 1500, {fg: 'green'});
+log.addLevel('debug', 1500, { fg: 'cyan' });
 
 // Print out configuration settings in verbose startup
-log.verbose(utils.prettyStringify(config));
+log.debug('Config', utils.prettyStringify(config));
+
+// Skip if running tests
+if (process.env.NODE_ENV !== 'test') {
+  // Add Morgan endpoint logging
+  app.use(morgan(config.get('server.morganFormat')));
+}
 
 // Use Keycloak OIDC Middleware
 app.use(keycloak.middleware());
@@ -36,22 +42,24 @@ app.use(keycloak.middleware());
 const apiPath = `${config.get('server.basePath')}${config.get('server.apiPath')}`;
 app.use(apiPath, apiRoutes);
 
-// start of handling static files - the frontend app.
-// ... expose an endpoint to return configuration
-// eslint-disable-next-line no-unused-vars
-app.use(`${config.get('frontend.basePath')}/config`, (req, res, next) => {
-  const frontend = config.get('frontend');
-  res.status(200).json(frontend);
+// Handle Static Files (frontend app)
+// Expose endpoint to return frontend configuration
+app.use(`${config.get('frontend.basePath')}/config`, (_req, res, next) => {
+  try {
+    const frontend = config.get('frontend');
+    res.status(200).json(frontend);
+  } catch (err) {
+    next(err);
+  }
 });
 
-// host the compiled/static web application here...
+// Host the compiled and static assets
 const staticFilesPath = config.get('frontend.basePath');
-const staticFileMiddleware = express.static(path.join(__dirname, 'frontend/dist'));
-app.use(staticFilesPath, staticFileMiddleware);
+app.use(staticFilesPath, express.static(path.join(__dirname, 'frontend/dist')));
 
 // Handle 500
 // eslint-disable-next-line no-unused-vars
-app.use(function (err, req, res, next) {
+app.use((err, _req, res, _next) => {
   if (err.stack) {
     log.error(err.stack);
   }
@@ -59,42 +67,43 @@ app.use(function (err, req, res, next) {
   if (err instanceof Problem) {
     err.send(res, null);
   } else {
-    let p = new Problem(500, 'DGRSC-CDOGS Server Error', {detail: err.message});
-    p.send(res, null);
+    new Problem(500, 'DGRSC-CDOGS Server Error', {
+      detail: (err.message) ? err.message : err
+    }).send(res);
   }
 });
 
 // Handle 404
-app.use(function (req, res) {
+app.use((req, res) => {
   if (req.originalUrl.startsWith(apiPath)) {
-    let p = new Problem(404, 'Page Not Found', {detail: req.originalUrl});
-    p.send(res, null);
+    // Return a 404 problem if attempting to access API
+    new Problem(404, 'Page Not Found', {
+      detail: req.originalUrl
+    }).send(res, null);
   } else {
-    // any non-api urls, let's just send into the app
+    // Redirect any non-API requests to static frontend
     res.redirect(staticFilesPath);
   }
 });
 
 // Prevent unhandled errors from crashing application
 process.on('unhandledRejection', err => {
-  log.error(err.stack);
+  if (err && err.stack) {
+    log.error(err.stack);
+  }
 });
 
 // Graceful shutdown support
-process.on('SIGTERM', shutdown);
-process.on('SIGINT', shutdown);
-
-function shutdown() {
+const shutdown = () => {
   if (!state.isShutdown) {
-    log.info('Received kill signal...');
-    log.info('...Time to die.');
+    log.info('Received kill signal. Shutting down...');
     state.isShutdown = true;
-    //
-    // if we had a db connection, we would shut it down here.
-    //
     // Wait 3 seconds before hard exiting
     setTimeout(() => process.exit(), 3000);
   }
-}
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
 
 module.exports = app;
