@@ -12,7 +12,7 @@ import configService from './common/configService';
 Vue.config.productionTip = false;
 
 // application publicPath is ./ - so use relative path here, will hit the backend server using relative path to root.
-const CONFIG_URL = 'config';
+const CONFIG_URL = process.env.NODE_ENV === 'production' ? 'config' : 'app/config';
 
 configService.load(CONFIG_URL)
   .then(config => {

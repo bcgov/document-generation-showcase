@@ -1,10 +1,9 @@
 const compression = require('compression');
 const config = require('config');
-const cors = require('cors');
 const express = require('express');
 const log = require('npmlog');
 const morgan = require('morgan');
-var path = require('path');
+const path = require('path');
 const Problem = require('api-problem');
 
 const apiRoutes = require('./src/cdogsService/routes');
@@ -19,9 +18,6 @@ const app = express();
 app.use(compression());
 app.use(express.json({ limit: config.get('server.bodyLimit') }));
 app.use(express.urlencoded({ extended: true }));
-
-app.use(cors());
-app.options('*', cors());
 
 // Logging Setup
 log.level = config.get('server.logLevel');
