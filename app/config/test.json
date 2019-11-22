@@ -1,7 +1,7 @@
 {
   "frontend": {
     "keycloak": {
-      "clientId": "clientId",
+      "clientId": "clientId"
     },
     "apiPath": "api/v1",
     "basePath" : "/app"

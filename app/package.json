@@ -73,7 +73,7 @@
       "_": false
     },
     "parserOptions": {
-      "ecmaVersion": 2018
+      "ecmaVersion": 9
     },
     "rules": {
       "eol-last": [
@@ -82,7 +82,10 @@
       ],
       "indent": [
         "error",
-        2
+        2,
+        {
+          "SwitchCase": 1
+        }
       ],
       "linebreak-style": [
         "error",
@@ -98,9 +101,30 @@
       ]
     }
   },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
     "testMatch": [
-      "**/test/*test.js?(x)"
+      "**/tests/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+    ],
+    "testPathIgnorePatterns": [
+      "frontend"
+    ],
+    "testURL": "http://localhost/",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/frontend/**/*.*"
     ]
   }
 }
