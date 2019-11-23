@@ -1,6 +1,8 @@
 {
   "name": "document-generation-showcase-backend",
   "version": "0.0.1",
+  "private": true,
+  "description": "Documentation, Code Templates and a Showcase application to demonstrate features of the Natural Resources' Document Generation Service",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bcgov/document-generation-showcase.git"
@@ -10,22 +12,32 @@
   "bugs": {
     "url": "https://github.com/bcgov/document-generation-showcase/issues"
   },
+  "homepage": "https://github.com/bcgov/document-generation-showcase",
   "scripts": {
+    "serve": "node_modules/.bin/nodemon ./bin/www",
+    "build": "cd frontend && npm run build",
     "start": "node ./bin/www",
-    "test": "CI=true jest --env=jsdom --passWithNoTests",
-    "lint": "node_modules/.bin/eslint . --no-fix --ignore-pattern 'node_modules' --ignore-pattern 'frontend' **.js **/www",
-    "lint:fix": "node_modules/.bin/eslint . --fix --ignore-pattern 'node_modules' --ignore-pattern 'frontend' **.js **/www",
-    "clean": "rm -rf node_modules",
-    "clean:build": "npm run clean && npm install",
-    "app:test": "npm run test && cd frontend && npm run test:unit",
-    "app:lint": "npm run lint && cd frontend && npm run lint",
-    "app:lint-fix": "npm run lint:fix && cd frontend && npm run lint:fix",
-    "app:ci": "npm ci && cd frontend && npm ci",
-    "app:install": "npm install && cd frontend && npm install",
-    "app:clean": "npm run clean && cd frontend && npm run clean",
-    "app:build": "cd frontend && npm run build",
-    "app:start": "npm run start",
-    "app:clean-start": "npm run app:clean && npm run app:install && npm run app:build && npm run app:start"
+    "test": "node_modules/.bin/jest --verbose --env=jsdom --passWithNoTests",
+    "lint": "node_modules/.bin/eslint . **/www --no-fix --ext .js",
+    "lint:fix": "node_modules/.bin/eslint . **/www --fix --ext .js",
+    "pretest": "npm run lint",
+    "clean": "rm -rf coverage dist",
+    "purge": "rm -rf node_modules",
+    "rebuild": "npm run clean && npm run build",
+    "reinstall": "npm run purge && npm install",
+    "all:build": "npm run build",
+    "all:start": "npm run start",
+    "all:test": "npm run test && cd frontend && npm run test:unit",
+    "all:lint": "npm run lint && cd frontend && npm run lint",
+    "all:lint-fix": "npm run lint:fix && cd frontend && npm run lint:fix",
+    "all:ci": "npm ci && cd frontend && npm ci",
+    "all:install": "npm install && cd frontend && npm install",
+    "all:clean": "npm run clean && cd frontend && npm run clean",
+    "all:purge": "npm run purge && cd frontend && npm run purge",
+    "all:rebuild": "npm run rebuild && cd frontend && npm run rebuild",
+    "all:reinstall": "npm run reinstall && cd frontend && npm run reinstall",
+    "all:fresh-start": "npm run all:reinstall && npm run all:rebuild && npm run all:start",
+    "frontend:purge": "cd frontend && npm run purge"
   },
   "dependencies": {
     "api-problem": "6.0.1",
@@ -33,9 +45,9 @@
     "axios-oauth-client": "^1.2.1",
     "axios-token-interceptor": "^0.2.0",
     "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "config": "^3.2.4",
     "cors": "^2.8.5",
-    "eslint-plugin-jest": "^23.0.3",
     "express": "^4.17.1",
     "keycloak-connect": "^7.0.1",
     "morgan": "^1.9.1",
@@ -45,7 +57,10 @@
     "eslint": "^6.6.0",
     "eslint-config-recommended": "^4.0.0",
     "eslint-plugin-flowtype": "^4.4.1",
-    "jest": "24.9.0"
+    "eslint-plugin-jest": "^23.0.4",
+    "jest": "24.9.0",
+    "nodemon": "^1.19.4",
+    "supertest": "^4.0.2"
   },
   "eslintConfig": {
     "root": true,
@@ -64,7 +79,7 @@
       "_": false
     },
     "parserOptions": {
-      "ecmaVersion": 2018
+      "ecmaVersion": 9
     },
     "rules": {
       "eol-last": [
@@ -73,7 +88,10 @@
       ],
       "indent": [
         "error",
-        2
+        2,
+        {
+          "SwitchCase": 1
+        }
       ],
       "linebreak-style": [
         "error",
@@ -89,9 +107,30 @@
       ]
     }
   },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
     "testMatch": [
-      "**/test/*test.js?(x)"
+      "**/tests/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+    ],
+    "testPathIgnorePatterns": [
+      "frontend"
+    ],
+    "testURL": "http://localhost/",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/frontend/**/*.*"
     ]
   }
 }

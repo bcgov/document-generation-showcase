@@ -13,12 +13,15 @@
   "scripts": {
     "serve": "node_modules/.bin/vue-cli-service serve",
     "build": "node_modules/.bin/vue-cli-service build",
+    "test": "npm run test:unit",
     "test:unit": "node_modules/.bin/vue-cli-service test:unit",
-    "lint": "node_modules/.bin/vue-cli-service lint . --ignore-pattern 'node_modules' src/**/*.{js,vue}",
-    "clean": "rm -rf coverage && rm -rf dist && rm -rf node_modules",
-    "lint:fix": "node_modules/.bin/vue-cli-service lint . --ignore-pattern 'node_modules' src/**/*.{js,vue} --fix",
+    "lint": "node_modules/.bin/vue-cli-service lint . --no-fix --ext .js,vue",
+    "lint:fix": "node_modules/.bin/vue-cli-service lint . --fix --ext .js,vue",
+    "pretest": "npm run lint",
+    "clean": "rm -rf coverage dist",
+    "purge": "rm -rf node_modules",
     "rebuild": "npm run clean && npm run build",
-    "reinstall": "npm run clean && npm install"
+    "reinstall": "npm run purge && npm install"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -51,6 +54,7 @@
     "root": true,
     "env": {
       "es6": true,
+      "jest": true,
       "node": true
     },
     "extends": [
@@ -157,6 +161,45 @@
     "not ie <= 8"
   ],
   "jest": {
-    "preset": "@vue/cli-plugin-unit-jest"
+    "clearMocks": true,
+    "setupFiles": [
+      "<rootDir>/tests/unit/globalSetup.js"
+    ],
+    "preset": "@vue/cli-plugin-unit-jest",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue",
+      "jsx"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "vue-jest",
+      "^.+\\.vue$": "vue-jest",
+      ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "snapshotSerializers": [
+      "jest-serializer-vue"
+    ],
+    "testMatch": [
+      "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+    ],
+    "testURL": "http://localhost/",
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,vue}",
+      "!src/main.js",
+      "!src/plugins/*.*"
+    ]
   }
 }

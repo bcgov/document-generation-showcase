@@ -1,10 +1,7 @@
 import axios from 'axios';
 
-const defaultResource = './runtime-config.json';
-
 class ConfigService {
   constructor() {
-    this._resource = defaultResource;
     this._config = {};
   }
 

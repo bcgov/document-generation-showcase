@@ -1,0 +1,26 @@
+{
+  "frontend": {
+    "keycloak": {
+      "clientId": "clientId"
+    },
+    "apiPath": "api/v1",
+    "basePath" : "/app"
+  },
+  "server": {
+    "keycloak": {
+      "clientId": "clientId",
+      "clientSecret": "clientSecret"
+    },
+    "bodyLimit": "30mb",
+    "hostUrl": "http://localhost:8888",
+    "logLevel": "silent",
+    "morganFormat": "dev",
+    "port": "8888"
+  },
+  "services": {
+    "cdogs": {
+      "clientId": "clientId",
+      "clientSecret": "clientSecret"
+    }
+  }
+}
