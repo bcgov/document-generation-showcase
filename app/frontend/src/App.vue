@@ -24,7 +24,7 @@ export default {
   computed: {
   },
   mounted() {
-    this.$router.push({ name: 'home'});
+    this.$router.push({ name: 'home' }).catch(() => {});
   }
 };
 </script>
