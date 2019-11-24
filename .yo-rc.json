@@ -23,6 +23,30 @@
           "github_repo": "document-generation-showcase",
           "jenkinsFilePath": ".jenkins/Jenkinsfile",
           "uuid": "08268eec-8ed6-4bd9-9980-f8dba5705036"
+        },
+        "app": {
+          "name": "app",
+          "version": "1.0.0",
+          "path": ".",
+          "environments": {
+            "build": {
+              "namespace": "wfezkf-tools"
+            },
+            "dev": {
+              "namespace": "wfezkf-dev"
+            },
+            "test": {
+              "namespace": "wfezkf-test"
+            },
+            "prod": {
+              "namespace": "wfezkf-prod"
+            }
+          },
+          "jenkinsJobName": "app",
+          "github_owner": "bcgov",
+          "github_repo": "document-generation-showcase",
+          "jenkinsFilePath": "Jenkinsfile",
+          "uuid": "0f8cf009-1440-45bb-982f-7960ac6ca433"
         }
       }
     }
