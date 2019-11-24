@@ -1,3 +1,7 @@
+// Stash Names
+def COVERAGE_STASH = 'test-coverage'
+def SONARQUBE_URL_INT = 'http://sonarqube:9000'
+
 pipeline {
     agent none
     options {
@@ -24,6 +28,60 @@ pipeline {
                 sh "cd .pipeline && ./npmw ci && ./npmw run build -- --pr=${CHANGE_ID}"
             }
         }
+        stage('SonarQube (Test)') {
+          agent any
+          steps {
+            script {
+              dir('app/frontend') {
+                try {
+                  timeout(10) {
+                    echo 'Installing NPM Dependencies...'
+                    sh 'npm ci'
+
+                    echo "Testing app/frontend..."
+                    sh 'npm run test:unit'
+                  }
+                } catch (e) {
+                  echo "testing app/frontend failed"
+                  throw e
+                }
+              }
+            }
+          }
+          post {
+            success {
+              stash name: COVERAGE_STASH, includes: 'app/frontend/coverage/**'
+
+              echo 'All Tests passed'
+            }
+            failure {
+              echo 'Some Tests failed'
+            }
+          }
+        }
+
+        stage('SonarQube (Publish)') {
+          agent any
+          steps {
+            script {
+              openshift.withCluster() {
+                openshift.withProject('wfezkf-tools') {
+
+                  unstash COVERAGE_STASH
+
+                  echo 'Performing SonarQube static code analysis...'
+                  sh """
+                  sonar-scanner \
+                    -Dsonar.host.url='${SONARQUBE_URL_INT}' \
+                    -Dsonar.projectKey='dgrsc-${CHANGE_ID}' \
+                    -Dsonar.projectName='Document Generation Showcase (${CHANGE_ID.toUpperCase()})'
+                  """
+                }
+              }
+            }
+          }
+        }
+
         stage('Deploy (DEV)') {
             agent { label 'deploy' }
             steps {
@@ -31,6 +89,7 @@ pipeline {
                 sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=dev"
             }
         }
+
         stage('Deploy (TEST)') {
             agent { label 'deploy' }
             when {
@@ -46,6 +105,7 @@ pipeline {
                 sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=test"
             }
         }
+
         stage('Deploy (PROD)') {
             agent { label 'deploy' }
             when {
