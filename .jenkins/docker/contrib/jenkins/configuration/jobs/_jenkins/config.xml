@@ -29,7 +29,7 @@
     <data>
       <jenkins.branch.BranchSource>
         <source class="org.jenkinsci.plugins.github_branch_source.GitHubSCMSource" plugin="github-branch-source@2.3.6">
-          <id>08268eec-8ed6-4bd9-9980-f8dba5705036</id>
+          <id>62908b40-6b7a-4096-a695-a4e57b3b1022</id>
           <credentialsId>github-account</credentialsId>
           <repoOwner>bcgov</repoOwner>
           <repository>document-generation-showcase</repository>

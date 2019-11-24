@@ -83,9 +83,6 @@ parameters:
   - name: NAMESPACE
     description: OpenShift namespace containing our image to deploy (ex. idcqvl-dev)
     required: true
-  - name: REPO_NAME
-    description: Application repository name
-    required: true
   - name: SOURCE_REPO_REF
     description: Git Pull Request Reference (i.e. 'pull/CHANGE_ID/head')
     required: true
