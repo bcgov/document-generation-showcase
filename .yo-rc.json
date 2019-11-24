@@ -1,0 +1,30 @@
+{
+  "generator-bcdk": {
+    "promptValues": {
+      "modules": {
+        "jenkins": {
+          "path": ".jenkins",
+          "name": "jenkins",
+          "namespace": "wfezkf-tools",
+          "version": "1.0.0",
+          "environments": {
+            "build": {
+              "namespace": "wfezkf-tools"
+            },
+            "dev": {
+              "namespace": "wfezkf-tools"
+            },
+            "prod": {
+              "namespace": "wfezkf-tools"
+            }
+          },
+          "jenkinsJobName": "_jenkins",
+          "github_owner": "bcgov",
+          "github_repo": "document-generation-showcase",
+          "jenkinsFilePath": ".jenkins/Jenkinsfile",
+          "uuid": "08268eec-8ed6-4bd9-9980-f8dba5705036"
+        }
+      }
+    }
+  }
+}
