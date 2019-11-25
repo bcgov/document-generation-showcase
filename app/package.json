@@ -132,5 +132,13 @@
       "src/**/*.js",
       "!src/frontend/**/*.*"
     ]
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "frontend/src",
+      "frontend/test",
+      "node_modules/**/node_modules",
+      "test"
+    ]
   }
 }
