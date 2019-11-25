@@ -4,6 +4,7 @@
       <ul>
         <li><router-link :to="{ name: 'home' }">Home</router-link> </li>
         <li><router-link :to="{ name: 'secure' }">Secure</router-link></li>
+        <li><router-link :to="{ name: 'notFound' }">(Debug) 404</router-link></li>
       </ul>
     </div>
   </nav>

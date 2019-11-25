@@ -33,14 +33,14 @@ configService.load(CONFIG_URL)
       init: {
         onLoad: 'check-sso'
       },
+
       config: {
         url: config.keycloak.serverUrl,
         realm: config.keycloak.realm,
         clientId: config.keycloak.clientId
       },
 
-      onReady: (keycloak) => {
-
+      onReady: keycloak => {
         // load up some axios instances
         const instance = axios.create({});
         // one strictly for api, which we can automatically add the authorization header
