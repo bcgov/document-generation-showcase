@@ -1,12 +1,16 @@
 <template>
   <v-container class="home">
-    <v-alert>Home</v-alert>
+    <div>Home</div>
+    <FileInput />
   </v-container>
 </template>
 
 <script>
+import FileInput from '../components/FileInput';
 export default {
   name: 'home',
-  components: {}
+  components: {
+    FileInput
+  }
 };
 </script>

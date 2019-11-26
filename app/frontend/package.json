@@ -95,7 +95,7 @@
         "always"
       ],
       "vue/html-closing-bracket-newline": [
-        "error",
+        "off",
         {
           "singleline": "never",
           "multiline": "never"
@@ -113,7 +113,7 @@
         }
       ],
       "vue/max-attributes-per-line": [
-        "error",
+        "off",
         {
           "singleline": 1,
           "multiline": {
