@@ -76,7 +76,6 @@ export default {
         )
           .then(resp => resp.blob())
           .then(blob => {
-            console.log(blob);
             alert(blob);
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
