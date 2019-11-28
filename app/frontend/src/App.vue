@@ -2,8 +2,7 @@
   <v-app id="app">
     <Header />
     <NavigationBar />
-    <div class="container--fluid"
-         id="router-view-content">
+    <div class="container--fluid" id="router-view-content">
       <router-view />
     </div>
     <Footer />
