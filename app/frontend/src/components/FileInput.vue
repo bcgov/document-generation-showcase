@@ -12,7 +12,6 @@
       hint="JSON format for key-value pairs"
       label="Contexts"
       :mandatory="true"
-      name="contexts-input"
       persistent-hint
       :rules="notEmpty"
       v-model="contexts"
@@ -21,7 +20,6 @@
       hint="JWT Token string to be sent in Authentication: Bearer"
       label="JWT Token"
       :mandatory="true"
-      name="contexts-input"
       persistent-hint
       :rules="notEmpty"
       v-model="jwt"
@@ -39,7 +37,7 @@ export default {
       contexts: null,
       files: null,
       jwt: null,
-      notEmpty: [v => !!v | 'Cannot be empty']
+      notEmpty: [v => !!v || 'Cannot be empty']
     };
   },
   methods: {
@@ -52,7 +50,20 @@ export default {
       });
     },
 
+    createBody(contexts, content) {
+      return {
+        contexts: [contexts],
+        template: {
+          content: content,
+          contentEncodingType: 'base64'
+        }
+      };
+    },
+
     async upload() {
+      const a = document.createElement('a');
+      a.style.display = 'none';
+
       try {
         if (
           this.files &&
@@ -60,18 +71,13 @@ export default {
           this.contexts &&
           this.jwt
         ) {
-          console.log(this.files);
-          const base64 = await this.toBase64(this.files);
+          // Parse Contents
+          const parsedContexts = JSON.parse(this.contexts);
+          const content = await this.toBase64(this.files);
+          const body = this.createBody(parsedContexts, content);
 
-          const body = {
-            contexts: [JSON.parse(this.contexts)],
-            template: {
-              content: base64,
-              contentEncodingType: 'base64'
-            }
-          };
-
-          fetch(
+          // Perform API Call
+          const response = await fetch(
             'https://cdogs-manual-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docGen',
             {
               method: 'POST',
@@ -82,26 +88,21 @@ export default {
               },
               body: JSON.stringify(body)
             }
-          )
-            .then(resp => resp.blob())
-            .then(blob => {
-              const url = window.URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.style.display = 'none';
-              a.href = url;
-              a.download = `out-${this.files.name}`;
-              document.body.appendChild(a);
-              a.click();
-              window.URL.revokeObjectURL(url);
-              a.remove();
-            })
-            .catch(e => {
-              console.log(e);
-              throw e;
-            });
+          );
+          const blob = await response.blob();
+
+          // Generate Temporary Download Link
+          const url = window.URL.createObjectURL(blob);
+          a.href = url;
+          a.download = `out-${this.files.name}`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
         }
       } catch (e) {
         console.log(e);
+      } finally {
+        a.remove();
       }
     }
   }
