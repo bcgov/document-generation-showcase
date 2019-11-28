@@ -18,7 +18,7 @@
     "apiPath": "SERVER_APIPATH",
     "basePath": "SERVER_BASEPATH",
     "bodyLimit": "SERVER_BODYLIMIT",
-    "hostUrl": "SERVER_HOST_URL",
+    "hostUrl": "SERVER_HOSTURL",
     "logLevel": "SERVER_LOGLEVEL",
     "morganFormat": "SERVER_MORGANFORMAT",
     "port": "SERVER_PORT"

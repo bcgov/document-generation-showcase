@@ -93,6 +93,7 @@ export default {
               document.body.appendChild(a);
               a.click();
               window.URL.revokeObjectURL(url);
+              a.remove();
             })
             .catch(e => {
               console.log(e);
