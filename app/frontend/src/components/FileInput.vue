@@ -7,12 +7,17 @@
       show-size
       v-model="files"
     />
+    <v-text-field
+      hint="Desired output filename"
+      label="Filename"
+      :rules="notEmpty"
+      v-model="filename"
+    />
     <v-textarea
       auto-grow
       hint="JSON format for key-value pairs"
       label="Contexts"
       :mandatory="true"
-      persistent-hint
       :rules="notEmpty"
       v-model="contexts"
     />
@@ -20,11 +25,10 @@
       hint="JWT Token string to be sent in Authentication: Bearer"
       label="JWT Token"
       :mandatory="true"
-      persistent-hint
       :rules="notEmpty"
       v-model="jwt"
     />
-    <v-btn class="login-btn" text id="nav-login" @click="upload">Submit</v-btn>
+    <v-btn class="file-input-btn" color="primary" id="file-input-submit" @click="upload">Submit</v-btn>
   </div>
 </template>
 
@@ -36,6 +40,7 @@ export default {
     return {
       contexts: null,
       files: null,
+      filename: null,
       jwt: null,
       notEmpty: [v => !!v || 'Cannot be empty']
     };
@@ -50,12 +55,13 @@ export default {
       });
     },
 
-    createBody(contexts, content) {
+    createBody(contexts, content, filename = undefined) {
       return {
         contexts: [contexts],
         template: {
           content: content,
-          contentEncodingType: 'base64'
+          contentEncodingType: 'base64',
+          filename: filename
         }
       };
     },
@@ -74,7 +80,7 @@ export default {
           // Parse Contents
           const parsedContexts = JSON.parse(this.contexts);
           const content = await this.toBase64(this.files);
-          const body = this.createBody(parsedContexts, content);
+          const body = this.createBody(parsedContexts, content, this.filename);
 
           // Perform API Call
           const response = await fetch(
@@ -94,7 +100,7 @@ export default {
           // Generate Temporary Download Link
           const url = window.URL.createObjectURL(blob);
           a.href = url;
-          a.download = `out-${this.files.name}`;
+          a.download = this.filename || this.files.name;
           document.body.appendChild(a);
           a.click();
           window.URL.revokeObjectURL(url);
