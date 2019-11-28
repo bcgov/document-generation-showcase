@@ -75,7 +75,7 @@ app.use((req, res) => {
     // Return a 404 problem if attempting to access API
     new Problem(404, 'Page Not Found', {
       detail: req.originalUrl
-    }).send(res, null);
+    }).send(res);
   } else {
     // Redirect any non-API requests to static frontend
     res.redirect(staticFilesPath);

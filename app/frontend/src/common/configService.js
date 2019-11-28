@@ -14,13 +14,13 @@ class ConfigService {
   }
 
   set resource(v) {
-    this._config = (async() => await this.load(v))();
+    this._config = (async () => await this.load(v))();
   }
 
   get(propertyName) {
     let result;
     if (!this.config) {
-      this._config = (async() => await this.load())();
+      this._config = (async () => await this.load())();
     }
     try {
       result = this.config[propertyName];
@@ -35,10 +35,13 @@ class ConfigService {
     if (resource) {
       this._resource = resource;
     }
-    this._config = await axios.get(this._resource)
-      .then(response => {
-        return response.data;
-      });
+    try {
+      const response = await axios.get(this._resource);
+      this._config = response.data;
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(`Failed to acquire configuration: ${err.message}`);
+    }
     return this._config;
   }
 

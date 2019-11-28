@@ -1,8 +1,8 @@
-###Keycloak
+### Keycloak
 
 Login to [dev](https://sso-dev.pathfinder.gov.bc.ca/auth/admin/98r0z7rz/console/#/realms/98r0z7rz/clients) to get client secrets or add users to groups.
 
-####Clients
+#### Clients
 
 | Name | Description |
 | ---- | --- |
@@ -11,24 +11,26 @@ Login to [dev](https://sso-dev.pathfinder.gov.bc.ca/auth/admin/98r0z7rz/console/
 | dgrsc-local | configured for localhost:8888, local development. |
 | dgrsc-frontend-local | configured for localhost:8888, local development.|
 
-####Client Scope
+#### Client Scope
+
 **dgrsc** - note that there maybe alternatives to what we want to do (login to the frontend/ui with ability to call protected endpoints on our host).  Just starting out with scope approach.  Seemed most logical, although I ran into an issue in the frontend keycloak-js implementation.  If you use an additional scope (have the app specifically ask for it), it is simple enough to pass that additional scope to the login function, however, when this javascript client does additional lookups (to refresh and auto-renew), it doesn't include this additional scope.  So, both the backend and frontend clients include **dgrsc** as a default client scope.
 
-####Groups:
+#### Groups
+
 **DGRSC Users** - maps to the dgrsc (client) role: user.  Add keycloak users to this group to get access to secured areas in DGRSC and to call the DGRSC backend (protects CDOGS calls).
 
-Either add yourself to DGRSC Users group, or login with user@user/password.  
+Either add yourself to DGRSC Users group, or login with user@user/password.
 
 ### Openshift Manual Configuration and Deployment
 
 Assume you are logged into OpenShift and are in the repo/openshift local directory.  We will run the scripts from there.  We will use the [Document Generation Showcase (dev)](https://console.pathfinder.gov.bc.ca:8443/console/project/wfezkf-dev/overview) namespace.
 
-####Set up environment parameters
+#### Set up environment parameters
 
 Some notes:
 **FRONTEND\_APIPATH** has no beginning '/', that is so it will always call the relative api.
 
-```
+``` sh
 export NAMESPACE=wfezkf-dev
 
 export APP_NAME=dgrsc
@@ -56,23 +58,24 @@ export SERVER_APIPATH=/api/v1
 export CDOGS_TOKENURL=unknown
 export CDOGS_APIURL=unknown
 ```
-####Create secrets and config map
 
-```
+#### Create secrets and config map
+
+``` sh
 oc create secret -n $NAMESPACE generic app-client --from-literal=username=$SERVER_KC_CLIENTID --from-literal=password=$SERVER_KC_CLIENTSECRET --type=kubernetes.io/basic-auth
 ```
 
-```
+``` sh
 oc create secret -n $NAMESPACE generic cdogs-client --from-literal=username=$CDOGS_CLIENTID --from-literal=password=$CDOGS_CLIENTSECRET --type=kubernetes.io/basic-auth
 ```
 
-```
-oc create configmap -n $NAMESPACE app-config --from-literal=FRONTEND_KC_CLIENTID=$FRONTEND_KC_CLIENTID --from-literal=FRONTEND_KC_REALM=$FRONTEND_KC_REALM --from-literal=FRONTEND_KC_SERVERURL=$FRONTEND_KC_SERVERURL --from-literal=FRONTEND_APIPATH=$FRONTEND_APIPATH --from-literal=SERVER_KC_REALM=$SERVER_KC_REALM --from-literal=SERVER_KC_SERVERURL=$SERVER_KC_SERVERURL --from-literal=SERVER_LOGLEVEL=$SERVER_LOGLEVEL --from-literal=SERVER_MORGANFORMAT=$SERVER_MORGANFORMAT --from-literal=SERVER_PORT=$SERVER_PORT --from-literal=SERVER_BODYLIMIT=$SERVER_BODYLIMIT --from-literal=SERVER_APIPATH=$SERVER_APIPATH --from-literal=CDOGS_TOKENURL=$CDOGS_TOKENURL --from-literal=CDOGS_APIURL=$CDOGS_APIURL 
+``` sh
+oc create configmap -n $NAMESPACE app-config --from-literal=FRONTEND_KC_CLIENTID=$FRONTEND_KC_CLIENTID --from-literal=FRONTEND_KC_REALM=$FRONTEND_KC_REALM --from-literal=FRONTEND_KC_SERVERURL=$FRONTEND_KC_SERVERURL --from-literal=FRONTEND_APIPATH=$FRONTEND_APIPATH --from-literal=SERVER_KC_REALM=$SERVER_KC_REALM --from-literal=SERVER_KC_SERVERURL=$SERVER_KC_SERVERURL --from-literal=SERVER_LOGLEVEL=$SERVER_LOGLEVEL --from-literal=SERVER_MORGANFORMAT=$SERVER_MORGANFORMAT --from-literal=SERVER_PORT=$SERVER_PORT --from-literal=SERVER_BODYLIMIT=$SERVER_BODYLIMIT --from-literal=SERVER_APIPATH=$SERVER_APIPATH --from-literal=CDOGS_TOKENURL=$CDOGS_TOKENURL --from-literal=CDOGS_APIURL=$CDOGS_APIURL
 ```
 
 #### Run the build config
 
-```
+``` sh
 oc -n $NAMESPACE process -f app.bc.yaml -p APP_NAME=$APP_NAME -p JOB_NAME=$JOB_NAME -p NAMESPACE=$NAMESPACE -p REPO_NAME=$REPO_NAME -p SOURCE_REPO_URL=$SOURCE_REPO_URL -p SOURCE_REPO_REF=$SOURCE_REPO_REF -o yaml | oc -n $NAMESPACE create -f -
 
 oc -n $NAMESPACE start-build dgrsc-pr-x-app
@@ -81,21 +84,22 @@ oc logs build/dgrsc-pr-x-app-1 --follow
 ```
 
 #### Additional environment and pr specific configuration
+
 We will expect the following two environment variables to be created and populated in the pipeline.
 
-These will be used to populate additional configuration required for the application.  
+These will be used to populate additional configuration required for the application.
 
-FRONTEND\_BASEPATH and SERVER\_BASEPATH  = ROUTE\_PATH  
-SERVER\_HOST\_URL = https://${ROUTE\_HOST}${ROUTE\_PATH}  
+FRONTEND\_BASEPATH and SERVER\_BASEPATH  = ROUTE\_PATH
+SERVER\_HOST\_URL = https://${ROUTE\_HOST}${ROUTE\_PATH}
 
-```
+``` sh
 export ROUTE_HOST=$APP_NAME-dev.pathfinder.gov.bc.ca
 export ROUTE_PATH=/pr-x
 ```
 
 #### Run the deployment config
 
-```
+``` sh
 oc -n $NAMESPACE process -f app.dc.yaml -p APP_NAME=$APP_NAME -p JOB_NAME=$JOB_NAME -p NAMESPACE=$NAMESPACE -p ROUTE_HOST=$ROUTE_HOST -p ROUTE_PATH=$ROUTE_PATH  -o yaml | oc -n $NAMESPACE create -f -
 
 oc -n $NAMESPACE rollout latest dc/dgrsc-pr-x-app
@@ -103,7 +107,7 @@ oc -n $NAMESPACE rollout latest dc/dgrsc-pr-x-app
 
 #### Clean up the namespace
 
-```
+``` sh
 oc -n $NAMESPACE delete all,template,secret,configmap,pvc,serviceaccount,rolebinding,networksecuritypolicy --selector app=$APP_NAME-$JOB_NAME
 oc -n $NAMESPACE delete configmap app-config
 oc -n $NAMESPACE delete secret app-client

@@ -5,38 +5,30 @@ import Home from '../views/Home.vue';
 import NotFound from '../views/NotFound.vue';
 import Secure from '../views/Secure.vue';
 
-
 Vue.use(VueRouter);
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/secure',
-    name: 'secure',
-    component: Secure
-  },
-  {
-    path: '/404',
-    alias: '*',
-    name: 'notFound',
-    component: NotFound
-  },
-
-];
-
 const getRouter = (pathRoot = '/') => {
-  const router = new VueRouter({
-    mode: 'history',
+  return new VueRouter({
     base: pathRoot,
-    routes: routes
+    routes: [
+      {
+        path: '/',
+        name: 'home',
+        component: Home
+      },
+      {
+        path: '/secure',
+        name: 'secure',
+        component: Secure
+      },
+      {
+        path: '/404',
+        alias: '*',
+        name: 'notFound',
+        component: NotFound
+      }
+    ]
   });
-
-  return router;
 };
-
 
 export default getRouter;

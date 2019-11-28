@@ -1,14 +1,12 @@
 <template>
   <v-container class="home">
-    <v-alert>Home</v-alert>
+    <div>Home</div>
   </v-container>
 </template>
 
 <script>
-
 export default {
   name: 'home',
-  components: {
-  }
+  components: {}
 };
 </script>

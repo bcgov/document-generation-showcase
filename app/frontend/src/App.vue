@@ -2,13 +2,13 @@
   <v-app id="app">
     <Header />
     <NavigationBar />
-    <div class="container--fluid"
-         id="router-view-content">
-      <router-view/>
+    <div class="container--fluid" id="router-view-content">
+      <router-view />
     </div>
     <Footer />
   </v-app>
 </template>
+
 <script>
 import Header from './components/Header';
 import NavigationBar from './components/NavigationBar';
@@ -21,31 +21,29 @@ export default {
     NavigationBar,
     Footer
   },
-  computed: {
-  },
+  computed: {},
   mounted() {
-    this.$router.push({ name: 'home'});
+    this.$router.push({ name: 'home' }).catch(() => {});
   }
 };
 </script>
+
 <style lang="scss">
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  body {
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+}
 
-  #app {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-  }
-
-  #router-view-content {
-    position: relative;
-    top: 39px;
-  }
-
+#router-view-content {
+  position: relative;
+  top: 39px;
+}
 </style>

@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Template
+labels:
+  template: "networksecurity-template"
+metadata:
+  name: "networksecurity-basic"
+objects:
+  - kind: NetworkSecurityPolicy
+    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
+    metadata:
+      name: egress-internet
+    spec:
+      description: |
+        Allow the builds to access the internet.
+        This only needs to be specified once per environment.
+      source:
+        - - $namespace=${NAMESPACE}
+      destination:
+        - - ext:network=any
+  - kind: NetworkSecurityPolicy
+    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
+    metadata:
+      name: intra-namespace-comms
+    spec:
+      description: |
+        Allow the namespace to talk to itself
+        This only needs to be specified once per environment.
+      source:
+        - - $namespace=${NAMESPACE}
+      destination:
+        - - $namespace=${NAMESPACE}
+  - kind: NetworkSecurityPolicy
+    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
+    metadata:
+      name: int-cluster-k8s-api-comms
+    spec:
+      description: |
+        Allow pods to talk to the internal api so deployments work.
+        This only needs to be specified once per environment.
+      source:
+        - - $namespace=${NAMESPACE}
+      destination:
+        - - int:network=internal-cluster-api-endpoint
+parameters:
+  - name: NAMESPACE
+    description: OpenShift namespace containing our image to deploy (ex. idcqvl-dev)
+    required: true
