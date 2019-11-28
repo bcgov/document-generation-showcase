@@ -78,8 +78,7 @@ app.use((req, res) => {
     }).send(res);
   } else {
     // Redirect any non-API requests to static frontend
-    // Stores the path as an rpath query on redirect
-    res.redirect(`${staticFilesPath}?rpath=${req.path}`);
+    res.redirect(staticFilesPath);
   }
 });
 

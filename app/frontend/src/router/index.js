@@ -8,8 +8,7 @@ import Secure from '../views/Secure.vue';
 Vue.use(VueRouter);
 
 const getRouter = (pathRoot = '/') => {
-  const router = new VueRouter({
-    mode: 'history',
+  return new VueRouter({
     base: pathRoot,
     routes: [
       {
@@ -30,20 +29,6 @@ const getRouter = (pathRoot = '/') => {
       }
     ]
   });
-
-  // WIP attempt to handle refresh routing issues
-  // router.beforeEach((to, _from, next) => {
-  //   console.log(to);
-  //   if (!to.matched.length) {
-  //     next({ name: 'notFound' });
-  //   } else {
-  //     console.log(to.query.rpath);
-  //     next({ path: to.query.rpath, query: '' });
-  //     // window.location.href = to.query.rpath;
-  //   }
-  // });
-
-  return router;
 };
 
 export default getRouter;
