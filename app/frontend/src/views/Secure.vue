@@ -1,16 +1,16 @@
 <template>
   <v-container class="secure">
-    <authentication-check>
+    <Authenticated>
       <div>This is a secured page, {{$keycloak.userName}} is logged in.</div>
       <FileInput />
       <!-- <div><p>{{health}}</p></div> -->
       <!-- <div><p>{{$keycloak.tokenParsed}}</p></div> -->
-    </authentication-check>
+    </Authenticated>
   </v-container>
 </template>
 
 <script>
-import AuthenticationCheck from '../components/AuthenticationCheck';
+import Authenticated from '../components/Authenticated';
 import FileInput from '../components/FileInput';
 export default {
   name: 'secure',
@@ -20,7 +20,7 @@ export default {
     };
   },
   components: {
-    AuthenticationCheck,
+    Authenticated,
     FileInput
   },
   mounted() {
