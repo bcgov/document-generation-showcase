@@ -7,24 +7,12 @@ labels:
 metadata:
   name: "${REPO_NAME}-app-dc"
 objects:
-  # - kind: NetworkSecurityPolicy
-  #   apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
-  #   metadata:
-  #     name: int-cluster-k8s-api-comms
-  #   spec:
-  #     description: |
-  #       Allow pods to talk to the internal api so deployments work.
-  #       This only needs to be specified once per environment.
-  #     source:
-  #       - - "$namespace=${NAMESPACE}"
-  #     destination:
-  #       - - int:network=internal-cluster-api-endpoint
   - apiVersion: v1
     kind: DeploymentConfig
     metadata:
       name: "${APP_NAME}-app-${JOB_NAME}"
     spec:
-      replicas: 1
+      replicas: 2
       revisionHistoryLimit: 10
       selector:
         app: "${APP_NAME}-${JOB_NAME}"

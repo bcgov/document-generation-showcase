@@ -7,20 +7,6 @@ labels:
 metadata:
   name: "${REPO_NAME}-app-bc"
 objects:
-  # - kind: NetworkSecurityPolicy
-  #   apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
-  #   metadata:
-  #     name: egress-internet
-  #     labels:
-  #       app: "${APP_NAME}-${JOB_NAME}"
-  #   spec:
-  #     description: |
-  #       Allow the builds to access the internet.
-  #       This only needs to be specified once per environment.
-  #     source:
-  #     - - "$namespace=${NAMESPACE}"
-  #     destination:
-  #     - - ext:network=any
   - apiVersion: v1
     kind: ImageStream
     metadata:
@@ -56,7 +42,7 @@ objects:
           uri: "${SOURCE_REPO_URL}"
         type: Git
         dockerfile: |-
-          FROM mhart/alpine-node:12
+          FROM BuildConfig
           WORKDIR /opt/app-root/src
           COPY . .
           RUN npm run all:ci \
@@ -65,16 +51,13 @@ objects:
           EXPOSE 8888
           CMD ["npm", "run", "start"]
       strategy:
-        dockerStrategy: {}
+        dockerStrategy:
+          from:
+            kind: DockerImage
+            name: "mhart/alpine-node:12"
         type: Docker
       successfulBuildsHistoryLimit: 3
 parameters:
-  # - name: APP_NAME
-  #   description: Application name
-  #   required: true
-  # - name: NAMESPACE
-  #   description: OpenShift namespace containing our image to deploy (ex. idcqvl-dev)
-  #   required: true
   - name: REPO_NAME
     description: Application repository name
     displayName: Repository Name
