@@ -1,12 +1,12 @@
 import axios from 'axios';
 import Vue from 'vue';
+import VueKeycloakService from '@dsb-norge/vue-keycloak-js';
 
 import App from './App.vue';
 import getRouter from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
 
-import KeycloakService from './common/keycloakService';
 import configService from './common/configService';
 
 Vue.config.productionTip = false;
@@ -26,10 +26,9 @@ configService.load(CONFIG_URL)
     return config;
   })
   .then(config => {
-    //
     // now load our keycloak service using our configured realm/client
     // and load up the application.
-    Vue.use(KeycloakService, {
+    Vue.use(VueKeycloakService, {
       init: {
         onLoad: 'check-sso'
       },
