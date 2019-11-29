@@ -46,6 +46,7 @@ export default {};
 
 .navigation-main .container ul li {
   margin: 0;
+  border-right: 1px solid #9b9b9b;
 }
 
 .navigation-main .container ul li a {
@@ -55,7 +56,6 @@ export default {};
   color: #fff;
   padding: 0 15px 0 15px;
   text-decoration: none;
-  border-right: 1px solid #9b9b9b;
 }
 
 .navigation-main .container ul li a:hover {

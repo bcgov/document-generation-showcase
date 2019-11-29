@@ -54,7 +54,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .gov-header .title {
   color: #fff;
