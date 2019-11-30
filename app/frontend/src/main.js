@@ -19,7 +19,7 @@ configService.load(CONFIG_URL)
     // add the config service to Vue as a plugin.
     // can be used in components like: this.$configService.get('title')
     Object.defineProperty(Vue.prototype, '$configService', {
-      get () {
+      get() {
         return configService;
       }
     });
@@ -44,15 +44,16 @@ configService.load(CONFIG_URL)
         const instance = axios.create({});
         // one strictly for api, which we can automatically add the authorization header
         const instanceApi = axios.create({
-          baseURL: config.apiPath
+          baseURL: `${config.basePath}/${config.apiPath}`
         });
 
-        instanceApi.interceptors.request.use((config) => {
+        instanceApi.interceptors.request.use(config => {
           if (keycloak.authenticated) {
             config.headers.Authorization = `Bearer ${keycloak.token}`;
           }
+
           return config;
-        }, (error) => {
+        }, error => {
           return Promise.reject(error);
         });
 

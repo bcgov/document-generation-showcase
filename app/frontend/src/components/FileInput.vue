@@ -1,18 +1,14 @@
 <template>
-  <div>
+  <div class="file-input">
     <v-file-input
       counter
       label="Upload your file"
+      :mandatory="true"
       prepend-icon="mdi-paperclip"
       show-size
       v-model="files"
     />
-    <v-text-field
-      hint="Desired output filename"
-      label="Filename"
-      :rules="notEmpty"
-      v-model="filename"
-    />
+    <v-text-field hint="(Optional) Desired output filename" label="Filename" v-model="filename" />
     <v-textarea
       auto-grow
       hint="JSON format for key-value pairs"
@@ -20,13 +16,6 @@
       :mandatory="true"
       :rules="notEmpty"
       v-model="contexts"
-    />
-    <v-textarea
-      hint="JWT Token string to be sent in Authentication: Bearer"
-      label="JWT Token"
-      :mandatory="true"
-      :rules="notEmpty"
-      v-model="jwt"
     />
     <v-btn class="file-input-btn" color="primary" id="file-input-submit" @click="upload">Submit</v-btn>
   </div>
@@ -41,7 +30,6 @@ export default {
       contexts: null,
       files: null,
       filename: null,
-      jwt: null,
       notEmpty: [v => !!v || 'Cannot be empty']
     };
   },
@@ -66,49 +54,41 @@ export default {
       };
     },
 
-    async upload() {
+    createDownload(blob, filename = undefined) {
+      const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.style.display = 'none';
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    },
 
+    async upload() {
       try {
-        if (
-          this.files &&
-          this.files instanceof File &&
-          this.contexts &&
-          this.jwt
-        ) {
+        if (this.files && this.files instanceof File && this.contexts) {
           // Parse Contents
           const parsedContexts = JSON.parse(this.contexts);
           const content = await this.toBase64(this.files);
           const body = this.createBody(parsedContexts, content, this.filename);
+          const filename = this.filename || this.files.name;
 
           // Perform API Call
-          const response = await fetch(
-            'https://cdogs-manual-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docGen',
-            {
-              method: 'POST',
-              cache: 'no-cache',
-              headers: {
-                Authorization: `Bearer ${this.jwt}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(body)
-            }
-          );
-          const blob = await response.blob();
+          const response = await this.$httpApi.post('/docGen', body, {
+            responseType: 'arraybuffer' // Needed for binaries unless you want pain
+          });
+
+          const blob = new Blob([response.data], {
+            type: 'attachment'
+          });
 
           // Generate Temporary Download Link
-          const url = window.URL.createObjectURL(blob);
-          a.href = url;
-          a.download = this.filename || this.files.name;
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
+          this.createDownload(blob, filename);
         }
       } catch (e) {
         console.log(e);
-      } finally {
-        a.remove();
       }
     }
   }
