@@ -27,13 +27,12 @@ module.exports = (settings)=>{
       'SUFFIX': phases[phase].suffix,
       'VERSION': phases[phase].tag,
       'SOURCE_IMAGE_STREAM_TAG': `${phases[phase].name}:${phases[phase].tag}`,
-      'SLAVE_NAME':'main'
+      'SLAVE_NAME': 'main'
     }
   }));
 
 
   oc.applyRecommendedLabels(objects, phases[phase].name, phase, phases[phase].changeId, phases[phase].instance)
   oc.applyAndBuild(objects)
-  oc.raw('set', ['triggers', 'bc', `${phases[phase].name}-slave-main${phases[phase].suffix}`], {'from-image':`${phases.build.namespace}/${phases[phase].name}:${phases[phase].tag}`, 'namespace':phases.build.namespace})
 
 }

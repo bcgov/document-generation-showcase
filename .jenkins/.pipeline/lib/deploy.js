@@ -33,8 +33,8 @@ module.exports = (settings)=>{
       'CPU_REQUEST': '300m',
       'CPU_LIMIT': '500m',
       'MEMORY_REQUEST': '2Gi',
-      'MEMORY_LIMIT': '2Gi'
-
+      'MEMORY_LIMIT': '2Gi',
+      'SLAVE_NAME': 'main'
     }
   }))
 

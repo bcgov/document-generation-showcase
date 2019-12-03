@@ -6,6 +6,16 @@ metadata:
   name: jenkins
 objects:
 - apiVersion: v1
+  kind: ImageStream
+  metadata:
+    creationTimestamp: null
+    labels:
+      shared: "true"
+    name: ${NAME}-slave-${SLAVE_NAME}
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     creationTimestamp:
@@ -29,7 +39,7 @@ objects:
       spec:
         initContainers:
         - name: init
-          image: docker-registry.default.svc:5000/${NAMESPACE}/${NAME}-slave-main:${VERSION}
+          image: docker-registry.default.svc:5000/${NAMESPACE}/${NAME}-slave-${SLAVE_NAME}:${VERSION}
           command:
           - curl
           - "-sSf"
@@ -52,7 +62,7 @@ objects:
             value: "${ENV_NAME}"
           - name: ENV_ID
             value: "${ENV_ID}"
-          image: docker-registry.default.svc:5000/${NAMESPACE}/${NAME}-slave-main:${VERSION}
+          image: docker-registry.default.svc:5000/${NAMESPACE}/${NAME}-slave-${SLAVE_NAME}:${VERSION}
           imagePullPolicy: Always
           name: jenkins
           ports:
