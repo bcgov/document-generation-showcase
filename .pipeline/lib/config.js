@@ -24,8 +24,26 @@ const phases = {
     version:`${version}-${changeId}`,
     tag:`dev-${version}-${changeId}`
   },
-  test: {namespace:'wfezkf-test'    , name: `${name}`, phase: 'test'  , changeId:changeId, suffix: `-test`  , instance: `${name}-test`  , version:`${version}`, tag:`test-${version}`},
-  prod: {namespace:'wfezkf-prod'    , name: `${name}`, phase: 'prod'  , changeId:changeId, suffix: `-prod`  , instance: `${name}-prod`  , version:`${version}`, tag:`prod-${version}`},
+  test: {
+    namespace:'wfezkf-test'    ,
+    name: `${name}`,
+    phase: 'test'  ,
+    changeId:changeId,
+    suffix: `-test`  ,
+    instance: `${name}-test`  ,
+    version:`${version}`,
+    tag:`test-${version}`
+  },
+  prod: {
+    namespace:'wfezkf-prod'    ,
+    name: `${name}`,
+    phase: 'prod'  ,
+    changeId:changeId,
+    suffix: `-prod`  ,
+    instance: `${name}-prod`  ,
+    version:`${version}`,
+    tag:`prod-${version}`
+  },
 };
 
 // This callback forces the node process to exit as failure.
