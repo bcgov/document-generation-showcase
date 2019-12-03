@@ -3,25 +3,65 @@
     <v-card-title>
       <p>Document Generation</p>
     </v-card-title>
+    <v-card-text>
+      <v-form ref="form" v-model="validFileInput">
+        <v-file-input
+          counter
+          :clearable=false
+          label="Upload your file"
+          :mandatory="true"
+          prepend-icon="mdi-paperclip"
+          :rules="notEmpty"
+          show-size
+          v-model="files"
+        />
+        <v-text-field
+          hint="(Optional) Desired output filename"
+          label="Filename"
+          v-model="filename"
+        />
+        <v-textarea
+          auto-grow
+          hint="JSON format for key-value pairs"
+          label="Contexts"
+          :mandatory="true"
+          required
+          :rules="notEmpty"
+          v-model="contexts"
+        />
+      </v-form>
+    </v-card-text>
     <v-card-actions>
-      <v-file-input
-        counter
-        label="Upload your file"
-        :mandatory="true"
-        prepend-icon="mdi-paperclip"
-        show-size
-        v-model="files"
-      />
-      <v-text-field hint="(Optional) Desired output filename" label="Filename" v-model="filename" />
-      <v-textarea
-        auto-grow
-        hint="JSON format for key-value pairs"
-        label="Contexts"
-        :mandatory="true"
-        :rules="notEmpty"
-        v-model="contexts"
-      />
-      <v-btn class="file-input-btn" color="primary" id="file-input-submit" @click="upload">Submit</v-btn>
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            color="info"
+            class="btn-file-input-reset"
+            id="file-input-reset"
+            @click="reset"
+            v-on="on"
+          >
+            <v-icon left>mdi-refresh</v-icon>Reset
+          </v-btn>
+        </template>
+        <span>Reset Form</span>
+      </v-tooltip>
+      <v-spacer />
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            color="primary"
+            class="btn-file-input-submit"
+            :disabled="!validFileInput"
+            id="file-input-submit"
+            @click="upload"
+            v-on="on"
+          >
+            <v-icon left>mdi-content-save</v-icon>Submit
+          </v-btn>
+        </template>
+        <span>Submit to CDOGS and Download</span>
+      </v-tooltip>
     </v-card-actions>
   </v-card>
 </template>
@@ -35,7 +75,7 @@ export default {
       files: null,
       filename: null,
       notEmpty: [v => !!v || 'Cannot be empty'],
-      temp: null
+      validFileInput: false
     };
   },
   methods: {
@@ -68,6 +108,10 @@ export default {
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
+    },
+
+    reset() {
+      this.$refs.form.reset();
     },
 
     async upload() {
