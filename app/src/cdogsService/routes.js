@@ -3,7 +3,7 @@ const log = require('npmlog');
 const keycloak = require('../components/keycloak');
 const { relatedLinks } = require('../components/relatedLinks');
 const routes = require('express').Router();
-const wrap = require('../middleware/wrap');
+// const wrap = require('../middleware/wrap');
 
 const { healthCheck, docGen } = require('./controller');
 
@@ -13,21 +13,21 @@ const protector = token => {
   return hasUser;
 };
 
-routes.get('/', wrap((req, res) => {
+routes.get('/', (req, res) => {
   res.status(200).json({
     links: relatedLinks.createLinks(req, [
       { r: 'health', m: 'GET', p: '/health' },
       { r: 'docgen', m: 'POST', p: '/docGen' }
     ])
   });
-}));
+});
 
-routes.get('/health', keycloak.protect(protector), wrap(async (req, res, next) => {
-  await healthCheck(req, res, next);
-}));
+routes.get('/health', keycloak.protect(protector), (req, res, next) => {
+  healthCheck(req, res, next);
+});
 
-routes.post('/docGen', /*keycloak.protect(protector),*/ wrap(async (req, res, next) => {
-  await docGen(req, res, next);
-}));
+routes.post('/docGen', keycloak.protect(protector), (req, res, next) => {
+  docGen(req, res, next);
+});
 
 module.exports = routes;

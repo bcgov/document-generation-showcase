@@ -30,7 +30,8 @@ export default {
       contexts: null,
       files: null,
       filename: null,
-      notEmpty: [v => !!v || 'Cannot be empty']
+      notEmpty: [v => !!v || 'Cannot be empty'],
+      temp: null
     };
   },
   methods: {
@@ -68,29 +69,43 @@ export default {
 
     async upload() {
       try {
-        if (this.files && this.files instanceof File && this.contexts) {
-          // Parse Contents
-          const parsedContexts = JSON.parse(this.contexts);
-          const content = await this.toBase64(this.files);
-          const body = this.createBody(parsedContexts, content, this.filename);
-          const filename = this.filename || this.files.name;
+        console.log('methods', this.$httpApi.get);
+        console.log('methods', this.$keycloak);
+        console.log('methods', this.$keycloak.authenticated);
+        console.log('methods', this.$keycloak.token);
+        await this.$httpApi.get('/health').then((response) => { this.temp = response.data; }).catch((err) => { this.temp = err; });
 
-          // Perform API Call
-          const response = await this.$httpApi.post('/docGen', body, {
-            responseType: 'arraybuffer' // Needed for binaries unless you want pain
-          });
+        // if (this.files && this.files instanceof File && this.contexts) {
+        //   // Parse Contents
+        //   const parsedContexts = JSON.parse(this.contexts);
+        //   const content = await this.toBase64(this.files);
+        //   const body = this.createBody(parsedContexts, content, this.filename);
+        //   const filename = this.filename || this.files.name;
 
-          const blob = new Blob([response.data], {
-            type: 'attachment'
-          });
+        //   // Perform API Call
+        //   const response = await this.$httpApi.post('/docGen', body, {
+        //     responseType: 'arraybuffer' // Needed for binaries unless you want pain
+        //   });
 
-          // Generate Temporary Download Link
-          this.createDownload(blob, filename);
-        }
+        //   const blob = new Blob([response.data], {
+        //     type: 'attachment'
+        //   });
+
+        //   // Generate Temporary Download Link
+        //   this.createDownload(blob, filename);
+        // }
       } catch (e) {
         console.log(e);
       }
     }
+  },
+
+  mounted() {
+    console.log('mounted', this.$httpApi);
+    console.log('mounted', this.$keycloak);
+    console.log('mounted', this.$keycloak.authenticated);
+    console.log('mounted', this.$keycloak.token);
+    this.$httpApi.get('/health').then((response) => { this.temp = response.data; }).catch((err) => { this.temp = err; });
   }
 };
 </script>

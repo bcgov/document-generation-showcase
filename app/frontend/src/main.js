@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Vue from 'vue';
-import VueKeycloakService from '@dsb-norge/vue-keycloak-js';
+import VueKeycloakJs from '@dsb-norge/vue-keycloak-js';
 
 import App from './App.vue';
 import getRouter from './router';
@@ -28,36 +28,36 @@ configService.load(CONFIG_URL)
   .then(config => {
     // now load our keycloak service using our configured realm/client
     // and load up the application.
-    Vue.use(VueKeycloakService, {
+    Vue.use(VueKeycloakJs, {
       init: {
         onLoad: 'check-sso'
       },
-
       config: {
-        url: config.keycloak.serverUrl,
+        clientId: config.keycloak.clientId,
         realm: config.keycloak.realm,
-        clientId: config.keycloak.clientId
+        url: config.keycloak.serverUrl
       },
-
-      onReady: keycloak => {
-        // load up some axios instances
-        const instance = axios.create({});
-        // one strictly for api, which we can automatically add the authorization header
+      onReady: kc => {
+        const timeout = 10000;
+        // Generic Axios instance with timeout
+        const instance = axios.create({ timeout: timeout });
+        // API focused Axios instance with timeout and authorization header insertion
         const instanceApi = axios.create({
-          baseURL: `${config.basePath}/${config.apiPath}`
+          baseURL: `${config.basePath}/${config.apiPath}`,
+          timeout: timeout
         });
 
-        instanceApi.interceptors.request.use(config => {
-          if (keycloak.authenticated) {
-            config.headers.Authorization = `Bearer ${keycloak.token}`;
+        instanceApi.interceptors.request.use(cfg => {
+          console.log('onReady authenticated', kc.authenticated);
+          if (kc.authenticated) {
+            cfg.headers.Authorization = `Bearer ${kc.token}`;
           }
-
-          return config;
+          return Promise.resolve(cfg);
         }, error => {
           return Promise.reject(error);
         });
 
-        // make available to components...
+        // Make available to components
         Vue.prototype.$http = instance;
         Vue.prototype.$httpApi = instanceApi;
 

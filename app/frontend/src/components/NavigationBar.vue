@@ -20,7 +20,7 @@ export default {};
 <style scoped>
 .navigation-main {
   display: block;
-  position: fixed;
+  /* position: fixed; */
   top: 65px;
   color: #fcba19;
   background-color: #38598a;

@@ -21,14 +21,13 @@ export default {
     NavigationBar,
     Footer
   },
-  computed: {},
   mounted() {
     this.$router.push({ name: 'home' }).catch(() => {});
   }
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 body {
   margin: 0;
   padding: 0;

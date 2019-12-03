@@ -3,8 +3,9 @@
     <Authenticated>
       <div>This is a secured page, {{$keycloak.userName}} is logged in.</div>
       <FileInput />
-      <!-- <div><p>{{health}}</p></div> -->
-      <!-- <div><p>{{$keycloak.tokenParsed}}</p></div> -->
+      <div><p>{{health}}</p></div>
+      <div><p>{{$keycloak.authenticated}}</p></div>
+      <div><p>{{$keycloak.tokenParsed}}</p></div>
     </Authenticated>
   </v-container>
 </template>
@@ -24,6 +25,7 @@ export default {
     FileInput
   },
   mounted() {
+    // console.log('mounted', this.$httpApi);
     // this.$httpApi.get('/health').then((response) => { this.health = response.data; }).catch((err) => { this.health = err; });
   }
 };
