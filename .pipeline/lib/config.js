@@ -5,6 +5,15 @@ const version = '1.0.0'
 const name = 'dgrsc'
 
 const phases = {
+  build: {
+    namespace:'wfezkf-tools'    ,
+    name: `${name}`,
+    phase: 'build'  ,
+    changeId:changeId,
+    suffix: `-build-${changeId}`  ,
+    instance: `${name}-build-${changeId}`  ,
+    version:`${version}-${changeId}`,
+    tag:`build-${version}-${changeId}`},
   dev: {
     namespace:'wfezkf-dev'    ,
     name: `${name}`,
