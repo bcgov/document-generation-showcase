@@ -28,7 +28,7 @@ pipeline {
                 sh "cd .pipeline && ./npmw ci && ./npmw run build -- --pr=${CHANGE_ID}"
             }
         }
-        stage('SonarQube (Test)') {
+        stage('SonarQube (Unit Test)') {
           agent any
           steps {
             script {
