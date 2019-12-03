@@ -27,13 +27,14 @@ module.exports = (settings)=>{
       'NAME': phases[phase].name,
       'SUFFIX': phases[phase].suffix,
       'VERSION': phases[phase].tag,
-      'SLAVE_NAME': 'build',
+      'NAMESPACE': phases[phase].namespace,
       'SLAVE_LABELS': 'build deploy test ui-test',
-      'SLAVE_EXECUTORS': '3',
+      'SLAVE_EXECUTORS': '6',
       'CPU_REQUEST': '300m',
       'CPU_LIMIT': '500m',
       'MEMORY_REQUEST': '2Gi',
       'MEMORY_LIMIT': '2Gi'
+
     }
   }))
 

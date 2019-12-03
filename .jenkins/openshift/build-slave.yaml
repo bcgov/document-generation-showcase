@@ -1,3 +1,4 @@
+---
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
@@ -44,13 +45,7 @@ objects:
         USER 0
         RUN fix_permission() { while [[ $# > 0 ]] ; do chgrp -R 0 "$1" && chmod -R g=u "$1"; shift; done } && \
             set -x && \
-            mkdir /opt/flywaydb && \
-            curl -sSL https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/5.2.4/flyway-commandline-5.2.4-linux-x64.tar.gz | tar xvz --strip-components=1 -C /opt/flywaydb && \
-            ln -s /opt/flywaydb/flyway /usr/local/bin && \
-            mkdir /opt/liquibase && \
-            curl -sSL https://github.com/liquibase/liquibase/releases/download/liquibase-parent-3.6.3/liquibase-3.6.3-bin.tar.gz | tar xvz -C /opt/liquibase --exclude=sdk --exclude=liquibase.bat && \
-            ln -s /opt/liquibase/liquibase /usr/local/bin && \
-                        curl -sSL -o /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_VERSION}-linux.zip && \
+            curl -sSL -o /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_VERSION}-linux.zip && \
             unzip /tmp/sonar-scanner-cli.zip -d /tmp/sonar-scanner-cli && \
             mv /tmp/sonar-scanner-cli/sonar-scanner-${SONAR_VERSION}-linux /opt/sonar-scanner && \
             ln -s /opt/sonar-scanner/bin/sonar-scanner /usr/local/bin && \
@@ -58,7 +53,7 @@ objects:
             rm -rf /tmp/sonar-scanner-cli && \
             curl -sSL https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-x64.tar.xz | tar -Jx -C /opt && \
             mv /opt/node-${NODE_VERSION}-linux-x64 /opt/node && \
-            fix_permission '/opt/flywaydb' '/opt/liquibase' '/opt/sonar-scanner' '/opt/node'
+            fix_permission '/opt/sonar-scanner' '/opt/node'
         ENV NODE_HOME=/opt/node \
             PATH=$PATH:/opt/node/bin
         USER 1001
@@ -75,19 +70,18 @@ objects:
     - imageChange: {}
       type: ImageChange
 parameters:
-- description: A name used for all objects
+- name: NAME
+  description: A name used for all objects
   displayName: Name
-  name: NAME
   required: true
   value: jenkins
-- description: A name suffix used for all objects
+- name: SUFFIX
+  description: A name suffix used for all objects
   displayName: Suffix
-  name: SUFFIX
-  required: false
   value: "-0"
-- description: A version used for the image tags
+- name: VERSION
+  description: A version used for the image tags
   displayName: version
-  name: VERSION
   required: true
   value: latest
 - name: SLAVE_NAME
@@ -97,12 +91,3 @@ parameters:
 - name: SOURCE_IMAGE_STREAM_TAG
   required: true
   value: "jenkins:prod-1.0.0"
-- name: SOURCE_GIT_URL
-  required: true
-  value: https://github.com/cvarjao-o/hello-world.git
-- name: SOURCE_GIT_REF
-  required: true
-  value: master
-- name: SOURCE_CONTEXT_DIR
-  required: true
-  value: .jenkins/docker-slave

@@ -31,6 +31,9 @@ module.exports = (settings)=>{
     }
   }));
 
+
   oc.applyRecommendedLabels(objects, phases[phase].name, phase, phases[phase].changeId, phases[phase].instance)
   oc.applyAndBuild(objects)
+  oc.raw('set', ['triggers', 'bc', `${phases[phase].name}-slave-main${phases[phase].suffix}`], {'from-image':`${phases.build.namespace}/${phases[phase].name}:${phases[phase].tag}`, 'namespace':phases.build.namespace})
+
 }
