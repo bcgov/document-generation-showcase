@@ -47,7 +47,7 @@ footer.gov-footer.v-footer {
   color: #fff;
   text-decoration: none;
   text-transform: none;
-  font-size: 0.813em;
+  font-size: 0.75rem;
 }
 
 .v-btn--active.gov-footer:before,
@@ -67,9 +67,9 @@ footer.gov-footer.v-footer {
   height: 100%;
 }
 
-.gov-footer ul li {
+.gov-footer ul li ~ li {
+  border-left: 1px solid #4b5e7e;
   margin: 0;
-  border-right: 1px solid #4b5e7e;
 }
 
 .gov-footer ul li a {

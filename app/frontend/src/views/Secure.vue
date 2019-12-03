@@ -1,11 +1,17 @@
 <template>
   <v-container class="secure">
     <Authenticated>
-      <div>This is a secured page, {{$keycloak.userName}} is logged in.</div>
+      <p>This is a secured page, {{$keycloak.userName}} is logged in.</p>
       <FileInput />
-      <div><p>{{health}}</p></div>
-      <div><p>{{$keycloak.authenticated}}</p></div>
-      <div><p>{{$keycloak.tokenParsed}}</p></div>
+      <v-card class="my-4" >
+        <v-container>
+          <p>{{health}}</p>
+          <div>
+            <p>Parsed JWT Token</p>
+            <p>{{$keycloak.tokenParsed}}</p>
+          </div>
+        </v-container>
+      </v-card>
     </Authenticated>
   </v-container>
 </template>
@@ -25,8 +31,17 @@ export default {
     FileInput
   },
   mounted() {
-    // console.log('mounted', this.$httpApi);
-    // this.$httpApi.get('/health').then((response) => { this.health = response.data; }).catch((err) => { this.health = err; });
+    this.$httpApi
+      .get('/health')
+      .then(response => {
+        this.health = response.data;
+      })
+      .catch(err => {
+        this.health = err;
+      });
   }
 };
 </script>
+
+<style scoped>
+</style>

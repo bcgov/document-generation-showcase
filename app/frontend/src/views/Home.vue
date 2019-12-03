@@ -1,6 +1,6 @@
 <template>
   <v-container class="home">
-    <div>Home</div>
+    <p>This is a public page. Home page contents TBD.</p>
   </v-container>
 </template>
 
@@ -10,3 +10,6 @@ export default {
   components: {}
 };
 </script>
+
+<style scoped>
+</style>

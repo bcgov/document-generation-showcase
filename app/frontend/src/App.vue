@@ -27,7 +27,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 body {
   margin: 0;
   padding: 0;
@@ -42,7 +42,9 @@ body {
 }
 
 #router-view-content {
-  position: relative;
-  top: 39px;
+  /* position: relative; */
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+  top: 40px;
 }
 </style>

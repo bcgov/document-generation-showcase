@@ -1,10 +1,14 @@
 <template>
-  <v-container class="not-found">404: Page not found. :(</v-container>
+  <v-container class="not-found">
+    <p>404: Page not found. :(</p>
+  </v-container>
 </template>
 
 <script>
 export default {
-  name: 'notFound',
-  components: {}
+  name: 'notFound'
 };
 </script>
+
+<style scoped>
+</style>

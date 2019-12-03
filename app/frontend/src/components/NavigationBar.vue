@@ -44,9 +44,9 @@ export default {};
   margin-left: -25px;
 }
 
-.navigation-main .container ul li {
+.navigation-main .container ul li ~ li {
+  border-left: 1px solid #9b9b9b;
   margin: 0;
-  border-right: 1px solid #9b9b9b;
 }
 
 .navigation-main .container ul li a {

@@ -48,7 +48,6 @@ configService.load(CONFIG_URL)
         });
 
         instanceApi.interceptors.request.use(cfg => {
-          console.log('onReady authenticated', kc.authenticated);
           if (kc.authenticated) {
             cfg.headers.Authorization = `Bearer ${kc.token}`;
           }

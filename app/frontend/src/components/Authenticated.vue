@@ -1,10 +1,8 @@
 <template>
-  <v-container>
-    <div v-if="$keycloak.authenticated">
-      <slot />
-    </div>
-    <div v-else>{{ message }}</div>
-  </v-container>
+  <div v-if="$keycloak.authenticated">
+    <slot />
+  </div>
+  <div v-else>{{ message }}</div>
 </template>
 
 <script>
@@ -16,3 +14,6 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+</style>

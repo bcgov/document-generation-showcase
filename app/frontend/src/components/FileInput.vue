@@ -1,5 +1,5 @@
 <template>
-  <div class="file-input">
+  <v-card class="file-input px-4 my-4">
     <v-file-input
       counter
       label="Upload your file"
@@ -18,7 +18,7 @@
       v-model="contexts"
     />
     <v-btn class="file-input-btn" color="primary" id="file-input-submit" @click="upload">Submit</v-btn>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -61,7 +61,6 @@ export default {
       a.style.display = 'none';
       a.href = url;
       a.download = filename;
-      document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
@@ -69,43 +68,29 @@ export default {
 
     async upload() {
       try {
-        console.log('methods', this.$httpApi.get);
-        console.log('methods', this.$keycloak);
-        console.log('methods', this.$keycloak.authenticated);
-        console.log('methods', this.$keycloak.token);
-        await this.$httpApi.get('/health').then((response) => { this.temp = response.data; }).catch((err) => { this.temp = err; });
+        if (this.files && this.files instanceof File && this.contexts) {
+          // Parse Contents
+          const parsedContexts = JSON.parse(this.contexts);
+          const content = await this.toBase64(this.files);
+          const body = this.createBody(parsedContexts, content, this.filename);
+          const filename = this.filename || this.files.name;
 
-        // if (this.files && this.files instanceof File && this.contexts) {
-        //   // Parse Contents
-        //   const parsedContexts = JSON.parse(this.contexts);
-        //   const content = await this.toBase64(this.files);
-        //   const body = this.createBody(parsedContexts, content, this.filename);
-        //   const filename = this.filename || this.files.name;
+          // Perform API Call
+          const response = await this.$httpApi.post('/docGen', body, {
+            responseType: 'arraybuffer' // Needed for binaries unless you want pain
+          });
 
-        //   // Perform API Call
-        //   const response = await this.$httpApi.post('/docGen', body, {
-        //     responseType: 'arraybuffer' // Needed for binaries unless you want pain
-        //   });
+          const blob = new Blob([response.data], {
+            type: 'attachment'
+          });
 
-        //   const blob = new Blob([response.data], {
-        //     type: 'attachment'
-        //   });
-
-        //   // Generate Temporary Download Link
-        //   this.createDownload(blob, filename);
-        // }
+          // Generate Temporary Download Link
+          this.createDownload(blob, filename);
+        }
       } catch (e) {
         console.log(e);
       }
     }
-  },
-
-  mounted() {
-    console.log('mounted', this.$httpApi);
-    console.log('mounted', this.$keycloak);
-    console.log('mounted', this.$keycloak.authenticated);
-    console.log('mounted', this.$keycloak.token);
-    this.$httpApi.get('/health').then((response) => { this.temp = response.data; }).catch((err) => { this.temp = err; });
   }
 };
 </script>
