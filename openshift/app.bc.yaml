@@ -55,7 +55,7 @@ objects:
           memory: 8Gi
       runPolicy: Serial
       source:
-        contextDir: /app
+        contextDir: app
         git:
           ref: "${SOURCE_REPO_REF}"
           uri: "${SOURCE_REPO_URL}"
