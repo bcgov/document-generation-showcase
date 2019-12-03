@@ -1,30 +1,34 @@
 <template>
-  <v-card class="file-input px-4 my-4">
-    <v-file-input
-      counter
-      label="Upload your file"
-      :mandatory="true"
-      prepend-icon="mdi-paperclip"
-      show-size
-      v-model="files"
-    />
-    <v-text-field hint="(Optional) Desired output filename" label="Filename" v-model="filename" />
-    <v-textarea
-      auto-grow
-      hint="JSON format for key-value pairs"
-      label="Contexts"
-      :mandatory="true"
-      :rules="notEmpty"
-      v-model="contexts"
-    />
-    <v-btn class="file-input-btn" color="primary" id="file-input-submit" @click="upload">Submit</v-btn>
+  <v-card class="file-input pa-2 my-2">
+    <v-card-title>
+      <p>Document Generation</p>
+    </v-card-title>
+    <v-card-actions>
+      <v-file-input
+        counter
+        label="Upload your file"
+        :mandatory="true"
+        prepend-icon="mdi-paperclip"
+        show-size
+        v-model="files"
+      />
+      <v-text-field hint="(Optional) Desired output filename" label="Filename" v-model="filename" />
+      <v-textarea
+        auto-grow
+        hint="JSON format for key-value pairs"
+        label="Contexts"
+        :mandatory="true"
+        :rules="notEmpty"
+        v-model="contexts"
+      />
+      <v-btn class="file-input-btn" color="primary" id="file-input-submit" @click="upload">Submit</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
 <script>
 export default {
   name: 'fileInput',
-  components: {},
   data() {
     return {
       contexts: null,
