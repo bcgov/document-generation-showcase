@@ -20,7 +20,7 @@ module.exports = (settings)=>{
       'SOURCE_REPO_REF': oc.git.ref
     }
   }))
-
+  console.log(JSON.stringify(objects, null, 2))
   oc.applyRecommendedLabels(objects, phases[phase].name, phase, phases[phase].changeId, phases[phase].instance)
   oc.applyAndBuild(objects)
 }

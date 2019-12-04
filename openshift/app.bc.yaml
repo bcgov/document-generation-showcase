@@ -82,7 +82,7 @@ parameters:
     description: Job identifier (i.e. 'pr-5' OR 'master')
     required: true
   - name: VERSION
-    description: Build number or tag for images
+    description: Build number or tag for images (ImageStreamTag)
     required: true
   - name: NAMESPACE
     description: OpenShift namespace containing our image to deploy (ex. idcqvl-dev)
