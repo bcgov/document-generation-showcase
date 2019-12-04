@@ -15,6 +15,7 @@ module.exports = (settings)=>{
     'param':{
       'APP_NAME': phases[phase].name,
       'JOB_NAME': phases[phase].changeId,
+      'VERSION': phases[phase].tag,
       'NAMESPACE': phases[phase].namespace,
       'ROUTE_HOST': `${phases[phase].name}-${phases[phase].phase}.pathfinder.gov.bc.ca`,
       'ROUTE_PATH': `/${phases[phase].changeId}`

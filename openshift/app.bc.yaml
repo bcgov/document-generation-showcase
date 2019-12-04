@@ -44,7 +44,7 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: "${APP_NAME}-${JOB_NAME}-app:latest"
+          name: "${APP_NAME}-${JOB_NAME}-app:${VERSION}"
       postCommit: {}
       resources:
         requests:
@@ -79,6 +79,9 @@ parameters:
     required: true
   - name: JOB_NAME
     description: Job identifier (i.e. 'pr-5' OR 'master')
+    required: true
+  - name: VERSION
+    description: Build number or tag for images
     required: true
   - name: NAMESPACE
     description: OpenShift namespace containing our image to deploy (ex. idcqvl-dev)

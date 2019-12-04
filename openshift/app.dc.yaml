@@ -173,6 +173,9 @@ parameters:
   - name: JOB_NAME
     description: Job identifier (i.e. 'pr-5' OR 'master')
     required: true
+  - name: VERSION
+    description: Build number or tag for images
+    required: true
   - name: NAMESPACE
     description: OpenShift namespace we are deploying to...(ex. idcqvl-dev)
     required: true

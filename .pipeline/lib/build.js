@@ -14,6 +14,7 @@ module.exports = (settings)=>{
     'param':{
       'APP_NAME': phases[phase].name,
       'JOB_NAME': phases[phase].changeId,
+      'VERSION': phases[phase].tag,
       'NAMESPACE': phases[phase].namespace,
       'SOURCE_REPO_URL': oc.git.http_url,
       'SOURCE_REPO_REF': oc.git.ref
