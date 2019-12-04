@@ -22,7 +22,7 @@
           <v-btn outlined dark v-on="on">Debug</v-btn>
         </template>
         <v-sheet class="text-center">
-          <v-btn class="sheet-close ma-2" flat color="primary" @click="sheet = !sheet">close</v-btn>
+          <v-btn class="sheet-close ma-2" color="primary" @click="sheet = !sheet">close</v-btn>
           <v-card class="sheet-debug pa-2 ma-2" raised>
             <v-card-text>
               <b v-if="$keycloak.authenticated">JWT Debug - {{$keycloak.fullName}} ({{$keycloak.userName}}) is logged in.</b>

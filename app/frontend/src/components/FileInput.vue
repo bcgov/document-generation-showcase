@@ -58,6 +58,7 @@
             class="btn-file-input-submit"
             :disabled="!validFileInput"
             id="file-input-submit"
+            :loading="loading"
             @click="upload"
             v-on="on"
           >
@@ -78,6 +79,7 @@ export default {
       contexts: null,
       files: null,
       filename: null,
+      loading: false,
       notEmpty: [v => !!v || 'Cannot be empty'],
       validFileInput: false
     };
@@ -94,7 +96,7 @@ export default {
 
     createBody(contexts, content, filename = undefined) {
       return {
-        contexts: [contexts],
+        contexts: contexts,
         template: {
           content: content,
           contentEncodingType: 'base64',
@@ -120,7 +122,9 @@ export default {
 
     async upload() {
       try {
-        if (this.files && this.files instanceof File && this.contexts) {
+        this.loading = true;
+
+        if (this.files && this.files instanceof File) {
           // Parse Contents
           const parsedContexts = JSON.parse(this.contexts);
           const content = await this.toBase64(this.files);
@@ -141,6 +145,8 @@ export default {
         }
       } catch (e) {
         console.log(e);
+      } finally {
+        this.loading = false;
       }
     }
   }

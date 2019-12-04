@@ -1,11 +1,14 @@
 <template>
   <v-app id="app">
-    <Header />
-    <NavigationBar />
-    <div class="container--fluid" id="router-view-content">
-      <router-view />
+    <v-progress-circular v-if="!$router" color="primary" indeterminate size="64" />
+    <div v-else>
+      <Header />
+      <NavigationBar />
+      <div class="container--fluid" id="router-view-content">
+        <router-view />
+      </div>
+      <Footer />
     </div>
-    <Footer />
   </v-app>
 </template>
 
@@ -20,9 +23,6 @@ export default {
     Header,
     NavigationBar,
     Footer
-  },
-  mounted() {
-    this.$router.push({ name: 'home' }).catch(() => {});
   }
 };
 </script>
@@ -33,6 +33,10 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.v-progress-circular {
+  margin: auto;
 }
 
 #app {
