@@ -87,7 +87,8 @@ objects:
             deploymentconfig: "${APP_NAME}-${JOB_NAME}-app"
         spec:
           containers:
-            - image: "docker-registry.default.svc:5000/${BUILD_NAMESPACE}/${APP_NAME}-${JOB_NAME}-app:latest"
+            - image: " "
+              name: app
               imagePullPolicy: Always
               livenessProbe:
                 failureThreshold: 3
@@ -99,7 +100,6 @@ objects:
                 periodSeconds: 60
                 successThreshold: 1
                 timeoutSeconds: 5
-              name: "${APP_NAME}-${JOB_NAME}-app"
               ports:
                 - containerPort: 8888
                   protocol: TCP
@@ -156,7 +156,16 @@ objects:
           securityContext: {}
           terminationGracePeriodSeconds: 30
       test: false
-
+      triggers:
+      - type: ConfigChange
+      - imageChangeParams:
+          automatic: true
+          containerNames:
+          - app
+          from:
+            kind: ImageStreamTag
+            name: ${APP_NAME}-${JOB_NAME}-app:${VERSION}
+        type: ImageChange
 parameters:
   - name: APP_NAME
     description: Application name
@@ -166,9 +175,6 @@ parameters:
     required: true
   - name: NAMESPACE
     description: OpenShift namespace we are deploying to...(ex. idcqvl-dev)
-    required: true
-  - name: BUILD_NAMESPACE
-    description: OpenShift namespace containing our image to deploy (ex. idcqvl-tools)
     required: true
   - name: ROUTE_HOST
     description: Configure the route host
