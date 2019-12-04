@@ -6,7 +6,7 @@
           <router-link :to="{ name: 'home' }">Home</router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'secure' }">Secure</router-link>
+          <router-link :to="{ name: 'cdogs' }">CDOGS v1</router-link>
         </li>
       </ul>
     </div>
@@ -20,7 +20,7 @@ export default {};
 <style scoped>
 .navigation-main {
   display: block;
-  position: fixed;
+  /* position: fixed; */
   top: 65px;
   color: #fcba19;
   background-color: #38598a;
@@ -28,7 +28,7 @@ export default {};
   -webkit-box-shadow: 0 6px 8px -4px #b3b1b3;
   -moz-box-shadow: 0 6px 8px -4px #b3b1b3;
   box-shadow: 0 6px 8px -4px #b3b1b3;
-  z-index: 999;
+  /* z-index: 999; */
 }
 
 .navigation-main .container {
@@ -44,7 +44,8 @@ export default {};
   margin-left: -25px;
 }
 
-.navigation-main .container ul li {
+.navigation-main .container ul li ~ li {
+  border-left: 1px solid #9b9b9b;
   margin: 0;
 }
 
@@ -55,7 +56,6 @@ export default {};
   color: #fff;
   padding: 0 15px 0 15px;
   text-decoration: none;
-  border-right: 1px solid #9b9b9b;
 }
 
 .navigation-main .container ul li a:hover {

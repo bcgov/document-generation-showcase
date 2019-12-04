@@ -1,12 +1,14 @@
 <template>
   <v-container class="home">
-    <div>Home</div>
+    <h2>Welcome to Document Generation Showcase (DGRSC).</h2>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'home',
-  components: {}
+  name: 'home'
 };
 </script>
+
+<style scoped>
+</style>

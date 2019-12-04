@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import CDOGS from '../views/CDOGS.vue';
 import Home from '../views/Home.vue';
 import NotFound from '../views/NotFound.vue';
-import Secure from '../views/Secure.vue';
 
 Vue.use(VueRouter);
 
@@ -17,9 +17,9 @@ const getRouter = (pathRoot = '/') => {
         component: Home
       },
       {
-        path: '/secure',
-        name: 'secure',
-        component: Secure
+        path: '/cdogs',
+        name: 'cdogs',
+        component: CDOGS
       },
       {
         path: '/404',

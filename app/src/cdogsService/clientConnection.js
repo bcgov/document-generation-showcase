@@ -5,10 +5,10 @@ const tokenProvider = require('axios-token-interceptor');
 
 class ClientConnection {
   constructor({tokenUrl, clientId, clientSecret}) {
-    log.info('ClientConnection ', `${tokenUrl}, ${clientId}, secret`);
+    log.verbose('ClientConnection', `Constructed with ${tokenUrl}, ${clientId}, clientSecret`);
     if (!tokenUrl || !clientId || !clientSecret) {
-      log.error('ClientConnection - invalid configuration.');
-      throw new Error('ClientConnection is not configured.  Check configuration.');
+      log.error('ClientConnection', 'Invalid configuration.');
+      throw new Error('ClientConnection is not configured. Check configuration.');
     }
 
     this.tokenUrl = tokenUrl;

@@ -19,10 +19,10 @@ const errorToProblem = (e) => {
 
 class CdogsService {
   constructor({tokenUrl, clientId, clientSecret, apiUrl}) {
-    log.info('CdogsService ', `${tokenUrl}, ${clientId}, secret, ${apiUrl}`);
+    log.verbose('CdogsService', `Constructed with ${tokenUrl}, ${clientId}, clientSecret, ${apiUrl}`);
     if (!tokenUrl || !clientId || !clientSecret || !apiUrl) {
-      log.error('CdogsService - invalid configuration.');
-      throw new Error('CdogsService is not configured.  Check configuration.');
+      log.error('CdogsService', 'Invalid configuration.');
+      throw new Error('CdogsService is not configured. Check configuration.');
     }
     this.connection = new ClientConnection({tokenUrl, clientId, clientSecret});
     this.axios = this.connection.axios;
@@ -31,15 +31,25 @@ class CdogsService {
 
   async health() {
     try {
-      const response = await this.axios.get(
-        `${this.apiUrl}/health`,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
+      const { data, status } = await this.axios.get(`${this.apiUrl}/health`, {
+        headers: {
+          'Content-Type': 'application/json'
         }
-      );
-      return response.data;
+      });
+
+      return { data, status };
+    } catch (e) {
+      errorToProblem(e);
+    }
+  }
+
+  async docGen(body) {
+    try {
+      const { data, status } = await this.axios.post(`${this.apiUrl}/docGen`, body, {
+        responseType: 'arraybuffer' // Needed for binaries unless you want pain
+      });
+
+      return { data, status };
     } catch (e) {
       errorToProblem(e);
     }

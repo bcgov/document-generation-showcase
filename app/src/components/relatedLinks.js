@@ -22,8 +22,7 @@ const relatedLinks = {
   },
 
   createLinks: (req, links) => {
-
-    if (links && links.length > 0) {
+    if (links && links.length) {
       // if we passed in links, add self to front of the list
       links.unshift({r: 'self'});
     } else {
@@ -31,8 +30,7 @@ const relatedLinks = {
       links = [{r: 'self'}];
     }
 
-    const linksArray = links.map(l => relatedLinks.createLink(req, l.r, l.m, l.p));
-    return linksArray;
+    return links.map(l => relatedLinks.createLink(req, l.r, l.m, l.p));
   }
 
 
