@@ -87,7 +87,7 @@ objects:
             deploymentconfig: "${APP_NAME}-${JOB_NAME}-app"
         spec:
           containers:
-            - image: "docker-registry.default.svc:5000/${NAMESPACE}/${APP_NAME}-${JOB_NAME}-app:latest"
+            - image: "docker-registry.default.svc:5000/${BUILD_NAMESPACE}/${APP_NAME}-${JOB_NAME}-app:latest"
               imagePullPolicy: Always
               livenessProbe:
                 failureThreshold: 3
@@ -165,7 +165,10 @@ parameters:
     description: Job identifier (i.e. 'pr-5' OR 'master')
     required: true
   - name: NAMESPACE
-    description: OpenShift namespace containing our image to deploy (ex. idcqvl-dev)
+    description: OpenShift namespace we are deploying to...(ex. idcqvl-dev)
+    required: true
+  - name: BUILD_NAMESPACE
+    description: OpenShift namespace containing our image to deploy (ex. idcqvl-tools)
     required: true
   - name: ROUTE_HOST
     description: Configure the route host
