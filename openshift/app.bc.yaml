@@ -7,21 +7,6 @@ metadata:
   name: "${APP_NAME}-${JOB_NAME}-app-bc"
 objects:
 
-  - kind: NetworkSecurityPolicy
-    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
-    metadata:
-      name: egress-internet
-      labels:
-        app: "${APP_NAME}-${JOB_NAME}"
-    spec:
-      description: |
-        Allow the builds to access the internet.
-        This only needs to be specified once per environment.
-      source:
-        - - $namespace=${NAMESPACE}
-      destination:
-        - - ext:network=any
-
   - apiVersion: image.openshift.io/v1
     kind: ImageStream
     metadata:
@@ -83,9 +68,6 @@ parameters:
     required: true
   - name: VERSION
     description: Build number or tag for images (ImageStreamTag)
-    required: true
-  - name: NAMESPACE
-    description: OpenShift namespace containing our image to deploy (ex. idcqvl-dev)
     required: true
   - name: SOURCE_REPO_REF
     description: Git Pull Request Reference (i.e. 'pull/CHANGE_ID/head')

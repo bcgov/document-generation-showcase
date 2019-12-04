@@ -16,13 +16,10 @@ module.exports = (settings)=>{
       'APP_NAME': phases[phase].name,
       'JOB_NAME': phases[phase].changeId,
       'VERSION': phases[phase].tag,
-      'NAMESPACE': phases[phase].namespace,
       'ROUTE_HOST': `${phases[phase].name}-${phases[phase].phase}.pathfinder.gov.bc.ca`,
       'ROUTE_PATH': `/${phases[phase].changeId}`
     }
   }))
-
-  console.log(JSON.stringify(objects, null, 2))
 
   oc.applyRecommendedLabels(objects, phases[phase].name, phase, `${changeId}`, phases[phase].instance)
   oc.importImageStreams(objects, phases[phase].tag, phases.build.namespace, phases.build.tag)

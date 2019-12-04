@@ -7,21 +7,6 @@ metadata:
   name: "${APP_NAME}-${JOB_NAME}-app-dc"
 objects:
 
-  - kind: NetworkSecurityPolicy
-    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
-    metadata:
-      name: int-cluster-k8s-api-comms
-      labels:
-        app: "${APP_NAME}-${JOB_NAME}"
-    spec:
-      description: |
-        Allow pods to talk to the internal api so deployments work.
-        This only needs to be specified once per environment.
-      source:
-        - - $namespace=${NAMESPACE}
-      destination:
-        - - int:network=internal-cluster-api-endpoint
-
   - apiVersion: image.openshift.io/v1
     kind: ImageStream
     metadata:
@@ -192,9 +177,6 @@ parameters:
     required: true
   - name: VERSION
     description: Build number or tag for images
-    required: true
-  - name: NAMESPACE
-    description: OpenShift namespace we are deploying to...(ex. idcqvl-dev)
     required: true
   - name: ROUTE_HOST
     description: Configure the route host
