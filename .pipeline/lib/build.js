@@ -1,16 +1,16 @@
-'use strict';
-const {OpenShiftClientX} = require('pipeline-cli')
-const path = require('path');
+"use strict";
+const { OpenShiftClientX } = require("@bcgov/pipeline-cli");
+const path = require("path");
 
-module.exports = (settings)=>{
-  const phases = settings.phases
-  const options = settings.options
-  const oc=new OpenShiftClientX(Object.assign({'namespace':phases.build.namespace}, options));
-  const phase='build'
-  let objects = []
-  const templatesLocalBaseUrl =oc.toFileUrl(path.resolve(__dirname, '../../openshift'))
+module.exports = settings => {
+  const phases = settings.phases;
+  const options = settings.options;
+  const oc = new OpenShiftClientX(Object.assign({ namespace: phases.build.namespace }, options));
+  const phase = "build";
+  let objects = [];
+  const templatesLocalBaseUrl = oc.toFileUrl(path.resolve(__dirname, "../../openshift"));
 
-   objects.push(...oc.processDeploymentTemplate(`${templatesLocalBaseUrl}/app.bc.yaml`, {
+  objects.push(...oc.processDeploymentTemplate(`${templatesLocalBaseUrl}/app.bc.yaml`, {
     'param':{
       'APP_NAME': phases[phase].name,
       'JOB_NAME': phases[phase].changeId,
@@ -20,6 +20,12 @@ module.exports = (settings)=>{
     }
   }))
 
-  oc.applyRecommendedLabels(objects, phases[phase].name, phase, phases[phase].changeId, phases[phase].instance)
-  oc.applyAndBuild(objects)
-}
+  oc.applyRecommendedLabels(
+    objects,
+    phases[phase].name,
+    phase,
+    phases[phase].changeId,
+    phases[phase].instance,
+  );
+  oc.applyAndBuild(objects);
+};
