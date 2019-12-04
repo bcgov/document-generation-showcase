@@ -1,6 +1,6 @@
 <template>
   <v-container class="home">
-    <p>This is a public page. Home page contents TBD.</p>
+    <h2>Welcome to Document Generation Showcase (DGRSC).</h2>
   </v-container>
 </template>
 

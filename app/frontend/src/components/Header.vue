@@ -17,10 +17,29 @@
 
       <v-spacer></v-spacer>
 
-      <div v-if="$keycloak.authenticated">
-        <v-btn text class="login-btn" id="nav-logout" @click="logout">Logout</v-btn>
-      </div>
-      <v-btn v-else class="login-btn" text id="nav-login" @click="login">Login</v-btn>
+      <v-bottom-sheet v-if="devMode" inset v-model="sheet">
+        <template v-slot:activator="{ on }">
+          <v-btn outlined dark v-on="on">Debug</v-btn>
+        </template>
+        <v-sheet class="text-center">
+          <v-btn class="sheet-close ma-2" flat color="primary" @click="sheet = !sheet">close</v-btn>
+          <v-card class="sheet-debug pa-2 ma-2" raised>
+            <v-card-text>
+              <b>JWT Debug - {{$keycloak.fullName}} ({{$keycloak.userName}}) is logged in.</b>
+              <p>{{$keycloak.tokenParsed}}</p>
+            </v-card-text>
+          </v-card>
+        </v-sheet>
+      </v-bottom-sheet>
+
+      <v-btn
+        v-if="$keycloak.authenticated"
+        class="login-btn"
+        id="nav-logout"
+        text
+        @click="logout"
+      >Logout</v-btn>
+      <v-btn v-else class="login-btn" id="nav-login" text @click="login">Login</v-btn>
     </v-toolbar>
   </header>
 </template>
@@ -29,7 +48,9 @@
 export default {
   data() {
     return {
-      appTitle: process.env.VUE_APP_TITLE
+      appTitle: process.env.VUE_APP_TITLE,
+      devMode: process.env.NODE_ENV === 'development',
+      sheet: false
     };
   },
   computed: {},

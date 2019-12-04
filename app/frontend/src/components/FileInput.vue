@@ -3,11 +3,12 @@
     <v-card-title>
       <p>Document Generation</p>
     </v-card-title>
+
     <v-card-text>
       <v-form ref="form" v-model="validFileInput">
         <v-file-input
           counter
-          :clearable=false
+          :clearable="false"
           label="Upload your file"
           :mandatory="true"
           prepend-icon="mdi-paperclip"
@@ -31,6 +32,7 @@
         />
       </v-form>
     </v-card-text>
+
     <v-card-actions>
       <v-tooltip top>
         <template v-slot:activator="{ on }">
@@ -46,7 +48,9 @@
         </template>
         <span>Reset Form</span>
       </v-tooltip>
+
       <v-spacer />
+
       <v-tooltip top>
         <template v-slot:activator="{ on }">
           <v-btn

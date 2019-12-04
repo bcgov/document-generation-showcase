@@ -40,7 +40,7 @@ footer.gov-footer.v-footer {
   border-top: 2px solid rgb(252, 186, 25);
   min-height: 45px;
   min-width: 100%;
-  z-index: 999;
+  /* z-index: 999; */
 }
 
 .gov-footer .v-btn {
