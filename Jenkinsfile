@@ -6,7 +6,7 @@ import bcgov.GitHubHelper
 // ------------------
 
 // Stash Names
-def FE_COV_STASH = 'frontend-coverage'
+def COVERAGE_STASH = 'test-coverage'
 
 // --------------------
 // Declarative Pipeline
@@ -89,7 +89,7 @@ pipeline {
               echo 'Installing NPM Dependencies...'
               sh 'npm ci'
 
-              echo 'Linting and Testing Backend...'
+              echo 'Linting and Testing App/Frontend...'
               sh 'npm run test:unit'
 
               echo 'Frontend Lint Checks and Tests passed'
@@ -104,7 +104,7 @@ pipeline {
       }
       post {
         success {
-          stash name: FE_COV_STASH, includes: 'app/frontend/coverage/**'
+          stash name: COVERAGE_STASH, includes: 'app/frontend/coverage/**'
 
           echo 'All Lint Checks and Tests passed'
           notifyStageStatus('Tests', 'SUCCESS')
@@ -129,7 +129,7 @@ pipeline {
               parallel(
                 App: {
                   try {
-                    notifyStageStatus('Backend', 'PENDING')
+                    notifyStageStatus('App', 'PENDING')
 
                     echo "Processing BuildConfig ${REPO_NAME}-app-${JOB_NAME}..."
                     def bcApp = openshift.process('-f',
@@ -158,7 +158,7 @@ pipeline {
                 },
 
                 SonarQube: {
-                  unstash FE_COV_STASH
+                  unstash COVERAGE_STASH
 
                   echo 'Performing SonarQube static code analysis...'
                   sh """
@@ -175,7 +175,7 @@ pipeline {
       }
       post {
         success {
-          echo 'Cleanup Backend BuildConfigs...'
+          echo 'Cleanup App BuildConfigs...'
           script {
             openshift.withCluster() {
               openshift.withProject(TOOLS_PROJECT) {
@@ -283,7 +283,7 @@ def deployStage(String stageEnv, String projectEnv, String hostEnv, String pathE
         throw e
       }
 
-      createDeploymentStatus(projectEnv, 'PENDING', String hostEnv, String pathEnv)
+      createDeploymentStatus(projectEnv, 'PENDING', hostEnv, pathEnv)
 
       // Wait for deployments to roll out
       timeout(10) {
