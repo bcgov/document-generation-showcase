@@ -254,7 +254,7 @@ def deployStage(String stageEnv, String projectEnv, String hostEnv, String pathE
         throw e
       }
 
-      createDeploymentStatus(projectEnv, 'PENDING', String hostEnv, String pathEnv)
+      createDeploymentStatus(projectEnv, 'PENDING', hostEnv, pathEnv)
 
       // Wait for deployments to roll out
       timeout(10) {
