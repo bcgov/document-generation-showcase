@@ -27,7 +27,7 @@
           label="Contexts"
           :mandatory="true"
           required
-          :rules="notEmpty"
+          :rules="contextsRules"
           v-model="contexts"
         />
       </v-form>
@@ -77,6 +77,24 @@ export default {
   data() {
     return {
       contexts: null,
+      contextsRules: [
+        v => !!v || 'Cannot be empty',
+        v => {
+          try {
+            return !!JSON.parse(v);
+          } catch (e) {
+            return 'Must be valid JSON';
+          }
+        },
+        v => {
+          try {
+            if(!Array.isArray(JSON.parse(v))) throw new Error();
+            return true;
+          } catch (e) {
+            return 'Must be an Array object';
+          }
+        }
+      ],
       files: null,
       filename: null,
       loading: false,
@@ -128,8 +146,10 @@ export default {
           // Parse Contents
           const parsedContexts = JSON.parse(this.contexts);
           const content = await this.toBase64(this.files);
-          const body = this.createBody(parsedContexts, content, this.filename);
           const filename = this.filename || this.files.name;
+          const body = this.createBody(parsedContexts, content, filename);
+
+          console.log(filename);
 
           // Perform API Call
           const response = await this.$httpApi.post('/docGen', body, {
