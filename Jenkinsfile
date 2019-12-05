@@ -6,7 +6,7 @@ import bcgov.GitHubHelper
 // ------------------
 
 // Stash Names
-def FE_COV_STASH = 'frontend-coverage'
+def COVERAGE_STASH = 'test-coverage'
 
 // --------------------
 // Declarative Pipeline
@@ -104,7 +104,7 @@ pipeline {
       }
       post {
         success {
-          stash name: FE_COV_STASH, includes: 'app/frontend/coverage/**'
+          stash name: COVERAGE_STASH, includes: 'app/frontend/coverage/**'
 
           echo 'All Lint Checks and Tests passed'
           notifyStageStatus('Tests', 'SUCCESS')
@@ -158,7 +158,7 @@ pipeline {
                 },
 
                 SonarQube: {
-                  unstash FE_COV_STASH
+                  unstash COVERAGE_STASH
 
                   echo 'Performing SonarQube static code analysis...'
                   sh """
