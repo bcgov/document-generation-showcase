@@ -6,7 +6,7 @@ import bcgov.GitHubHelper
 // ------------------
 
 // Stash Names
-def FE_COV_STASH = 'frontend-coverage'
+def COVERAGE_STASH = 'test-coverage'
 
 // --------------------
 // Declarative Pipeline
@@ -78,23 +78,18 @@ pipeline {
     stage('Tests') {
       agent any
       steps {
-        notifyStageStatus('Tests', 'PENDING')
-
         script {
           dir('app/frontend') {
             try {
               timeout(10) {
-              echo 'Installing NPM Dependencies...'
-              sh 'npm ci'
+                echo 'Installing NPM Dependencies...'
+                sh 'npm ci'
 
-              echo 'Linting and Testing Backend...'
-              sh 'npm run test:unit'
-
-              echo 'Frontend Lint Checks and Tests passed'
-
+                echo "Testing app/frontend..."
+                sh 'npm run test:unit'
               }
             } catch (e) {
-              echo 'Frontend Lint Checks and Tests failed'
+              echo "testing app/frontend failed"
               throw e
             }
           }
@@ -102,7 +97,7 @@ pipeline {
       }
       post {
         success {
-          stash name: FE_COV_STASH, includes: 'app/frontend/coverage/**'
+          stash name: COVERAGE_STASH, includes: 'app/frontend/coverage/**'
 
           echo 'All Lint Checks and Tests passed'
           notifyStageStatus('Tests', 'SUCCESS')
@@ -110,6 +105,28 @@ pipeline {
         failure {
           echo 'Some Lint Checks and Tests failed'
           notifyStageStatus('Tests', 'FAILURE')
+        }
+      }
+    }
+
+    stage('Tests (Publish)') {
+      agent any
+      steps {
+        script {
+          openshift.withCluster() {
+            openshift.withProject(TOOLS_PROJECT) {
+
+              unstash COVERAGE_STASH
+
+              echo 'Performing SonarQube static code analysis...'
+              sh """
+              sonar-scanner \
+                -Dsonar.host.url='${SONARQUBE_URL_INT}' \
+                -Dsonar.projectKey='${REPO_NAME}-${JOB_NAME}' \
+                -Dsonar.projectName='${APP_NAME} (${JOB_NAME.toUpperCase()})'
+              """
+            }
+          }
         }
       }
     }
@@ -124,49 +141,33 @@ pipeline {
                 echo "DEBUG - Using project: ${openshift.project()}"
               }
 
-              parallel(
-                App: {
-                  try {
-                    notifyStageStatus('Backend', 'PENDING')
+              try {
+                notifyStageStatus('Backend', 'PENDING')
 
-                    echo "Processing BuildConfig ${REPO_NAME}-app-${JOB_NAME}..."
-                    def bcApp = openshift.process('-f',
-                      'openshift/app.bc.yaml',
-                      "REPO_NAME=${REPO_NAME}",
-                      "JOB_NAME=${JOB_NAME}",
-                      "SOURCE_REPO_URL=${SOURCE_REPO_URL}",
-                      "SOURCE_REPO_REF=${SOURCE_REPO_REF}"
-                    )
+                echo "Processing BuildConfig ${REPO_NAME}-app-${JOB_NAME}..."
+                def bcApp = openshift.process('-f',
+                  'openshift/app.bc.yaml',
+                  "REPO_NAME=${REPO_NAME}",
+                  "JOB_NAME=${JOB_NAME}",
+                  "SOURCE_REPO_URL=${SOURCE_REPO_URL}",
+                  "SOURCE_REPO_REF=${SOURCE_REPO_REF}"
+                )
 
-                    echo "Building ImageStream..."
-                    openshift.apply(bcApp).narrow('bc').startBuild('-w').logs('-f')
+                echo "Building ImageStream..."
+                openshift.apply(bcApp).narrow('bc').startBuild('-w').logs('-f')
 
-                    echo "Tagging Image ${REPO_NAME}-app:latest..."
-                    openshift.tag("${REPO_NAME}-app:latest",
-                      "${REPO_NAME}-app:${JOB_NAME}"
-                    )
+                echo "Tagging Image ${REPO_NAME}-app:latest..."
+                openshift.tag("${REPO_NAME}-app:latest",
+                  "${REPO_NAME}-app:${JOB_NAME}"
+                )
 
-                    echo 'App build successful'
-                    notifyStageStatus('App', 'SUCCESS')
-                  } catch (e) {
-                    echo 'App build failed'
-                    notifyStageStatus('App', 'FAILURE')
-                    throw e
-                  }
-                },
-
-                SonarQube: {
-                  unstash FE_COV_STASH
-
-                  echo 'Performing SonarQube static code analysis...'
-                  sh """
-                  sonar-scanner \
-                    -Dsonar.host.url='${SONARQUBE_URL_INT}' \
-                    -Dsonar.projectKey='${REPO_NAME}-${JOB_NAME}' \
-                    -Dsonar.projectName='${APP_NAME} (${JOB_NAME.toUpperCase()})'
-                  """
-                }
-              )
+                echo 'App build successful'
+                notifyStageStatus('App', 'SUCCESS')
+              } catch (e) {
+                echo 'App build failed'
+                notifyStageStatus('App', 'FAILURE')
+                throw e
+              }
             }
           }
         }
