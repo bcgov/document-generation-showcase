@@ -68,7 +68,7 @@ objects:
                 - name: SERVER_BASEPATH
                   value: "${ROUTE_PATH}"
                 - name: SERVER_HOSTURL
-                  value: https://${HOST_ROUTE}${ROUTE_PATH}
+                  value: https://${ROUTE_HOST}${ROUTE_PATH}
                 - name: SERVER_KC_CLIENTID
                   valueFrom:
                     secretKeyRef:
@@ -120,7 +120,7 @@ objects:
     metadata:
       name: "${APP_NAME}-app-${JOB_NAME}"
     spec:
-      host: "${HOST_ROUTE}"
+      host: "${ROUTE_HOST}"
       path: "${ROUTE_PATH}"
       port:
         targetPort: 8888-tcp
@@ -137,9 +137,9 @@ parameters:
     description: Application name
     displayName: Application name
     required: true
-  - name: HOST_ROUTE
+  - name: ROUTE_HOST
     description: The host the route will use to expose service outside cluster
-    displayName: Host route
+    displayName: Route host
     required: true
   - name: ROUTE_PATH
     description: Configure the route path (ex. /pr-5 or /app), also used for FRONTEND_BASEPATH
