@@ -1,6 +1,6 @@
 <template>
   <v-container class="not-found">
-    <h2>404: Page not found. :(</h2>
+    <h2 class="text-center">404: Page not found. :(</h2>
   </v-container>
 </template>
 

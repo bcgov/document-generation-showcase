@@ -42,11 +42,9 @@ body {
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
 }
 
 #router-view-content {
-  /* position: relative; */
   padding-top: 1rem;
   padding-bottom: 3rem;
   top: 40px;

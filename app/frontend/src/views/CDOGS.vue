@@ -1,6 +1,7 @@
 <template>
   <v-container class="secure">
     <Authenticated>
+      <h2 class="text-center">Common Document Generation Service (v1)</h2>
       <FileInput />
       <Health />
     </Authenticated>
