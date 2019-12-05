@@ -89,7 +89,7 @@ pipeline {
               echo 'Installing NPM Dependencies...'
               sh 'npm ci'
 
-              echo 'Linting and Testing Backend...'
+              echo 'Linting and Testing App/Frontend...'
               sh 'npm run test:unit'
 
               echo 'Frontend Lint Checks and Tests passed'
@@ -129,7 +129,7 @@ pipeline {
               parallel(
                 App: {
                   try {
-                    notifyStageStatus('Backend', 'PENDING')
+                    notifyStageStatus('App', 'PENDING')
 
                     echo "Processing BuildConfig ${REPO_NAME}-app-${JOB_NAME}..."
                     def bcApp = openshift.process('-f',
@@ -175,7 +175,7 @@ pipeline {
       }
       post {
         success {
-          echo 'Cleanup Backend BuildConfigs...'
+          echo 'Cleanup App BuildConfigs...'
           script {
             openshift.withCluster() {
               openshift.withProject(TOOLS_PROJECT) {
