@@ -1,43 +1,85 @@
 <template>
-  <div>
-    <v-file-input
-      counter
-      label="Upload your file"
-      prepend-icon="mdi-paperclip"
-      show-size
-      v-model="files"
-    />
-    <v-textarea
-      auto-grow
-      hint="JSON format for key-value pairs"
-      label="Contexts"
-      :mandatory="true"
-      persistent-hint
-      :rules="notEmpty"
-      v-model="contexts"
-    />
-    <v-textarea
-      hint="JWT Token string to be sent in Authentication: Bearer"
-      label="JWT Token"
-      :mandatory="true"
-      persistent-hint
-      :rules="notEmpty"
-      v-model="jwt"
-    />
-    <v-btn class="login-btn" text id="nav-login" @click="upload">Submit</v-btn>
-  </div>
+  <v-card class="file-input pa-2 my-2">
+    <v-card-title>
+      <p>Document Generation</p>
+    </v-card-title>
+
+    <v-card-text>
+      <v-form ref="form" v-model="validFileInput">
+        <v-file-input
+          counter
+          :clearable="false"
+          label="Upload your file"
+          :mandatory="true"
+          prepend-icon="mdi-paperclip"
+          :rules="notEmpty"
+          show-size
+          v-model="files"
+        />
+        <v-text-field
+          hint="(Optional) Desired output filename"
+          label="Filename"
+          v-model="filename"
+        />
+        <v-textarea
+          auto-grow
+          hint="JSON format for key-value pairs"
+          label="Contexts"
+          :mandatory="true"
+          required
+          :rules="notEmpty"
+          v-model="contexts"
+        />
+      </v-form>
+    </v-card-text>
+
+    <v-card-actions>
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            color="info"
+            class="btn-file-input-reset"
+            id="file-input-reset"
+            @click="reset"
+            v-on="on"
+          >
+            <v-icon left>mdi-refresh</v-icon>Reset
+          </v-btn>
+        </template>
+        <span>Reset Form</span>
+      </v-tooltip>
+
+      <v-spacer />
+
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            color="primary"
+            class="btn-file-input-submit"
+            :disabled="!validFileInput"
+            id="file-input-submit"
+            @click="upload"
+            v-on="on"
+          >
+            <v-icon left>mdi-content-save</v-icon>Submit
+          </v-btn>
+        </template>
+        <span>Submit to CDOGS and Download</span>
+      </v-tooltip>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
 export default {
   name: 'fileInput',
-  components: {},
   data() {
     return {
       contexts: null,
       files: null,
-      jwt: null,
-      notEmpty: [v => !!v || 'Cannot be empty']
+      filename: null,
+      notEmpty: [v => !!v || 'Cannot be empty'],
+      validFileInput: false
     };
   },
   methods: {
@@ -50,59 +92,55 @@ export default {
       });
     },
 
-    createBody(contexts, content) {
+    createBody(contexts, content, filename = undefined) {
       return {
         contexts: [contexts],
         template: {
           content: content,
-          contentEncodingType: 'base64'
+          contentEncodingType: 'base64',
+          filename: filename
         }
       };
     },
 
-    async upload() {
+    createDownload(blob, filename = undefined) {
+      const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.style.display = 'none';
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    },
 
+    reset() {
+      this.$refs.form.reset();
+    },
+
+    async upload() {
       try {
-        if (
-          this.files &&
-          this.files instanceof File &&
-          this.contexts &&
-          this.jwt
-        ) {
+        if (this.files && this.files instanceof File && this.contexts) {
           // Parse Contents
           const parsedContexts = JSON.parse(this.contexts);
           const content = await this.toBase64(this.files);
-          const body = this.createBody(parsedContexts, content);
+          const body = this.createBody(parsedContexts, content, this.filename);
+          const filename = this.filename || this.files.name;
 
           // Perform API Call
-          const response = await fetch(
-            'https://cdogs-manual-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docGen',
-            {
-              method: 'POST',
-              cache: 'no-cache',
-              headers: {
-                Authorization: `Bearer ${this.jwt}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(body)
-            }
-          );
-          const blob = await response.blob();
+          const response = await this.$httpApi.post('/docGen', body, {
+            responseType: 'arraybuffer' // Needed for binaries unless you want pain
+          });
+
+          const blob = new Blob([response.data], {
+            type: 'attachment'
+          });
 
           // Generate Temporary Download Link
-          const url = window.URL.createObjectURL(blob);
-          a.href = url;
-          a.download = `out-${this.files.name}`;
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
+          this.createDownload(blob, filename);
         }
       } catch (e) {
         console.log(e);
-      } finally {
-        a.remove();
       }
     }
   }

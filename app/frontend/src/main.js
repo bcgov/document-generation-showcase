@@ -1,12 +1,12 @@
 import axios from 'axios';
 import Vue from 'vue';
+import VueKeycloakJs from '@dsb-norge/vue-keycloak-js';
 
 import App from './App.vue';
 import getRouter from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
 
-import KeycloakService from './common/keycloakService';
 import configService from './common/configService';
 
 Vue.config.productionTip = false;
@@ -19,45 +19,44 @@ configService.load(CONFIG_URL)
     // add the config service to Vue as a plugin.
     // can be used in components like: this.$configService.get('title')
     Object.defineProperty(Vue.prototype, '$configService', {
-      get () {
+      get() {
         return configService;
       }
     });
     return config;
   })
   .then(config => {
-    //
     // now load our keycloak service using our configured realm/client
     // and load up the application.
-    Vue.use(KeycloakService, {
+    Vue.use(VueKeycloakJs, {
       init: {
         onLoad: 'check-sso'
       },
-
       config: {
-        url: config.keycloak.serverUrl,
+        clientId: config.keycloak.clientId,
         realm: config.keycloak.realm,
-        clientId: config.keycloak.clientId
+        url: config.keycloak.serverUrl
       },
-
-      onReady: keycloak => {
-        // load up some axios instances
-        const instance = axios.create({});
-        // one strictly for api, which we can automatically add the authorization header
+      onReady: kc => {
+        const timeout = 10000;
+        // Generic Axios instance with timeout
+        const instance = axios.create({ timeout: timeout });
+        // API focused Axios instance with timeout and authorization header insertion
         const instanceApi = axios.create({
-          baseURL: config.apiPath
+          baseURL: `${config.basePath}/${config.apiPath}`,
+          timeout: timeout
         });
 
-        instanceApi.interceptors.request.use((config) => {
-          if (keycloak.authenticated) {
-            config.headers.Authorization = `Bearer ${keycloak.token}`;
+        instanceApi.interceptors.request.use(cfg => {
+          if (kc.authenticated) {
+            cfg.headers.Authorization = `Bearer ${kc.token}`;
           }
-          return config;
-        }, (error) => {
+          return Promise.resolve(cfg);
+        }, error => {
           return Promise.reject(error);
         });
 
-        // make available to components...
+        // Make available to components
         Vue.prototype.$http = instance;
         Vue.prototype.$httpApi = instanceApi;
 
