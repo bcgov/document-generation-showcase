@@ -93,6 +93,14 @@ export default {
           } catch (e) {
             return 'Must be an Array object';
           }
+        },
+        v => {
+          try {
+            if(!JSON.parse(v).length) throw new Error();
+            return true;
+          } catch (e) {
+            return 'Array must have at least one element';
+          }
         }
       ],
       files: null,

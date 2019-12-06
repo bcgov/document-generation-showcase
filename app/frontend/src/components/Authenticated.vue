@@ -3,7 +3,7 @@
     <slot />
   </div>
   <div v-else>
-    <h2>{{ message }}</h2>
+    <h2 class="text-center">{{ message }}</h2>
   </div>
 </template>
 
