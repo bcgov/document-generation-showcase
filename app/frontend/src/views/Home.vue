@@ -47,7 +47,7 @@
                 small
               >
                 <v-icon left>{{ item.template.icon }}</v-icon>
-                {{ item.template.name }}
+                {{ item.template.link.replace(/^.*\//, '') }}
               </v-btn>
             </td>
             <td>
@@ -60,7 +60,7 @@
                 small
               >
                 <v-icon left>mdi-download</v-icon>
-                {{ item.contexts.name }}
+                {{ item.contexts.link.replace(/^.*\//, '') }}
               </v-btn>
             </td>
           </tr>
@@ -78,46 +78,40 @@ export default {
       examples: [
         {
           contexts: {
-            color: 'gray',
+            color: 'teal',
             link: './examples/contexts_dgrsc.json',
-            name: 'contexts_dgrsc.json'
           },
           description: 'Information Sharing Agreement',
           template: {
             color: 'blue',
             icon: 'mdi-file-word',
             link: './examples/template_information_sharing_agreement.docx',
-            name: 'template_information_sharing_agreement.docx'
           },
           type: 'Microsoft Word Document (.docx)'
         },
         {
           contexts: {
-            color: 'black',
+            color: 'teal',
             link: './examples/contexts_dgrsc.json',
-            name: 'contexts_dgrsc.json'
           },
           description: 'Information Sharing Agreement',
           template: {
             color: 'brown',
             icon: 'mdi-file-document',
             link: './examples/template_information_sharing_agreement.odt',
-            name: 'template_information_sharing_agreement.odt'
           },
           type: 'OpenDocument Text (.odt)'
         },
         {
           contexts: {
-            color: 'black',
+            color: 'teal',
             link: './examples/contexts_dgrsc.json',
-            name: 'contexts_dgrsc.json'
           },
           description: 'Sample PowerPoint Presentation',
           template: {
             color: 'orange',
             icon: 'mdi-file-powerpoint',
             link: './examples/template_powerpoint.pptx',
-            name: 'template_powerpoint.pptx'
           },
           type: 'Microsoft PowerPoint Presentation (.pptx)'
         },
@@ -125,14 +119,12 @@ export default {
           contexts: {
             color: 'red',
             link: './examples/contexts_movies.json',
-            name: 'contexts_movies.json'
           },
           description: 'Sample Movie Spreadsheet',
           template: {
             color: 'green',
             icon: 'mdi-file-excel',
             link: './examples/template_movies.xlsx',
-            name: 'template_movies.xlsx'
           },
           type: 'Microsoft Excel Worksheet (.xlsx)'
         },
@@ -140,25 +132,18 @@ export default {
           contexts: {
             color: 'purple',
             link: './examples/contexts_mx_permit.json',
-            name: 'contexts_mx_permit.json'
           },
           description: 'Mineral Exploration Reclamation Permit',
           template: {
             color: 'blue',
             icon: 'mdi-file-word',
             link: './examples/mx_permit_{d.permitNumber}.docx',
-            name: 'mx_permit_{d.permitNumber}.docx'
           },
           type: 'Microsoft Word Document (.docx)'
         }
       ]
     };
   },
-  methods: {
-    dropPath(link) {
-      return link.replace(/^.*\//, '');
-    }
-  }
 };
 </script>
 
