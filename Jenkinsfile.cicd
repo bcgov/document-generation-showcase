@@ -251,7 +251,7 @@ def deployStage(String stageEnv, String projectEnv, String hostEnv, String pathE
       openshift.selector('secret', "app-keycloak-secret").exists() &&
       openshift.selector('secret', "cdogs-service-secret").exists())) {
         echo 'Some ConfigMaps and/or Secrets are missing. Please consult the openshift readme for details.'
-        throw e
+        throw new Exception('Missing ConfigMaps and/or Secrets')
       }
 
       createDeploymentStatus(projectEnv, 'PENDING', hostEnv, pathEnv)
