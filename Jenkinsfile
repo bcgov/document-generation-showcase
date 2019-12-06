@@ -341,11 +341,11 @@ def createDeploymentStatus(String environment, String status, String hostEnv, St
     this,
     ghDeploymentId,
     status,
-    ['targetUrl': "https://${hostEnv}/${pathEnv}"]
+    ['targetUrl': "https://${hostEnv}${pathEnv}"]
   )
 
   if (status.equalsIgnoreCase('SUCCESS')) {
-    echo "${environment} deployment successful at https://${hostEnv}/${pathEnv}"
+    echo "${environment} deployment successful at https://${hostEnv}${pathEnv}"
   } else if (status.equalsIgnoreCase('PENDING')) {
     echo "${environment} deployment pending..."
   } else if (status.equalsIgnoreCase('FAILURE')) {
