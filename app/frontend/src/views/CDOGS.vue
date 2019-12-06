@@ -1,8 +1,11 @@
 <template>
   <v-container class="secure">
     <Authenticated>
+      <h2 class="text-center">
+        Common Document Generation Service (v1)
+        <Health />
+      </h2>
       <FileInput />
-      <Health />
     </Authenticated>
   </v-container>
 </template>
@@ -20,6 +23,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>

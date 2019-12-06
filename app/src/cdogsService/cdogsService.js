@@ -31,7 +31,10 @@ class CdogsService {
 
   async health() {
     try {
-      const { data, status } = await this.axios.get(`${this.apiUrl}/health`, {
+      const endpoint = `${this.apiUrl}/health`;
+      log.debug('health', `GET to ${endpoint}`);
+
+      const { data, status } = await this.axios.get(endpoint, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -45,7 +48,10 @@ class CdogsService {
 
   async docGen(body) {
     try {
-      const { data, status } = await this.axios.post(`${this.apiUrl}/docGen`, body, {
+      const endpoint = `${this.apiUrl}/docGen`;
+      log.debug('docGen', `POST to ${endpoint}`);
+
+      const { data, status } = await this.axios.post(endpoint, body, {
         responseType: 'arraybuffer' // Needed for binaries unless you want pain
       });
 
@@ -54,7 +60,6 @@ class CdogsService {
       errorToProblem(e);
     }
   }
-
 }
 
 module.exports = CdogsService;

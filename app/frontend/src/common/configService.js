@@ -31,20 +31,27 @@ class ConfigService {
   }
 
   async load(resource = null) {
-    if (resource) {
-      this._resource = resource;
-    }
+    const storageKey = 'config';
+
     try {
-      const response = await axios.get(this._resource);
-      this._config = response.data;
+      if (resource) {
+        this._resource = resource;
+      }
+
+      if (sessionStorage.getItem(storageKey) === null) {
+        const { data } = await axios.get(this._resource);
+        sessionStorage.setItem(storageKey, JSON.stringify(data));
+      }
+
+      this._config = JSON.parse(sessionStorage.getItem(storageKey));
     } catch (err) {
       console.log(`Failed to acquire configuration: ${err.message}`);
+      sessionStorage.removeItem(storageKey);
     }
+
     return this._config;
   }
 
 }
 
-const configService = new ConfigService();
-
-export default configService;
+export default new ConfigService();

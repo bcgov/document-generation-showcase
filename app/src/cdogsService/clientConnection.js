@@ -4,7 +4,7 @@ const oauth = require('axios-oauth-client');
 const tokenProvider = require('axios-token-interceptor');
 
 class ClientConnection {
-  constructor({tokenUrl, clientId, clientSecret}) {
+  constructor({ tokenUrl, clientId, clientSecret }) {
     log.verbose('ClientConnection', `Constructed with ${tokenUrl}, ${clientId}, clientSecret`);
     if (!tokenUrl || !clientId || !clientSecret) {
       log.error('ClientConnection', 'Invalid configuration.');

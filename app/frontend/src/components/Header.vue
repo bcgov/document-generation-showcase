@@ -15,23 +15,9 @@
         <v-btn class="title hidden-sm-and-down" color="text" text>{{ appTitle }}</v-btn>
       </v-toolbar-title>
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
-      <v-bottom-sheet v-if="devMode" inset v-model="sheet">
-        <template v-slot:activator="{ on }">
-          <v-btn outlined dark v-on="on">Debug</v-btn>
-        </template>
-        <v-sheet class="text-center">
-          <v-btn class="sheet-close ma-2" flat color="primary" @click="sheet = !sheet">close</v-btn>
-          <v-card class="sheet-debug pa-2 ma-2" raised>
-            <v-card-text>
-              <b>JWT Debug - {{$keycloak.fullName}} ({{$keycloak.userName}}) is logged in.</b>
-              <p>{{$keycloak.tokenParsed}}</p>
-            </v-card-text>
-          </v-card>
-        </v-sheet>
-      </v-bottom-sheet>
-
+      <JWTDebug />
       <v-btn
         v-if="$keycloak.authenticated"
         class="login-btn"
@@ -45,15 +31,16 @@
 </template>
 
 <script>
+import JWTDebug from './JWTDebug';
 export default {
   data() {
     return {
-      appTitle: process.env.VUE_APP_TITLE,
-      devMode: process.env.NODE_ENV === 'development',
-      sheet: false
+      appTitle: process.env.VUE_APP_TITLE
     };
   },
-  computed: {},
+  components: {
+    JWTDebug
+  },
   methods: {
     login() {
       const basePath = this.$configService.get('basePath');

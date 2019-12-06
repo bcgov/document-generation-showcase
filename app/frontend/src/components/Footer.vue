@@ -47,7 +47,7 @@ footer.gov-footer.v-footer {
   color: #fff;
   text-decoration: none;
   text-transform: none;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .v-btn--active.gov-footer:before,
@@ -73,7 +73,7 @@ footer.gov-footer.v-footer {
 }
 
 .gov-footer ul li a {
-  font-size: 0.813em;
+  font-size: 0.8rem;
   font-weight: normal; /* 400 */
   color: #fff;
   padding-left: 5px;

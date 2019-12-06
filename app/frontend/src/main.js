@@ -11,6 +11,18 @@ import configService from './common/configService';
 
 Vue.config.productionTip = false;
 
+function initializeApp(router = undefined, store = undefined) {
+  new Vue({
+    vuetify,
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app');
+}
+
+// Do a barebones mount before configuration is in to display a loading spinner
+initializeApp();
+
 // application publicPath is ./ - so use relative path here, will hit the backend server using relative path to root.
 const CONFIG_URL = process.env.NODE_ENV === 'production' ? 'config' : 'app/config';
 
@@ -60,13 +72,9 @@ configService.load(CONFIG_URL)
         Vue.prototype.$http = instance;
         Vue.prototype.$httpApi = instanceApi;
 
+        // Remount once configuration is loaded
         const router = getRouter(config.basePath);
-        new Vue({
-          vuetify,
-          router,
-          store,
-          render: h => h(App),
-        }).$mount('#app');
+        initializeApp(router, store);
       }
     });
   });
