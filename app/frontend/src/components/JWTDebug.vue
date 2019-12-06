@@ -7,10 +7,10 @@
       <v-btn class="sheet-close ma-2" color="primary" @click="sheet = !sheet">close</v-btn>
       <v-card class="sheet-debug pa-2 ma-2" raised>
         <v-card-text>
-          <b
+          <strong
             v-if="$keycloak.authenticated"
-          >JWT Debug - {{$keycloak.fullName}} ({{$keycloak.userName}}) is logged in.</b>
-          <b v-else>JWT Debug - Not logged in.</b>
+          >JWT Debug - {{$keycloak.fullName}} ({{$keycloak.userName}}) is logged in.</strong>
+          <strong v-else>JWT Debug - Not logged in.</strong>
           <p>{{$keycloak.tokenParsed}}</p>
         </v-card-text>
       </v-card>
@@ -23,13 +23,10 @@ export default {
   name: 'jwtdebug',
   data() {
     return {
+      // TODO: Consider slot pattern or determining logic higher up in layout chain
       devMode: process.env.NODE_ENV === 'development',
       sheet: false
     };
   },
 };
 </script>
-
-<style scoped>
-
-</style>

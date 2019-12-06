@@ -1,6 +1,6 @@
 <template>
   <v-container class="home">
-    <h2 class="text-center">Welcome to Document Generation Showcase (DGRSC).</h2>
+    <h2 class="text-center">Welcome to Document Generation Showcase (DGRSC)</h2>
     <p>
       DGRSC demonstrates how an application can have document generation functionality by calling an API. In this case, this application demonstrates how one may be able to call the
       <a
@@ -117,7 +117,7 @@ export default {
         },
         {
           contexts: {
-            color: 'red',
+            color: 'teal',
             link: './examples/contexts_movies.json',
           },
           description: 'Sample Movie Spreadsheet',
@@ -130,7 +130,7 @@ export default {
         },
         {
           contexts: {
-            color: 'purple',
+            color: 'teal',
             link: './examples/contexts_mx_permit.json',
           },
           description: 'Mineral Exploration Reclamation Permit',
@@ -146,6 +146,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-</style>
