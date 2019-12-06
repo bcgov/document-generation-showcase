@@ -34,7 +34,8 @@
         <thead>
           <tr>
             <th class="text-left">Description</th>
-            <th class="text-left">Type</th>
+            <th v-if="$vuetify.breakpoint.mdAndUp" class="text-left">Type</th>
+            <th class="text-left">Extension</th>
             <th class="text-left">Template</th>
             <th class="text-left">Contexts</th>
           </tr>
@@ -42,7 +43,8 @@
         <tbody>
           <tr v-for="(item, index) in examples" :key="`item-${index}`">
             <td>{{ item.description }}</td>
-            <td>{{ item.type }}</td>
+            <td v-if="$vuetify.breakpoint.mdAndUp">{{ item.type }}</td>
+            <td>{{ item.template.link.replace(/^.*\./, '') }}</td>
             <td>
               <v-btn
                 :color="item.template.color"
@@ -53,7 +55,7 @@
                 small
               >
                 <v-icon left>{{ item.template.icon }}</v-icon>
-                <div class="d-none d-sm-flex">Download</div>
+                <div v-if="$vuetify.breakpoint.mdAndUp">Download</div>
               </v-btn>
             </td>
             <td>
@@ -66,7 +68,7 @@
                 small
               >
                 <v-icon left>mdi-download</v-icon>
-                <div class="d-none d-sm-flex">Download</div>
+                <div v-if="$vuetify.breakpoint.mdAndUp">Download</div>
               </v-btn>
             </td>
           </tr>
@@ -93,7 +95,7 @@ export default {
             icon: 'mdi-file-word',
             link: './examples/template_information_sharing_agreement.docx'
           },
-          type: 'Microsoft Word Document (.docx)'
+          type: 'Microsoft Word Document'
         },
         {
           contexts: {
@@ -106,7 +108,7 @@ export default {
             icon: 'mdi-file-document',
             link: './examples/template_information_sharing_agreement.odt'
           },
-          type: 'OpenDocument Text (.odt)'
+          type: 'OpenDocument Text'
         },
         {
           contexts: {
@@ -119,7 +121,7 @@ export default {
             icon: 'mdi-file-powerpoint',
             link: './examples/template_powerpoint.pptx'
           },
-          type: 'Microsoft PowerPoint Presentation (.pptx)'
+          type: 'Microsoft PowerPoint Presentation'
         },
         {
           contexts: {
@@ -132,7 +134,7 @@ export default {
             icon: 'mdi-file-excel',
             link: './examples/template_movies.xlsx'
           },
-          type: 'Microsoft Excel Worksheet (.xlsx)'
+          type: 'Microsoft Excel Worksheet'
         },
         {
           contexts: {
@@ -145,7 +147,7 @@ export default {
             icon: 'mdi-file-word',
             link: './examples/mx_permit_{d.permitNumber}.docx'
           },
-          type: 'Microsoft Word Document (.docx)'
+          type: 'Microsoft Word Document'
         }
       ]
     };
