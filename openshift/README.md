@@ -42,7 +42,7 @@ export SOURCE_REPO_REF=master
 export SERVER_KC_CLIENTID=dgrsc
 export SERVER_KC_CLIENTSECRET=<get the secret from keycloak>
 export CDOGS_CLIENTID=DGRSC_SERVICE_CLIENT
-export CDOGS_CLIENTSECRET=unknown
+export CDOGS_CLIENTSECRET=<get the secret from keycloak>
 
 export FRONTEND_KC_CLIENTID=dgrsc-frontend
 export FRONTEND_KC_REALM=98r0z7rz
@@ -55,28 +55,36 @@ export SERVER_MORGANFORMAT=dev
 export SERVER_PORT=8888
 export SERVER_BODYLIMIT=30mb
 export SERVER_APIPATH=/api/v1
-export CDOGS_TOKENURL=unknown
-export CDOGS_APIURL=unknown
+export CDOGS_TOKENURL=https://sso-dev.pathfinder.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
+export CDOGS_APIURL=https://cdogs-manual-idcqvl-dev.pathfinder.gov.bc.ca/api/v1
 ```
 
 #### Create secrets and config map
 
 ``` sh
-oc create secret -n $NAMESPACE generic app-client --from-literal=username=$SERVER_KC_CLIENTID --from-literal=password=$SERVER_KC_CLIENTSECRET --type=kubernetes.io/basic-auth
+oc create secret -n $NAMESPACE generic app-keycloak-secret --from-literal=username=$SERVER_KC_CLIENTID --from-literal=password=$SERVER_KC_CLIENTSECRET --type=kubernetes.io/basic-auth
 ```
 
 ``` sh
-oc create secret -n $NAMESPACE generic cdogs-client --from-literal=username=$CDOGS_CLIENTID --from-literal=password=$CDOGS_CLIENTSECRET --type=kubernetes.io/basic-auth
+oc create secret -n $NAMESPACE generic cdogs-service-secret --from-literal=username=$CDOGS_CLIENTID --from-literal=password=$CDOGS_CLIENTSECRET --type=kubernetes.io/basic-auth
 ```
 
 ``` sh
-oc create configmap -n $NAMESPACE app-config --from-literal=FRONTEND_KC_CLIENTID=$FRONTEND_KC_CLIENTID --from-literal=FRONTEND_KC_REALM=$FRONTEND_KC_REALM --from-literal=FRONTEND_KC_SERVERURL=$FRONTEND_KC_SERVERURL --from-literal=FRONTEND_APIPATH=$FRONTEND_APIPATH --from-literal=SERVER_KC_REALM=$SERVER_KC_REALM --from-literal=SERVER_KC_SERVERURL=$SERVER_KC_SERVERURL --from-literal=SERVER_LOGLEVEL=$SERVER_LOGLEVEL --from-literal=SERVER_MORGANFORMAT=$SERVER_MORGANFORMAT --from-literal=SERVER_PORT=$SERVER_PORT --from-literal=SERVER_BODYLIMIT=$SERVER_BODYLIMIT --from-literal=SERVER_APIPATH=$SERVER_APIPATH --from-literal=CDOGS_TOKENURL=$CDOGS_TOKENURL --from-literal=CDOGS_APIURL=$CDOGS_APIURL
+oc create configmap -n $NAMESPACE dgrsc-frontend-config --from-literal=FRONTEND_KC_CLIENTID=$FRONTEND_KC_CLIENTID --from-literal=FRONTEND_KC_REALM=$FRONTEND_KC_REALM --from-literal=FRONTEND_KC_SERVERURL=$FRONTEND_KC_SERVERURL --from-literal=FRONTEND_APIPATH=$FRONTEND_APIPATH
+```
+
+``` sh
+oc create configmap -n $NAMESPACE dgrsc-server-config --from-literal=SERVER_KC_REALM=$SERVER_KC_REALM --from-literal=SERVER_KC_SERVERURL=$SERVER_KC_SERVERURL --from-literal=SERVER_LOGLEVEL=$SERVER_LOGLEVEL --from-literal=SERVER_MORGANFORMAT=$SERVER_MORGANFORMAT --from-literal=SERVER_PORT=$SERVER_PORT --from-literal=SERVER_BODYLIMIT=$SERVER_BODYLIMIT --from-literal=SERVER_APIPATH=$SERVER_APIPATH
+```
+
+``` sh
+oc create configmap -n $NAMESPACE dgrsc-services-config --from-literal=CDOGS_TOKENURL=$CDOGS_TOKENURL --from-literal=CDOGS_APIURL=$CDOGS_APIURL
 ```
 
 #### Run the build config
 
 ``` sh
-oc -n $NAMESPACE process -f app.bc.yaml -p APP_NAME=$APP_NAME -p JOB_NAME=$JOB_NAME -p NAMESPACE=$NAMESPACE -p REPO_NAME=$REPO_NAME -p SOURCE_REPO_URL=$SOURCE_REPO_URL -p SOURCE_REPO_REF=$SOURCE_REPO_REF -o yaml | oc -n $NAMESPACE create -f -
+oc -n $NAMESPACE process -f app.bc.yaml -p REPO_NAME=$REPO_NAME -p JOB_NAME=$JOB_NAME -p SOURCE_REPO_URL=$SOURCE_REPO_URL -p SOURCE_REPO_REF=$SOURCE_REPO_REF -o yaml | oc -n $NAMESPACE create -f -
 
 oc -n $NAMESPACE start-build dgrsc-pr-x-app
 
@@ -100,7 +108,7 @@ export ROUTE_PATH=/pr-x
 #### Run the deployment config
 
 ``` sh
-oc -n $NAMESPACE process -f app.dc.yaml -p APP_NAME=$APP_NAME -p JOB_NAME=$JOB_NAME -p NAMESPACE=$NAMESPACE -p ROUTE_HOST=$ROUTE_HOST -p ROUTE_PATH=$ROUTE_PATH  -o yaml | oc -n $NAMESPACE create -f -
+oc -n $NAMESPACE process -f app.dc.yaml -p REPO_NAME=$REPO_NAME -p JOB_NAME=$JOB_NAME -p NAMESPACE=$NAMESPACE -p APP_NAME=$APP_NAME -p ROUTE_HOST=$ROUTE_HOST -p ROUTE_PATH=$ROUTE_PATH  -o yaml | oc -n $NAMESPACE create -f -
 
 oc -n $NAMESPACE rollout latest dc/dgrsc-pr-x-app
 ```
@@ -109,7 +117,9 @@ oc -n $NAMESPACE rollout latest dc/dgrsc-pr-x-app
 
 ``` sh
 oc -n $NAMESPACE delete all,template,secret,configmap,pvc,serviceaccount,rolebinding,networksecuritypolicy --selector app=$APP_NAME-$JOB_NAME
-oc -n $NAMESPACE delete configmap app-config
-oc -n $NAMESPACE delete secret app-client
-oc -n $NAMESPACE delete secret cdogs-client
+oc -n $NAMESPACE delete configmap dgrsc-frontend-config
+oc -n $NAMESPACE delete configmap dgrsc-server-config
+oc -n $NAMESPACE delete configmap dgrsc-services-config
+oc -n $NAMESPACE delete secret app-keycloak-secret
+oc -n $NAMESPACE delete secret cdogs-service-secret
 ```
