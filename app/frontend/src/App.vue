@@ -46,7 +46,6 @@ body {
 
 #router-view-content {
   padding-top: 1rem;
-  padding-bottom: 3rem;
-  top: 40px;
+  padding-bottom: 6.5rem;
 }
 </style>

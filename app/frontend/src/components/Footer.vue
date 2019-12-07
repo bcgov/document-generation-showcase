@@ -1,5 +1,5 @@
 <template>
-  <v-footer absolute padless class="gov-footer">
+  <footer class="gov-footer v-footer">
     <ul>
       <li>
         <v-btn text id="footer-home" href="https://www.gov.bc.ca/">Home</v-btn>
@@ -27,19 +27,22 @@
         <v-btn text href="https://www2.gov.bc.ca/gov/content/home/contact-us">Contact Us</v-btn>
       </li>
     </ul>
-  </v-footer>
+  </footer>
 </template>
 
 <script>
 export default {};
 </script>
 
-<style>
-footer.gov-footer.v-footer {
+<style scoped>
+.gov-footer.v-footer {
+  bottom: 0;
   background-color: rgb(0, 51, 102);
   border-top: 2px solid rgb(252, 186, 25);
-  min-height: 45px;
+  min-height: 2.5rem;
   min-width: 100%;
+  padding: 0;
+  position: fixed;
   /* z-index: 999; */
 }
 

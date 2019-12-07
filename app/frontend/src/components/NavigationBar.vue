@@ -19,9 +19,7 @@ export default {};
 
 <style scoped>
 .navigation-main {
-  display: block;
-  /* position: fixed; */
-  top: 65px;
+  display: flex;
   color: #fcba19;
   background-color: #38598a;
   width: 100%;
@@ -32,7 +30,7 @@ export default {};
 }
 
 .navigation-main .container {
-  padding: 10px 0 10px 0;
+  padding: 0.5rem 0 0.5rem 0;
 }
 
 .navigation-main .container ul {
@@ -41,7 +39,7 @@ export default {};
   margin: 0;
   color: #fff;
   list-style: none;
-  margin-left: -25px;
+  margin-left: -1.7rem;
 }
 
 .navigation-main .container ul li ~ li {
@@ -51,10 +49,10 @@ export default {};
 
 .navigation-main .container ul li a {
   display: flex;
-  font-size: 0.813em;
+  font-size: 0.8rem;
   font-weight: normal; /* 400 */
   color: #fff;
-  padding: 0 15px 0 15px;
+  padding: 0 1rem 0 1rem;
   text-decoration: none;
 }
 
@@ -68,19 +66,7 @@ export default {};
 }
 
 .navigation-main .container ul .active {
-  text-decoration: underline;
   font-weight: bold;
-}
-
-@media screen and (max-width: 959px) {
-  .navigation-main {
-    top: 57px;
-  }
-}
-
-@media screen and (min-width: 960px) {
-  .navigation-main {
-    top: 65px;
-  }
+  text-decoration: underline;
 }
 </style>

@@ -16,9 +16,15 @@
     </ul>
     <h3>Usage</h3>
     <p>
-      To learn more on how to call the CDOGS API directly, check out the API Usage docs
+      To learn more on how to use the CDOGS API, check out the API Usage docs
       <a
         href="https://github.com/bcgov/common-document-generation-service/blob/master/app/README.md#api-usage"
+      >here</a>.
+    </p>
+    <p>
+      You can find the OpenAPI 3.0 Specification of the CDOGS API
+      <a
+        href="https://cdogs-master-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docs"
       >here</a>.
     </p>
     <h3>Examples</h3>
@@ -28,7 +34,8 @@
         <thead>
           <tr>
             <th class="text-left">Description</th>
-            <th class="text-left">Type</th>
+            <th v-if="$vuetify.breakpoint.mdAndUp" class="text-left">Type</th>
+            <th class="text-left">Extension</th>
             <th class="text-left">Template</th>
             <th class="text-left">Contexts</th>
           </tr>
@@ -36,7 +43,8 @@
         <tbody>
           <tr v-for="(item, index) in examples" :key="`item-${index}`">
             <td>{{ item.description }}</td>
-            <td>{{ item.type }}</td>
+            <td v-if="$vuetify.breakpoint.mdAndUp">{{ item.type }}</td>
+            <td>{{ item.template.link.replace(/^.*\./, '') }}</td>
             <td>
               <v-btn
                 :color="item.template.color"
@@ -47,7 +55,7 @@
                 small
               >
                 <v-icon left>{{ item.template.icon }}</v-icon>
-                {{ item.template.link.replace(/^.*\//, '') }}
+                <div v-if="$vuetify.breakpoint.mdAndUp">Download</div>
               </v-btn>
             </td>
             <td>
@@ -60,7 +68,7 @@
                 small
               >
                 <v-icon left>mdi-download</v-icon>
-                {{ item.contexts.link.replace(/^.*\//, '') }}
+                <div v-if="$vuetify.breakpoint.mdAndUp">Download</div>
               </v-btn>
             </td>
           </tr>
@@ -79,70 +87,70 @@ export default {
         {
           contexts: {
             color: 'teal',
-            link: './examples/contexts_dgrsc.json',
+            link: './examples/contexts_dgrsc.json'
           },
           description: 'Information Sharing Agreement',
           template: {
             color: 'blue',
             icon: 'mdi-file-word',
-            link: './examples/template_information_sharing_agreement.docx',
+            link: './examples/template_information_sharing_agreement.docx'
           },
-          type: 'Microsoft Word Document (.docx)'
+          type: 'Microsoft Word Document'
         },
         {
           contexts: {
             color: 'teal',
-            link: './examples/contexts_dgrsc.json',
+            link: './examples/contexts_dgrsc.json'
           },
           description: 'Information Sharing Agreement',
           template: {
             color: 'brown',
             icon: 'mdi-file-document',
-            link: './examples/template_information_sharing_agreement.odt',
+            link: './examples/template_information_sharing_agreement.odt'
           },
-          type: 'OpenDocument Text (.odt)'
+          type: 'OpenDocument Text'
         },
         {
           contexts: {
             color: 'teal',
-            link: './examples/contexts_dgrsc.json',
+            link: './examples/contexts_dgrsc.json'
           },
           description: 'Sample PowerPoint Presentation',
           template: {
             color: 'orange',
             icon: 'mdi-file-powerpoint',
-            link: './examples/template_powerpoint.pptx',
+            link: './examples/template_powerpoint.pptx'
           },
-          type: 'Microsoft PowerPoint Presentation (.pptx)'
+          type: 'Microsoft PowerPoint Presentation'
         },
         {
           contexts: {
             color: 'teal',
-            link: './examples/contexts_movies.json',
+            link: './examples/contexts_movies.json'
           },
           description: 'Sample Movie Spreadsheet',
           template: {
             color: 'green',
             icon: 'mdi-file-excel',
-            link: './examples/template_movies.xlsx',
+            link: './examples/template_movies.xlsx'
           },
-          type: 'Microsoft Excel Worksheet (.xlsx)'
+          type: 'Microsoft Excel Worksheet'
         },
         {
           contexts: {
             color: 'teal',
-            link: './examples/contexts_mx_permit.json',
+            link: './examples/contexts_mx_permit.json'
           },
           description: 'Mineral Exploration Reclamation Permit',
           template: {
             color: 'blue',
             icon: 'mdi-file-word',
-            link: './examples/mx_permit_{d.permitNumber}.docx',
+            link: './examples/mx_permit_{d.permitNumber}.docx'
           },
-          type: 'Microsoft Word Document (.docx)'
+          type: 'Microsoft Word Document'
         }
       ]
     };
-  },
+  }
 };
 </script>
