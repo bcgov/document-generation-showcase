@@ -44,7 +44,8 @@
             @click="reset"
             v-on="on"
           >
-            <v-icon left>refresh</v-icon>Reset
+            <v-icon :left="$vuetify.breakpoint.smAndUp">refresh</v-icon>
+            <span v-if="$vuetify.breakpoint.smAndUp">Reset</span>
           </v-btn>
         </template>
         <span>Reset Form</span>
@@ -63,7 +64,8 @@
             @click="upload"
             v-on="on"
           >
-            <v-icon left>save</v-icon>Submit
+            <v-icon :left="$vuetify.breakpoint.smAndUp">save</v-icon>
+            <span v-if="$vuetify.breakpoint.smAndUp">Submit</span>
           </v-btn>
         </template>
         <span>Submit to CDOGS and Download</span>
@@ -89,7 +91,7 @@ export default {
         },
         v => {
           try {
-            if(!Array.isArray(JSON.parse(v))) throw new Error();
+            if (!Array.isArray(JSON.parse(v))) throw new Error();
             return true;
           } catch (e) {
             return 'Must be an Array object';
@@ -97,7 +99,7 @@ export default {
         },
         v => {
           try {
-            if(!JSON.parse(v).length) throw new Error();
+            if (!JSON.parse(v).length) throw new Error();
             return true;
           } catch (e) {
             return 'Array must have at least one element';

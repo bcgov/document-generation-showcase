@@ -2,61 +2,47 @@
   <v-card class="file-input pa-2 my-2">
     <v-card-title>
       <p>JSON Builder</p>
+      <v-spacer />
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <v-btn color="info" @click="addItem()" fab class="mb-2" v-on="on">
+            <v-icon>playlist_add</v-icon>
+          </v-btn>
+        </template>
+        <span>Add Key/Value Pair</span>
+      </v-tooltip>
     </v-card-title>
 
     <v-card-text>
       <v-data-table :headers="headers" :items="items">
         <template v-slot:item.key="props">
-          <v-edit-dialog
-            :return-value.sync="props.item.key"
-            @save="save"
-            @cancel="cancel"
-            @open="open"
-            @close="close"
-          >
-            {{ props.item.key }}
-            <template v-slot:input>
-              <v-text-field
-                v-model="props.item.key"
-                :rules="[max25chars]"
-                label="Edit"
-                single-line
-                counter
-                autofocus
-              />
-            </template>
-          </v-edit-dialog>
+          <v-text-field placeholder="Key" single-line v-model="props.item.key" />
         </template>
         <template v-slot:item.value="props">
-          <v-edit-dialog
-            :return-value.sync="props.item.value"
-            @save="save"
-            @cancel="cancel"
-            @open="open"
-            @close="close"
-          >
-            <div>{{ props.item.value }}</div>
-            <template v-slot:input>
-              <div class="mt-4 title">Update value</div>
+          <v-text-field placeholder="Value" single-line v-model="props.item.value" />
+        </template>
+        <template v-slot:item.action="{ item }">
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <v-btn @click="deleteItem(item)" fab class="mb-2" text v-on="on">
+                <v-icon>delete</v-icon>
+              </v-btn>
             </template>
-            <template v-slot:input>
-              <v-text-field
-                v-model="props.item.value"
-                :rules="[max25chars]"
-                label="Edit"
-                single-line
-                counter
-                autofocus
-              ></v-text-field>
+            <span>Add Key/Value Pair</span>
+          </v-tooltip>
+        </template>
+        <template v-slot:no-data>
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <v-btn color="info" @click="addItem()" class="mb-2" v-on="on">
+                <v-icon :left="$vuetify.breakpoint.smAndUp">playlist_add</v-icon>
+                <span v-if="$vuetify.breakpoint.smAndUp">Add Entries</span>
+              </v-btn>
             </template>
-          </v-edit-dialog>
+            <span>Add Key/Value Pair</span>
+          </v-tooltip>
         </template>
       </v-data-table>
-
-      <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
-        {{ snackText }}
-        <v-btn text @click="snack = false">Close</v-btn>
-      </v-snackbar>
     </v-card-text>
 
     <v-card-actions></v-card-actions>
@@ -73,32 +59,16 @@ export default {
         { text: 'Value', value: 'value' },
         { text: 'Action', value: 'action' }
       ],
-      items: [{ key: 'foo', value: 'bar' }, { key: 'baz', value: 'faz' }],
-      max25chars: v => v.length <= 25 || 'Input too long!',
-      snack: false,
-      snackColor: '',
-      snackText: '',
-      pagination: {}
+      items: []
     };
   },
   methods: {
-    save() {
-      this.snack = true;
-      this.snackColor = 'success';
-      this.snackText = 'Data saved';
+    addItem(k = '', v = '') {
+      this.items.push({ key: k, value: v });
     },
-    cancel() {
-      this.snack = true;
-      this.snackColor = 'error';
-      this.snackText = 'Canceled';
-    },
-    open() {
-      this.snack = true;
-      this.snackColor = 'info';
-      this.snackText = 'Dialog opened';
-    },
-    close() {
-      console.log('Dialog closed');
+    deleteItem(item) {
+      const index = this.items.indexOf(item);
+      this.items.splice(index, 1);
     }
   }
 };
