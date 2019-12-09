@@ -11,7 +11,7 @@
           :clearable="false"
           label="Upload your file"
           :mandatory="true"
-          prepend-icon="mdi-paperclip"
+          prepend-icon="attachment"
           :rules="notEmpty"
           show-size
           v-model="files"
@@ -43,7 +43,7 @@
             @click="reset"
             v-on="on"
           >
-            <v-icon left>mdi-refresh</v-icon>Reset
+            <v-icon left>refresh</v-icon>Reset
           </v-btn>
         </template>
         <span>Reset Form</span>
@@ -62,7 +62,7 @@
             @click="upload"
             v-on="on"
           >
-            <v-icon left>mdi-content-save</v-icon>Submit
+            <v-icon left>save</v-icon>Submit
           </v-btn>
         </template>
         <span>Submit to CDOGS and Download</span>

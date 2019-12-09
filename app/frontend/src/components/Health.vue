@@ -2,13 +2,13 @@
   <v-bottom-sheet inset v-model="sheet">
     <template v-slot:activator="{ on }">
       <v-btn v-if="response && health" color="success" rounded v-on="on">
-        <v-icon left>mdi-check-circle-outline</v-icon>Health
+        <v-icon left>check</v-icon>Health
       </v-btn>
       <v-btn v-else-if="response && !health" color="error" rounded v-on="on">
-        <v-icon left>mdi-close-circle-outline</v-icon>Health
+        <v-icon left>report_problem</v-icon>Health
       </v-btn>
       <v-btn v-else :loading="true" rounded v-on="on">
-        <v-icon left>mdi-circle-outline</v-icon>Health
+        <v-icon left>refresh</v-icon>Health
       </v-btn>
     </template>
     <v-sheet class="text-center">
