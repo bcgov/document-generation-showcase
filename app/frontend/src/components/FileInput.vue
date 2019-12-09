@@ -12,6 +12,7 @@
           label="Upload your file"
           :mandatory="true"
           prepend-icon="attachment"
+          required
           :rules="notEmpty"
           show-size
           v-model="files"
@@ -156,8 +157,6 @@ export default {
           const content = await this.toBase64(this.files);
           const filename = this.filename || this.files.name;
           const body = this.createBody(parsedContexts, content, filename);
-
-          console.log(filename);
 
           // Perform API Call
           const response = await this.$httpApi.post('/docGen', body, {
