@@ -1,10 +1,11 @@
 <template>
   <v-card class="file-input pa-2 my-2">
     <v-card-title>
-      <p>Document Generation</p>
+      <p>Document Generation Form</p>
     </v-card-title>
 
     <v-card-text>
+      <p>A successful submission requires a template file and a valid JSON object in an array.</p>
       <v-form ref="form" v-model="validFileInput">
         <v-file-input
           counter
@@ -17,20 +18,41 @@
           show-size
           v-model="files"
         />
+
         <v-text-field
           hint="(Optional) Desired output filename"
           label="Filename"
           v-model="filename"
         />
-        <v-textarea
-          auto-grow
-          hint="JSON format for key-value pairs"
-          label="Contexts"
-          :mandatory="true"
-          required
-          :rules="contextsRules"
-          v-model="contexts"
-        />
+
+        <v-card>
+          <v-toolbar light flat>
+            <v-tabs v-model="tab">
+              <v-tab>JSON Builder</v-tab>
+              <v-tab>Contexts JSON</v-tab>
+            </v-tabs>
+          </v-toolbar>
+
+          <v-card-text>
+            <v-tabs-items v-model="tab">
+              <v-tab-item>
+                <JsonBuilder :tab="tab" @json-object="updateContexts" />
+              </v-tab-item>
+
+              <v-tab-item>
+                <v-textarea
+                  auto-grow
+                  hint="JSON format for key-value pairs"
+                  label="Contexts"
+                  :mandatory="true"
+                  required
+                  :rules="contextsRules"
+                  v-model="contexts"
+                />
+              </v-tab-item>
+            </v-tabs-items>
+          </v-card-text>
+        </v-card>
       </v-form>
     </v-card-text>
 
@@ -75,8 +97,13 @@
 </template>
 
 <script>
+import JsonBuilder from './JsonBuilder.vue';
+
 export default {
   name: 'fileInput',
+  components: {
+    JsonBuilder
+  },
   data() {
     return {
       contexts: null,
@@ -110,19 +137,11 @@ export default {
       filename: null,
       loading: false,
       notEmpty: [v => !!v || 'Cannot be empty'],
+      tab: null,
       validFileInput: false
     };
   },
   methods: {
-    toBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result.replace(/^.*,/, ''));
-        reader.onerror = error => reject(error);
-      });
-    },
-
     createBody(contexts, content, filename = undefined) {
       return {
         contexts: contexts,
@@ -133,7 +152,6 @@ export default {
         }
       };
     },
-
     createDownload(blob, filename = undefined) {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -144,11 +162,25 @@ export default {
       window.URL.revokeObjectURL(url);
       a.remove();
     },
-
     reset() {
       this.$refs.form.reset();
     },
-
+    toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.replace(/^.*,/, ''));
+        reader.onerror = error => reject(error);
+      });
+    },
+    updateContexts(obj) {
+      try {
+        this.contexts = JSON.stringify([obj]);
+        console.log('Built Context', this.contexts);
+      } catch (e) {
+        console.log(e, obj);
+      }
+    },
     async upload() {
       try {
         this.loading = true;
