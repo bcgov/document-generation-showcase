@@ -7,52 +7,58 @@
     <v-card-text>
       <p>A successful submission requires a template file and a valid JSON object in an array.</p>
       <v-form ref="form" v-model="validFileInput">
-        <v-file-input
-          counter
-          :clearable="false"
-          label="Upload your file"
-          :mandatory="true"
-          prepend-icon="attachment"
-          required
-          :rules="notEmpty"
-          show-size
-          v-model="files"
-        />
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-file-input
+              counter
+              :clearable="false"
+              label="Upload your file"
+              :mandatory="true"
+              prepend-icon="attachment"
+              required
+              :rules="notEmpty"
+              show-size
+              v-model="files"
+            />
 
-        <v-text-field
-          hint="(Optional) Desired output filename"
-          label="Filename"
-          v-model="filename"
-        />
+            <v-text-field
+              hint="(Optional) Desired output filename"
+              label="Filename"
+              v-model="filename"
+            />
+          </v-col>
 
-        <v-card>
-          <v-toolbar light flat>
-            <v-tabs v-model="tab">
-              <v-tab>JSON Builder</v-tab>
-              <v-tab>Contexts JSON</v-tab>
-            </v-tabs>
-          </v-toolbar>
+          <v-col cols="12" md="8">
+            <v-card>
+              <v-toolbar light flat>
+                <v-tabs v-model="tab">
+                  <v-tab>JSON Builder</v-tab>
+                  <v-tab>Contexts JSON</v-tab>
+                </v-tabs>
+              </v-toolbar>
 
-          <v-card-text>
-            <v-tabs-items v-model="tab">
-              <v-tab-item>
-                <JsonBuilder :tab="tab" @json-object="updateContexts" />
-              </v-tab-item>
+              <v-card-text>
+                <v-tabs-items v-model="tab">
+                  <v-tab-item>
+                    <JsonBuilder :tab="tab" @json-object="updateContexts" />
+                  </v-tab-item>
 
-              <v-tab-item>
-                <v-textarea
-                  auto-grow
-                  hint="JSON format for key-value pairs"
-                  label="Contexts"
-                  :mandatory="true"
-                  required
-                  :rules="contextsRules"
-                  v-model="contexts"
-                />
-              </v-tab-item>
-            </v-tabs-items>
-          </v-card-text>
-        </v-card>
+                  <v-tab-item>
+                    <v-textarea
+                      auto-grow
+                      hint="JSON format for key-value pairs"
+                      label="Contexts"
+                      :mandatory="true"
+                      required
+                      :rules="contextsRules"
+                      v-model="contexts"
+                    />
+                  </v-tab-item>
+                </v-tabs-items>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-form>
     </v-card-text>
 

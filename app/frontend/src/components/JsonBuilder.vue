@@ -9,7 +9,7 @@
     <template v-slot:item.action="{ item }">
       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-btn @click="deleteItem(item)" fab class="mb-2" text v-on="on">
+          <v-btn @click="deleteItem(item)" fab class="mb-2" small text v-on="on">
             <v-icon>delete</v-icon>
           </v-btn>
         </template>
