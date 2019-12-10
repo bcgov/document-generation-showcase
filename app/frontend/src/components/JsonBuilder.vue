@@ -1,5 +1,12 @@
 <template>
-  <v-data-table class="json-builder" :headers="headers" :items="items">
+  <v-data-table
+    class="json-builder"
+    :disable-pagination="true"
+    :headers="headers"
+    :hide-default-header="true"
+    :hide-default-footer="true"
+    :items="items"
+  >
     <template v-slot:item.key="props">
       <v-text-field placeholder="Key" single-line v-model="props.item.key" />
     </template>
