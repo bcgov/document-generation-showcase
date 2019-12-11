@@ -1,0 +1,82 @@
+{
+  "name": "generator-dgrsc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "dgrsc tools for configuring openshift environments",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcgov/document-generation-showcase.git"
+  },
+  "author": "NR Common Service Showcase <NR.CommonServiceShowcase@gov.bc.ca>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bcgov/document-generation-showcase/issues"
+  },
+  "homepage": "https://github.com/bcgov/document-generation-showcase",
+  "files": [
+    "generators"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "engines": {
+    "npm": ">= 4.0.0"
+  },
+  "dependencies": {
+    "chalk": "^2.1.0",
+    "yeoman-generator": "^4.2.0",
+    "yosay": "^2.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "commonjs": true,
+      "es6": true,
+      "jest": true,
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended"
+    ],
+    "globals": {
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly",
+      "_": false
+    },
+    "parserOptions": {
+      "ecmaVersion": 9
+    },
+    "rules": {
+      "eol-last": [
+        "error",
+        "always"
+      ],
+      "indent": [
+        "error",
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "linebreak-style": [
+        "error",
+        "unix"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ]
+    }
+  }
+}

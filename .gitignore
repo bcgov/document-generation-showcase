@@ -3,6 +3,7 @@ node_modules
 dist
 .nyc_output
 coverage
+.nvm
 
 # local env files
 local.*
