@@ -54,7 +54,7 @@
                 outlined
                 small
               >
-                <v-icon left>{{ item.template.icon }}</v-icon>
+                <v-icon :left="$vuetify.breakpoint.mdAndUp">{{ item.template.icon }}</v-icon>
                 <div v-if="$vuetify.breakpoint.mdAndUp">Download</div>
               </v-btn>
             </td>
@@ -67,7 +67,7 @@
                 outlined
                 small
               >
-                <v-icon left>mdi-download</v-icon>
+                <v-icon :left="$vuetify.breakpoint.mdAndUp">mdi-download</v-icon>
                 <div v-if="$vuetify.breakpoint.mdAndUp">Download</div>
               </v-btn>
             </td>

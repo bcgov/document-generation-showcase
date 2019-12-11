@@ -29,8 +29,6 @@ export default {
 
 <style lang="scss" scoped>
 body {
-  margin: 0;
-  padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -45,7 +43,6 @@ body {
 }
 
 #router-view-content {
-  padding-top: 1rem;
   padding-bottom: 6.5rem;
 }
 </style>
