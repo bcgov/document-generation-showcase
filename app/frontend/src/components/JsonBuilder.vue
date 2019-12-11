@@ -57,10 +57,12 @@ export default {
   methods: {
     addItem(k = '', v = '') {
       this.items.push({ key: k, value: v });
+      this.emitJson();
     },
     deleteItem(item) {
       const index = this.items.indexOf(item);
       this.items.splice(index, 1);
+      this.emitJson();
     },
     emitJson() {
       // https://stackoverflow.com/a/44325124
@@ -72,6 +74,7 @@ export default {
     },
     reset() {
       this.items = [];
+      this.emitJson();
     }
   },
   mounted() {
