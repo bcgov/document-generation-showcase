@@ -18,13 +18,13 @@
               required
               :rules="notEmpty"
               show-size
-              v-model="files"
+              v-model="form.files"
             />
 
             <v-text-field
               hint="(Optional) Desired output filename"
               label="Filename"
-              v-model="filename"
+              v-model="form.filename"
             />
           </v-col>
 
@@ -40,7 +40,7 @@
               <v-card-text>
                 <v-tabs-items v-model="tab">
                   <v-tab-item>
-                    <JsonBuilder :tab="tab" @json-object="updateContexts" />
+                    <JsonBuilder :tab="tab" @json-object="updateContexts" ref="jsonBuilder" />
                   </v-tab-item>
 
                   <v-tab-item>
@@ -51,7 +51,7 @@
                       :mandatory="true"
                       required
                       :rules="contextsRules"
-                      v-model="contexts"
+                      v-model="form.contexts"
                     />
                   </v-tab-item>
                 </v-tabs-items>
@@ -112,7 +112,6 @@ export default {
   },
   data() {
     return {
-      contexts: null,
       contextsRules: [
         v => !!v || 'Cannot be empty',
         v => {
@@ -139,8 +138,11 @@ export default {
           }
         }
       ],
-      files: null,
-      filename: null,
+      form: {
+        contexts: null,
+        files: null,
+        filename: null
+      },
       loading: false,
       notEmpty: [v => !!v || 'Cannot be empty'],
       tab: null,
@@ -169,7 +171,13 @@ export default {
       a.remove();
     },
     reset() {
-      this.$refs.form.reset();
+      // Reset all values to starting null
+      Object.keys(this.form).forEach(key => {
+        this.form[key] = null;
+      });
+      this.$refs.jsonBuilder.reset();
+      // Reset validation results
+      this.$refs.form.resetValidation();
     },
     toBase64(file) {
       return new Promise((resolve, reject) => {
@@ -181,8 +189,8 @@ export default {
     },
     updateContexts(obj) {
       try {
-        this.contexts = JSON.stringify([obj]);
-        console.log('Built Context', this.contexts);
+        this.form.contexts = JSON.stringify([obj]);
+        console.log('Built Context', this.form.contexts);
       } catch (e) {
         console.log(e, obj);
       }
@@ -191,11 +199,11 @@ export default {
       try {
         this.loading = true;
 
-        if (this.files && this.files instanceof File) {
+        if (this.form.files && this.form.files instanceof File) {
           // Parse Contents
-          const parsedContexts = JSON.parse(this.contexts);
-          const content = await this.toBase64(this.files);
-          const filename = this.filename || this.files.name;
+          const parsedContexts = JSON.parse(this.form.contexts);
+          const content = await this.toBase64(this.form.files);
+          const filename = this.filename || this.form.files.name;
           const body = this.createBody(parsedContexts, content, filename);
 
           // Perform API Call

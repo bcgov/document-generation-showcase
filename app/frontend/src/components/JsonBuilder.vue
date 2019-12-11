@@ -69,6 +69,9 @@ export default {
         {}
       );
       this.$emit('json-object', obj);
+    },
+    reset() {
+      this.items = [];
     }
   },
   mounted() {
