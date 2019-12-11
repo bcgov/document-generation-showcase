@@ -8,7 +8,7 @@
       >Common Document Generation Service API (CDOGS)</a>.
     </p>
     <h3>Capabilities</h3>
-    <p>The CDOGS API should be capable of doing the following:</p>
+    <p>The CDOGS API is capable of doing the following:</p>
     <ul>
       <li>Merge complex datasets into document templates</li>
       <li>Supports any XML-based document templates including but not limited to Microsoft Office™, LibreOffice™ or OpenOffice™</li>
@@ -28,7 +28,7 @@
       >here</a>.
     </p>
     <h3>Examples</h3>
-    <p>Below are some various document template examples and their associated contexts which shocase the rich functionality that the CDOGS API can offer.</p>
+    <p>Below are some various document template examples and their associated contexts which showcase the rich functionality that the CDOGS API can offer.</p>
     <v-simple-table>
       <template v-slot:default>
         <thead>
