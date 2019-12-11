@@ -203,7 +203,7 @@ export default {
           // Parse Contents
           const parsedContexts = JSON.parse(this.form.contexts);
           const content = await this.toBase64(this.form.files);
-          const filename = this.filename || this.form.files.name;
+          const filename = this.form.filename || this.form.files.name;
           const body = this.createBody(parsedContexts, content, filename);
 
           // Perform API Call
