@@ -32,7 +32,6 @@
             <v-card>
               <v-toolbar light flat>
                 <v-tabs v-model="tab">
-                  <v-tab>Upload JSON</v-tab>
                   <v-tab>JSON Builder</v-tab>
                   <v-tab>Contexts JSON</v-tab>
                 </v-tabs>
@@ -40,6 +39,10 @@
 
               <v-card-text>
                 <v-tabs-items v-model="tab">
+                  <v-tab-item>
+                    <JsonBuilder @json-object="updateContexts" ref="jsonBuilder" />
+                  </v-tab-item>
+
                   <v-tab-item>
                     <v-file-input
                       counter
@@ -50,13 +53,7 @@
                       show-size
                       v-model="form.contextFiles"
                     />
-                  </v-tab-item>
 
-                  <v-tab-item>
-                    <JsonBuilder @json-object="updateContexts" ref="jsonBuilder" />
-                  </v-tab-item>
-
-                  <v-tab-item>
                     <v-textarea
                       auto-grow
                       hint="JSON format for key-value pairs"
@@ -112,6 +109,13 @@
         <span>Submit to CDOGS and Download</span>
       </v-tooltip>
     </v-card-actions>
+
+    <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+      {{ snackText }}
+      <v-btn text @click="snack = false">
+        <v-icon>close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -167,6 +171,9 @@ export default {
       },
       loading: false,
       notEmpty: [v => !!v || 'Cannot be empty'],
+      snack: false,
+      snackColor: '',
+      snackText: '',
       tab: null,
       validFileInput: false
     };
@@ -192,15 +199,32 @@ export default {
       window.URL.revokeObjectURL(url);
       a.remove();
     },
+    notifyError(errMsg) {
+      this.snack = true;
+      this.snackColor = 'error';
+      this.snackText = errMsg;
+    },
+    notifyInfo(infoMsg) {
+      this.snack = true;
+      this.snackColor = 'info';
+      this.snackText = infoMsg;
+    },
+    notifySuccess(msg) {
+      this.snack = true;
+      this.snackColor = 'success';
+      this.snackText = msg;
+    },
     async parseContextFiles() {
       try {
         if (this.form.contextFiles && this.form.contextFiles instanceof File) {
           // Parse Contents
-          const content = await this.toJsonObject(this.form.contextFiles);
-          this.updateContexts(content);
+          const content = await this.toTextObject(this.form.contextFiles);
+          this.updateContexts(JSON.parse(content));
+          this.notifySuccess('Parsed successfully');
         }
       } catch (e) {
         console.log(e);
+        this.notifyError(e.message);
       }
     },
     reset() {
@@ -211,6 +235,7 @@ export default {
       this.$refs.jsonBuilder.reset();
       // Reset validation results
       this.$refs.form.resetValidation();
+      this.notifyInfo('Form reset');
     },
     toBase64(file) {
       return new Promise((resolve, reject) => {
@@ -220,11 +245,11 @@ export default {
         reader.onerror = error => reject(error);
       });
     },
-    toJsonObject(file) {
+    toTextObject(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsText(file);
-        reader.onload = () => resolve(JSON.parse(reader.result));
+        reader.onload = () => resolve(reader.result);
         reader.onerror = error => reject(error);
       });
     },
@@ -257,9 +282,11 @@ export default {
 
           // Generate Temporary Download Link
           this.createDownload(blob, filename);
+          this.notifySuccess('Submitted successfully');
         }
       } catch (e) {
         console.log(e);
+        this.notifyError(e.message);
       } finally {
         this.loading = false;
       }
