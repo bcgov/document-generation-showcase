@@ -40,7 +40,7 @@
               <v-card-text>
                 <v-tabs-items v-model="tab">
                   <v-tab-item>
-                    <JsonBuilder :tab="tab" @json-object="updateContexts" ref="jsonBuilder" />
+                    <JsonBuilder @json-object="updateContexts" ref="jsonBuilder" />
                   </v-tab-item>
 
                   <v-tab-item>
@@ -195,7 +195,6 @@ export default {
     updateContexts(obj) {
       try {
         this.form.contexts = JSON.stringify([obj]);
-        console.log('Built Context', this.form.contexts);
       } catch (e) {
         console.log(e, obj);
       }
