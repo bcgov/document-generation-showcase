@@ -49,6 +49,7 @@
                       :clearable="false"
                       hint="(Optional) JSON file with key-value pairs"
                       label="Upload your contexts file"
+                      :persistent-hint="true"
                       prepend-icon="attachment"
                       show-size
                       v-model="form.contextFiles"
@@ -255,7 +256,7 @@ export default {
     },
     updateContexts(obj) {
       try {
-        this.form.contexts = JSON.stringify([obj]);
+        this.form.contexts = JSON.stringify(obj);
       } catch (e) {
         console.log(e, obj);
       }

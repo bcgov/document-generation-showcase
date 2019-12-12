@@ -68,7 +68,7 @@ export default {
         (obj, item) => ((obj[item.key] = item.value), obj),
         {}
       );
-      this.$emit('json-object', obj);
+      this.$emit('json-object', [obj]);
     },
     reset() {
       this.items = [];
