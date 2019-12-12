@@ -12,7 +12,7 @@
             <v-file-input
               counter
               :clearable="false"
-              label="Upload your file"
+              label="Upload your template file"
               :mandatory="true"
               prepend-icon="attachment"
               required
@@ -32,6 +32,7 @@
             <v-card>
               <v-toolbar light flat>
                 <v-tabs v-model="tab">
+                  <v-tab>Upload JSON</v-tab>
                   <v-tab>JSON Builder</v-tab>
                   <v-tab>Contexts JSON</v-tab>
                 </v-tabs>
@@ -39,6 +40,18 @@
 
               <v-card-text>
                 <v-tabs-items v-model="tab">
+                  <v-tab-item>
+                    <v-file-input
+                      counter
+                      :clearable="false"
+                      hint="(Optional) JSON file with key-value pairs"
+                      label="Upload your contexts file"
+                      prepend-icon="attachment"
+                      show-size
+                      v-model="form.contextFiles"
+                    />
+                  </v-tab-item>
+
                   <v-tab-item>
                     <JsonBuilder @json-object="updateContexts" ref="jsonBuilder" />
                   </v-tab-item>
@@ -111,6 +124,9 @@ export default {
     JsonBuilder
   },
   computed: {
+    contextFiles() {
+      return this.form.contextFiles;
+    },
     files() {
       return this.form.files;
     }
@@ -145,6 +161,7 @@ export default {
       ],
       form: {
         contexts: null,
+        contextFiles: null,
         files: null,
         filename: null
       },
@@ -175,6 +192,17 @@ export default {
       window.URL.revokeObjectURL(url);
       a.remove();
     },
+    async parseContextFiles() {
+      try {
+        if (this.form.contextFiles && this.form.contextFiles instanceof File) {
+          // Parse Contents
+          const content = await this.toJsonObject(this.form.contextFiles);
+          this.updateContexts(content);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
     reset() {
       // Reset all values to starting null
       Object.keys(this.form).forEach(key => {
@@ -189,6 +217,14 @@ export default {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result.replace(/^.*,/, ''));
+        reader.onerror = error => reject(error);
+      });
+    },
+    toJsonObject(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = () => resolve(JSON.parse(reader.result));
         reader.onerror = error => reject(error);
       });
     },
@@ -230,6 +266,9 @@ export default {
     }
   },
   watch: {
+    contextFiles() {
+      this.parseContextFiles();
+    },
     files() {
       // Only update the filename field if it is empty
       if (
