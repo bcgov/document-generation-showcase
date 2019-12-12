@@ -110,6 +110,11 @@ export default {
   components: {
     JsonBuilder
   },
+  computed: {
+    files() {
+      return this.form.files;
+    }
+  },
   data() {
     return {
       contextsRules: [
@@ -222,6 +227,18 @@ export default {
         console.log(e);
       } finally {
         this.loading = false;
+      }
+    }
+  },
+  watch: {
+    files() {
+      // Only update the filename field if it is empty
+      if (
+        this.form.files &&
+        this.form.files instanceof File &&
+        !this.form.filename
+      ) {
+        this.form.filename = this.files.name;
       }
     }
   }
