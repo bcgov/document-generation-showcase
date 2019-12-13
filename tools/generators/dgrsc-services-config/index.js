@@ -50,8 +50,8 @@ module.exports = class extends Generator {
     this.log(chalk.blue(`\n${MODULE_NAME} generator...\n`));
     if (this.canCreate(this.options.destination, 'configmap', this.answers.objectName)) {
       const pairs = [];
-      pairs.push({name: 'CDOGS_TOKENURL', value: this.answers.cdogsApiUrl});
-      pairs.push({name: 'CDOGS_APIURL', value: this.answers.cdogsTokenUrl});
+      pairs.push({name: 'CDOGS_TOKENURL', value: this.answers.cdogsTokenUrl});
+      pairs.push({name: 'CDOGS_APIURL', value: this.answers.cdogsApiUrl});
       this.createConfigMap(this.options.destination, this.answers.objectName, ...pairs);
     }
   }
