@@ -79,78 +79,14 @@
 </template>
 
 <script>
+import exampleTable from '../assets/exampleTable.json';
+
 export default {
   name: 'home',
-  data() {
-    return {
-      examples: [
-        {
-          contexts: {
-            color: 'teal',
-            link: './examples/contexts_dgrsc.json'
-          },
-          description: 'Information Sharing Agreement',
-          template: {
-            color: 'blue',
-            icon: 'mdi-file-word',
-            link: './examples/template_information_sharing_agreement.docx'
-          },
-          type: 'Microsoft Word Document'
-        },
-        {
-          contexts: {
-            color: 'teal',
-            link: './examples/contexts_dgrsc.json'
-          },
-          description: 'Information Sharing Agreement',
-          template: {
-            color: 'brown',
-            icon: 'mdi-file-document',
-            link: './examples/template_information_sharing_agreement.odt'
-          },
-          type: 'OpenDocument Text'
-        },
-        {
-          contexts: {
-            color: 'teal',
-            link: './examples/contexts_dgrsc.json'
-          },
-          description: 'Sample PowerPoint Presentation',
-          template: {
-            color: 'orange',
-            icon: 'mdi-file-powerpoint',
-            link: './examples/template_powerpoint.pptx'
-          },
-          type: 'Microsoft PowerPoint Presentation'
-        },
-        {
-          contexts: {
-            color: 'teal',
-            link: './examples/contexts_movies.json'
-          },
-          description: 'Sample Movie Spreadsheet',
-          template: {
-            color: 'green',
-            icon: 'mdi-file-excel',
-            link: './examples/template_movies.xlsx'
-          },
-          type: 'Microsoft Excel Worksheet'
-        },
-        {
-          contexts: {
-            color: 'teal',
-            link: './examples/contexts_mx_permit.json'
-          },
-          description: 'Mineral Exploration Reclamation Permit',
-          template: {
-            color: 'blue',
-            icon: 'mdi-file-word',
-            link: './examples/mx_permit_{d.permitNumber}.docx'
-          },
-          type: 'Microsoft Word Document'
-        }
-      ]
-    };
+  computed: {
+    examples() {
+      return exampleTable;
+    }
   }
 };
 </script>

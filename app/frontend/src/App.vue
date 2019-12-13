@@ -4,9 +4,7 @@
     <div v-else>
       <Header />
       <NavigationBar />
-      <div class="container--fluid" id="router-view-content">
-        <router-view />
-      </div>
+      <router-view id="router-view-content" />
       <Footer />
     </div>
   </v-app>
@@ -43,6 +41,17 @@ body {
 }
 
 #router-view-content {
-  padding-bottom: 6.5rem;
+  @media only screen and (min-width: 960px) {
+    margin-bottom: 2.5rem;
+  }
+  @media only screen and (min-width: 600px) and (max-width: 959px) {
+    margin-bottom: 5rem;
+  }
+  @media only screen and (min-width: 320px) and (max-width: 599px) {
+    margin-bottom: 7.5rem;
+  }
+  @media only screen and (max-width: 319px) {
+    margin-bottom: 10rem;
+  }
 }
 </style>

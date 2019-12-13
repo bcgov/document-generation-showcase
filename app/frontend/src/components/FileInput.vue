@@ -9,47 +9,68 @@
       <v-form ref="form" v-model="validFileInput">
         <v-row>
           <v-col cols="12" md="4">
-            <v-file-input
-              counter
-              :clearable="false"
-              label="Upload your file"
-              :mandatory="true"
-              prepend-icon="attachment"
-              required
-              :rules="notEmpty"
-              show-size
-              v-model="form.files"
-            />
+            <v-card>
+              <v-toolbar light flat>
+                <v-tabs>
+                  <v-tab>Template Upload</v-tab>
+                </v-tabs>
+              </v-toolbar>
+              <v-card-text>
+                <v-file-input
+                  counter
+                  :clearable="false"
+                  label="Upload template file"
+                  :mandatory="true"
+                  prepend-icon="attachment"
+                  required
+                  :rules="notEmpty"
+                  show-size
+                  v-model="form.files"
+                />
 
-            <v-text-field
-              hint="(Optional) Desired output filename"
-              label="Filename"
-              v-model="form.filename"
-            />
+                <v-text-field
+                  hint="(Optional) Desired output filename"
+                  label="Filename"
+                  v-model="form.filename"
+                />
+              </v-card-text>
+            </v-card>
           </v-col>
 
           <v-col cols="12" md="8">
             <v-card>
               <v-toolbar light flat>
-                <v-tabs v-model="tab">
+                <v-tabs v-model="contextTab">
                   <v-tab>JSON Builder</v-tab>
                   <v-tab>Contexts JSON</v-tab>
                 </v-tabs>
               </v-toolbar>
 
               <v-card-text>
-                <v-tabs-items v-model="tab">
+                <v-tabs-items v-model="contextTab">
                   <v-tab-item>
-                    <JsonBuilder :tab="tab" @json-object="updateContexts" ref="jsonBuilder" />
+                    <JsonBuilder @json-object="updateContexts" ref="jsonBuilder" />
                   </v-tab-item>
 
                   <v-tab-item>
+                    <v-file-input
+                      counter
+                      :clearable="false"
+                      hint="(Optional) JSON file with key-value pairs"
+                      label="Upload contexts file"
+                      :persistent-hint="true"
+                      prepend-icon="attachment"
+                      show-size
+                      v-model="form.contextFiles"
+                    />
+
                     <v-textarea
                       auto-grow
                       hint="JSON format for key-value pairs"
                       label="Contexts"
                       :mandatory="true"
                       required
+                      rows="1"
                       :rules="contextsRules"
                       v-model="form.contexts"
                     />
@@ -99,6 +120,13 @@
         <span>Submit to CDOGS and Download</span>
       </v-tooltip>
     </v-card-actions>
+
+    <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+      {{ snackText }}
+      <v-btn text @click="snack = false">
+        <v-icon>close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -109,6 +137,14 @@ export default {
   name: 'fileInput',
   components: {
     JsonBuilder
+  },
+  computed: {
+    contextFiles() {
+      return this.form.contextFiles;
+    },
+    files() {
+      return this.form.files;
+    }
   },
   data() {
     return {
@@ -138,14 +174,18 @@ export default {
           }
         }
       ],
+      contextTab: null,
       form: {
         contexts: null,
+        contextFiles: null,
         files: null,
         filename: null
       },
       loading: false,
       notEmpty: [v => !!v || 'Cannot be empty'],
-      tab: null,
+      snack: false,
+      snackColor: '',
+      snackText: '',
       validFileInput: false
     };
   },
@@ -170,6 +210,34 @@ export default {
       window.URL.revokeObjectURL(url);
       a.remove();
     },
+    notifyError(errMsg) {
+      this.snack = true;
+      this.snackColor = 'error';
+      this.snackText = errMsg;
+    },
+    notifyInfo(infoMsg) {
+      this.snack = true;
+      this.snackColor = 'info';
+      this.snackText = infoMsg;
+    },
+    notifySuccess(msg) {
+      this.snack = true;
+      this.snackColor = 'success';
+      this.snackText = msg;
+    },
+    async parseContextFiles() {
+      try {
+        if (this.form.contextFiles && this.form.contextFiles instanceof File) {
+          // Parse Contents
+          const content = await this.toTextObject(this.form.contextFiles);
+          this.updateContexts(JSON.parse(content));
+          this.notifySuccess('Parsed successfully');
+        }
+      } catch (e) {
+        console.log(e);
+        this.notifyError(e.message);
+      }
+    },
     reset() {
       // Reset all values to starting null
       Object.keys(this.form).forEach(key => {
@@ -178,6 +246,7 @@ export default {
       this.$refs.jsonBuilder.reset();
       // Reset validation results
       this.$refs.form.resetValidation();
+      this.notifyInfo('Form reset');
     },
     toBase64(file) {
       return new Promise((resolve, reject) => {
@@ -187,10 +256,17 @@ export default {
         reader.onerror = error => reject(error);
       });
     },
+    toTextObject(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    },
     updateContexts(obj) {
       try {
-        this.form.contexts = JSON.stringify([obj]);
-        console.log('Built Context', this.form.contexts);
+        this.form.contexts = JSON.stringify(obj);
       } catch (e) {
         console.log(e, obj);
       }
@@ -217,11 +293,28 @@ export default {
 
           // Generate Temporary Download Link
           this.createDownload(blob, filename);
+          this.notifySuccess('Submitted successfully');
         }
       } catch (e) {
         console.log(e);
+        this.notifyError(e.message);
       } finally {
         this.loading = false;
+      }
+    }
+  },
+  watch: {
+    contextFiles() {
+      this.parseContextFiles();
+    },
+    files() {
+      // Only update the filename field if it is empty
+      if (
+        this.form.files &&
+        this.form.files instanceof File &&
+        !this.form.filename
+      ) {
+        this.form.filename = this.files.name;
       }
     }
   }
