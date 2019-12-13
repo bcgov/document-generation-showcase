@@ -9,36 +9,45 @@
       <v-form ref="form" v-model="validFileInput">
         <v-row>
           <v-col cols="12" md="4">
-            <v-file-input
-              counter
-              :clearable="false"
-              label="Upload your template file"
-              :mandatory="true"
-              prepend-icon="attachment"
-              required
-              :rules="notEmpty"
-              show-size
-              v-model="form.files"
-            />
+            <v-card>
+              <v-toolbar light flat>
+                <v-tabs>
+                  <v-tab>Template Upload</v-tab>
+                </v-tabs>
+              </v-toolbar>
+              <v-card-text>
+                <v-file-input
+                  counter
+                  :clearable="false"
+                  label="Upload template file"
+                  :mandatory="true"
+                  prepend-icon="attachment"
+                  required
+                  :rules="notEmpty"
+                  show-size
+                  v-model="form.files"
+                />
 
-            <v-text-field
-              hint="(Optional) Desired output filename"
-              label="Filename"
-              v-model="form.filename"
-            />
+                <v-text-field
+                  hint="(Optional) Desired output filename"
+                  label="Filename"
+                  v-model="form.filename"
+                />
+              </v-card-text>
+            </v-card>
           </v-col>
 
           <v-col cols="12" md="8">
             <v-card>
               <v-toolbar light flat>
-                <v-tabs v-model="tab">
+                <v-tabs v-model="contextTab">
                   <v-tab>JSON Builder</v-tab>
                   <v-tab>Contexts JSON</v-tab>
                 </v-tabs>
               </v-toolbar>
 
               <v-card-text>
-                <v-tabs-items v-model="tab">
+                <v-tabs-items v-model="contextTab">
                   <v-tab-item>
                     <JsonBuilder @json-object="updateContexts" ref="jsonBuilder" />
                   </v-tab-item>
@@ -48,7 +57,7 @@
                       counter
                       :clearable="false"
                       hint="(Optional) JSON file with key-value pairs"
-                      label="Upload your contexts file"
+                      label="Upload contexts file"
                       :persistent-hint="true"
                       prepend-icon="attachment"
                       show-size
@@ -61,6 +70,7 @@
                       label="Contexts"
                       :mandatory="true"
                       required
+                      rows="1"
                       :rules="contextsRules"
                       v-model="form.contexts"
                     />
@@ -164,6 +174,7 @@ export default {
           }
         }
       ],
+      contextTab: null,
       form: {
         contexts: null,
         contextFiles: null,
@@ -175,7 +186,6 @@ export default {
       snack: false,
       snackColor: '',
       snackText: '',
-      tab: null,
       validFileInput: false
     };
   },
