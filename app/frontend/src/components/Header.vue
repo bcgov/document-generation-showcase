@@ -5,8 +5,8 @@
       <a href="https://www2.gov.bc.ca">
         <img
           src="@/assets/images/17_gov3_bc_logo.svg"
-          width="152"
-          height="55"
+          width="157"
+          height="44"
           alt="B.C. Government Logo"
         />
       </a>
