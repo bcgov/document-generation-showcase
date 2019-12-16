@@ -7,6 +7,13 @@
       <router-view id="router-view-content" />
       <Footer />
     </div>
+    <v-snackbar
+      v-model="snack"
+      :absolute="true"
+      :bottom="true"
+      color="primary"
+      :timeout="0"
+    >Loading has failed. Please check the console for details.</v-snackbar>
   </v-app>
 </template>
 
@@ -17,10 +24,23 @@ import Footer from './components/Footer';
 
 export default {
   name: 'app',
+  data() {
+    return {
+      snack: false
+    };
+  },
   components: {
     Header,
     NavigationBar,
     Footer
+  },
+  mounted() {
+    setTimeout(() => {
+      this.snack = !this.$router;
+      if (!this.$router && (this.$keycloak && !this.$keycloak.ready)) {
+        console.error('Keycloak failed to initialize');
+      }
+    }, 5000);
   }
 };
 </script>

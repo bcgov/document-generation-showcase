@@ -25,7 +25,7 @@ class ConfigService {
     try {
       result = this.config[propertyName];
     } catch (err) {
-      console.log(`configService.get(${propertyName})... error = ${err}`);
+      console.error(`configService.get(${propertyName})... error = ${err}`);
     }
     return result;
   }
@@ -45,8 +45,8 @@ class ConfigService {
 
       this._config = JSON.parse(sessionStorage.getItem(storageKey));
     } catch (err) {
-      console.log(`Failed to acquire configuration: ${err.message}`);
       sessionStorage.removeItem(storageKey);
+      throw new Error(`Failed to acquire configuration: ${err.message}`);
     }
 
     return this._config;
