@@ -27,7 +27,7 @@
         href="https://cdogs-master-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docs"
       >here</a>.
     </p>
-    <h3>Usage</h3>
+    <h3>Onboarding</h3>
     <p>
       For information about onboarding to CDOGS or other common services, see the <a href="https://github.com/bcgov/nr-get-token/wiki/Onboarding-Process" target="_blank">onboarding documentation</a>.
     </p>
