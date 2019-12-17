@@ -27,6 +27,10 @@
         href="https://cdogs-master-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docs"
       >here</a>.
     </p>
+    <h3>Onboarding</h3>
+    <p>
+      For information about onboarding to CDOGS or other common services, see the <a href="https://github.com/bcgov/nr-get-token/wiki/Onboarding-Process" target="_blank">onboarding documentation</a>.
+    </p>
     <h3>Examples</h3>
     <p>Below are some various document template examples and their associated contexts which showcase the rich functionality that the CDOGS API can offer.</p>
     <v-simple-table>
