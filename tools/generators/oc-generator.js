@@ -170,6 +170,71 @@ module.exports = class extends Generator {
         this.log(chalk.green(obj.stdout));
       }
     };
+
+    this.process = function (namespace, template, ...pairs) {
+      const args = [
+        '-n',
+        namespace,
+        'process',
+        '-f',
+        template
+      ];
+
+      pairs.forEach((p) => {
+        args.push('-p');
+        args.push(`${p.name}=${p.value}`);
+      });
+
+      const obj = spawnSync(
+        'oc',
+        args,
+        {encoding: 'utf-8'}
+      );
+      // eslint-disable-next-line no-negated-condition
+      if (obj.status !== 0) {
+        if (args && args.length) {
+          this.log(`oc ${args.join(' ')}`);
+        }
+        this.log(obj.stdout);
+        this.log(obj.stderr);
+        this.env.error(
+          'Error performing process.'
+        );
+      } else {
+        // show response from openshift
+        this.log(chalk.green(obj.stdout));
+        return obj.stdout;
+      }
+    };
+
+    this.create = function(namespace, input) {
+      const obj = spawnSync(
+        'oc',
+        [
+          '-n',
+          namespace,
+          'create',
+          '-f',
+          '-'
+        ],
+        {
+          input: input,
+          encoding: 'utf-8'
+        }
+      );
+      // eslint-disable-next-line no-negated-condition
+      if (obj.status !== 0) {
+
+        this.log(obj.stdout);
+        this.log(obj.stderr);
+        this.env.error(
+          'Error performing create.'
+        );
+      } else {
+        // show response from openshift
+        this.log(chalk.green(obj.stdout));
+      }
+    };
   }
 
   async prompting() {
