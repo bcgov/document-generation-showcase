@@ -1,10 +1,10 @@
 <template>
   <v-container class="secure">
     <Authenticated>
-      <h2 class="text-center">
+      <h1 class="text-center">
         Common Document Generation Service (v1)
         <Health />
-      </h2>
+      </h1>
       <p class="text-center">
         The Document Generation Showcase demonstrates the capabilities of the
         <a
