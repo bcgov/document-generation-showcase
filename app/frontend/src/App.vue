@@ -1,17 +1,17 @@
 <template>
   <v-app id="app">
+    <Header />
     <v-progress-circular v-if="!$router" color="primary" indeterminate size="64" />
     <div v-else>
-      <Header />
       <NavigationBar />
       <router-view id="router-view-content" />
-      <Footer />
     </div>
+    <Footer />
     <v-snackbar
       v-model="snack"
       :absolute="true"
       :bottom="true"
-      color="primary"
+      color="error"
       :timeout="0"
     >Loading has failed. Please check the console for details.</v-snackbar>
   </v-app>

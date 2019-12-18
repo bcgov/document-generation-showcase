@@ -17,15 +17,17 @@
 
       <v-spacer />
 
-      <JWTDebug />
-      <v-btn
-        v-if="$keycloak.authenticated"
-        class="login-btn"
-        id="nav-logout"
-        text
-        @click="logout"
-      >Logout</v-btn>
-      <v-btn v-else class="login-btn" id="nav-login" text @click="login">Login</v-btn>
+      <div v-if="kcReady">
+        <JWTDebug />
+        <v-btn
+          v-if="$keycloak.authenticated"
+          class="login-btn"
+          id="nav-logout"
+          text
+          @click="logout"
+        >Logout</v-btn>
+        <v-btn v-else class="login-btn" id="nav-login" text @click="login">Login</v-btn>
+      </div>
     </v-toolbar>
   </header>
 </template>
@@ -33,6 +35,11 @@
 <script>
 import JWTDebug from './JWTDebug';
 export default {
+  computed: {
+    kcReady() {
+      return !!this.$keycloak && this.$keycloak.ready;
+    }
+  },
   data() {
     return {
       appTitle: process.env.VUE_APP_TITLE
