@@ -1,12 +1,6 @@
 <template>
   <v-container class="home">
-    <h2 class="text-center">Welcome to Document Generation Showcase (DGRSC)</h2>
-    <p>
-      DGRSC demonstrates how an application can have document generation functionality by calling an API. In this case, this application demonstrates how one may be able to call the
-      <a
-        href="https://bcgov.github.io/common-document-generation-service/"
-      >Common Document Generation Service API (CDOGS)</a>.
-    </p>
+    <h2 class="text-center">TBD</h2>
     <h3>Capabilities</h3>
     <p>The CDOGS API is capable of doing the following:</p>
     <ul>
@@ -27,66 +21,11 @@
         href="https://cdogs-master-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docs"
       >here</a>.
     </p>
-    <h3>Examples</h3>
-    <p>Below are some various document template examples and their associated contexts which showcase the rich functionality that the CDOGS API can offer.</p>
-    <v-simple-table>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">Description</th>
-            <th v-if="$vuetify.breakpoint.mdAndUp" class="text-left">Type</th>
-            <th class="text-left">Extension</th>
-            <th class="text-left">Template</th>
-            <th class="text-left">Contexts</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in examples" :key="`item-${index}`">
-            <td>{{ item.description }}</td>
-            <td v-if="$vuetify.breakpoint.mdAndUp">{{ item.type }}</td>
-            <td>{{ item.template.link.replace(/^.*\./, '') }}</td>
-            <td>
-              <v-btn
-                :color="item.template.color"
-                class="btn-template-download"
-                download
-                :href="item.template.link"
-                outlined
-                small
-              >
-                <v-icon :left="$vuetify.breakpoint.mdAndUp">{{ item.template.icon }}</v-icon>
-                <div v-if="$vuetify.breakpoint.mdAndUp">Download</div>
-              </v-btn>
-            </td>
-            <td>
-              <v-btn
-                :color="item.contexts.color"
-                class="btn-contexts-download"
-                download
-                :href="item.contexts.link"
-                outlined
-                small
-              >
-                <v-icon :left="$vuetify.breakpoint.mdAndUp">mdi-download</v-icon>
-                <div v-if="$vuetify.breakpoint.mdAndUp">Download</div>
-              </v-btn>
-            </td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
   </v-container>
 </template>
 
 <script>
-import exampleTable from '../assets/exampleTable.json';
-
 export default {
-  name: 'home',
-  computed: {
-    examples() {
-      return exampleTable;
-    }
-  }
+  name: 'home'
 };
 </script>

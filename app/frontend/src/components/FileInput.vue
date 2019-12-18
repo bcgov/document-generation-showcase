@@ -5,7 +5,7 @@
     </v-card-title>
 
     <v-card-text>
-      <p>A successful submission requires a template file and a valid JSON object in an array.</p>
+      <p>A successful submission requires both a template file and a valid JSON object in an array.</p>
       <v-form ref="form" v-model="validFileInput">
         <v-row>
           <v-col cols="12" md="4">
