@@ -8,7 +8,8 @@
       <p class="text-center">
         The Document Generation Showcase demonstrates the capabilities of the
         <a
-          href="https://bcgov.github.io/common-document-generation-service/"
+          href="https://github.com/bcgov/common-document-generation-service"
+          target="_blank"
         >Common Document Generation Service API (CDOGS)</a>.
       </p>
       <FileInput />

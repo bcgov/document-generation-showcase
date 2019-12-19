@@ -1,15 +1,14 @@
 <template>
   <v-container class="home">
     <h1 class="text-center">Generate Printable Documents with a Template and your Data</h1>
-    <v-card class="home-jumbotron pa-2 my-2 text-center">
+    <v-card class="home-jumbotron pa-4 my-2 text-center">
       <v-img
-        v-if="$vuetify.breakpoint.smAndUp"
-        class="mx-6 text-center"
+        class="d-none d-sm-block mx-6 text-center"
         src="@/assets/images/home_flow.svg"
         alt="CDOGS Flow"
         contain
       />
-      <div v-else class="icon-flow text-center">
+      <div class="d-sm-none icon-flow text-center">
         <h2>JSON + Template -> Printable Documents</h2>
         <br />
         <v-icon color="black">code</v-icon>
@@ -26,18 +25,23 @@
       >Leverage your structured datasets and your business templates to automatically populate printable documents, spreadsheets, presentations, or PDFs using the Common Document Generation Service.</h2>
       <br />
       <router-link :to="{ name: 'cdogs' }">
-        <v-btn color="primary" class="home-btn" id="not-found-home" large>
+        <v-btn color="primary" class="tryit-btn" id="tryit-cdogs" large>
           <v-icon left>mdi-hexagon-multiple</v-icon>
           <span>Try it out</span>
         </v-btn>
       </router-link>
+      <a href="https://github.com/bcgov/common-document-generation-service" target="_blank">
+        <v-btn class="github-btn" id="github" large>
+          <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-github-circle</v-icon>
+          <span v-if="$vuetify.breakpoint.smAndUp">Github</span>
+        </v-btn>
+      </a>
     </v-card>
 
-    <v-card class="pa-6 mt-12">
-      <h3>Summary</h3>
+    <v-card class="pa-6 mt-6">
+      <h3>Capabilities</h3>
       <strong>The API can generate any PDF or XML-based documents such as docx, xlsx, pptx, odt, ods, odp, and html.</strong>
       <p>Examples of XML-based editors include Microsoft Office™, LibreOffice™ or OpenOffice™.</p>
-      <h3>Capabilities</h3>
       <p>The CDOGS API is capable of doing the following:</p>
       <ul>
         <li>Merge complex datasets into document templates</li>
@@ -49,12 +53,14 @@
         To learn more on how to use the CDOGS API, check out the API Usage docs
         <a
           href="https://github.com/bcgov/common-document-generation-service/blob/master/app/README.md#api-usage"
+          target="_blank"
         >here</a>.
       </p>
       <p>
         You can find the OpenAPI 3.0 Specification of the CDOGS API
         <a
           href="https://cdogs-master-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docs"
+          target="_blank"
         >here</a>.
       </p>
     </v-card>
