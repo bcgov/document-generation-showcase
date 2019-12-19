@@ -25,13 +25,13 @@
       >Leverage your structured datasets and your business templates to automatically populate printable documents, spreadsheets, presentations, or PDFs using the Common Document Generation Service.</h2>
       <br />
       <router-link :to="{ name: 'cdogs' }">
-        <v-btn color="primary" class="tryit-btn" id="tryit-cdogs" large>
+        <v-btn color="primary" class="tryit-btn mx-2" id="tryit-cdogs" large>
           <v-icon left>mdi-hexagon-multiple</v-icon>
           <span>Try it out</span>
         </v-btn>
       </router-link>
       <a href="https://github.com/bcgov/common-document-generation-service" target="_blank">
-        <v-btn class="github-btn" id="github" large>
+        <v-btn class="github-btn mx-2" id="github" large >
           <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-github-circle</v-icon>
           <span v-if="$vuetify.breakpoint.smAndUp">Github</span>
         </v-btn>
@@ -85,6 +85,10 @@ export default {
 </script>
 
 <style scoped>
+.home-jumbotron a {
+  text-decoration: unset;
+}
+
 .icon-flow > .v-icon {
   font-size: 3.5rem;
 }
