@@ -40,8 +40,7 @@
 
     <v-card class="pa-6 mt-6">
       <h3>Capabilities</h3>
-      <strong>The API can generate any PDF or XML-based documents such as docx, xlsx, pptx, odt, ods, odp, and html.</strong>
-      <p>Examples of XML-based editors include Microsoft Office™, LibreOffice™ or OpenOffice™.</p>
+      <p>The API can generate any PDF or XML-based documents such as docx, xlsx, pptx, odt, ods, odp, and html. Examples of XML-based editors include Microsoft Office™, LibreOffice™ or OpenOffice™.</p>
       <p>The CDOGS API is capable of doing the following:</p>
       <ul>
         <li>Merge complex datasets into document templates</li>
@@ -49,20 +48,32 @@
         <li>Rich templating library support leveraging the Carbone JS library</li>
       </ul>
       <h3>Usage</h3>
-      <p>
-        To learn more on how to use the CDOGS API, check out the API Usage docs
-        <a
-          href="https://github.com/bcgov/common-document-generation-service/blob/master/app/README.md#api-usage"
-          target="_blank"
-        >here</a>.
-      </p>
-      <p>
-        You can find the OpenAPI 3.0 Specification of the CDOGS API
-        <a
-          href="https://cdogs-master-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docs"
-          target="_blank"
-        >here</a>.
-      </p>
+      <ul>
+        <li>
+          To learn more on how to use the CDOGS API, check out the API Usage docs
+          <a
+            href="https://github.com/bcgov/common-document-generation-service/blob/master/app/README.md#api-usage"
+            target="_blank"
+          >here</a>.
+        </li>
+        <li>
+          You can find the OpenAPI 3.0 Specification of the CDOGS API
+          <a
+            href="https://cdogs-master-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docs"
+            target="_blank"
+          >here</a>.
+        </li>
+      </ul>
+      <h3>Onboarding</h3>
+      <ul>
+        <li>
+          For information about onboarding to CDOGS or other common services, see the
+          <a
+            href="https://github.com/bcgov/nr-get-token/wiki/Onboarding-Process"
+            target="_blank"
+          >onboarding documentation</a>.
+        </li>
+      </ul>
     </v-card>
   </v-container>
 </template>
