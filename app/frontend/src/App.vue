@@ -37,7 +37,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.snack = !this.$router;
-      if (!this.$router && (this.$keycloak && !this.$keycloak.ready)) {
+      if (!this.$router && this.$keycloak && !this.$keycloak.ready) {
         console.error('Keycloak failed to initialize');
       }
     }, 5000);
