@@ -1,10 +1,12 @@
 <template>
   <v-container class="not-found text-center">
-    <h1 >404: Page not found. :(</h1>
-    <v-btn color="primary" class="home-btn" id="not-found-home" @click="login" large>
-      <v-icon :left="$vuetify.breakpoint.smAndUp">home</v-icon>
-      <span v-if="$vuetify.breakpoint.smAndUp">Home</span>
-    </v-btn>
+    <h1>404: Page not found. :(</h1>
+    <router-link :to="{ name: 'home' }">
+      <v-btn color="primary" class="home-btn" id="not-found-home" large>
+        <v-icon left>home</v-icon>
+        <span>Home</span>
+      </v-btn>
+    </router-link>
   </v-container>
 </template>
 

@@ -3,10 +3,8 @@
     <v-toolbar>
       <!-- Navbar content -->
       <a href="https://www2.gov.bc.ca">
-        <img
+        <v-img
           src="@/assets/images/17_gov3_bc_logo.svg"
-          width="157"
-          height="44"
           alt="B.C. Government Logo"
         />
       </a>
@@ -19,7 +17,7 @@
 
       <div v-if="kcReady">
         <JWTDebug />
-        <v-btn v-if="$keycloak.authenticated" class="login-btn" id="header-logout" @click="logout">
+        <v-btn v-if="$keycloak.authenticated" color="secondary" class="login-btn" id="header-logout" @click="logout">
           <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-logout</v-icon>
           <span v-if="$vuetify.breakpoint.smAndUp">Logout</span>
         </v-btn>
