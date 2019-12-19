@@ -13,7 +13,7 @@
       :bottom="true"
       color="error"
       :timeout="0"
-    >Loading has failed. Please check the console for details.</v-snackbar>
+    >Something important failed while loading... :(</v-snackbar>
   </v-app>
 </template>
 
