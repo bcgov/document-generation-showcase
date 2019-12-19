@@ -1,12 +1,19 @@
 <template>
   <v-app id="app">
+    <Header />
     <v-progress-circular v-if="!$router" color="primary" indeterminate size="64" />
     <div v-else>
-      <Header />
       <NavigationBar />
       <router-view id="router-view-content" />
-      <Footer />
     </div>
+    <Footer />
+    <v-snackbar
+      v-model="snack"
+      :absolute="true"
+      :bottom="true"
+      color="error"
+      :timeout="0"
+    >Something important failed while loading... :(</v-snackbar>
   </v-app>
 </template>
 
@@ -17,10 +24,23 @@ import Footer from './components/Footer';
 
 export default {
   name: 'app',
+  data() {
+    return {
+      snack: false
+    };
+  },
   components: {
     Header,
     NavigationBar,
     Footer
+  },
+  mounted() {
+    setTimeout(() => {
+      this.snack = !this.$router;
+      if (!this.$router && this.$keycloak && !this.$keycloak.ready) {
+        console.error('Keycloak failed to initialize');
+      }
+    }, 5000);
   }
 };
 </script>

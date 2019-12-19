@@ -3,10 +3,8 @@
     <v-toolbar>
       <!-- Navbar content -->
       <a href="https://www2.gov.bc.ca">
-        <img
+        <v-img
           src="@/assets/images/17_gov3_bc_logo.svg"
-          width="152"
-          height="55"
           alt="B.C. Government Logo"
         />
       </a>
@@ -17,15 +15,17 @@
 
       <v-spacer />
 
-      <JWTDebug />
-      <v-btn
-        v-if="$keycloak.authenticated"
-        class="login-btn"
-        id="nav-logout"
-        text
-        @click="logout"
-      >Logout</v-btn>
-      <v-btn v-else class="login-btn" id="nav-login" text @click="login">Login</v-btn>
+      <div v-if="kcReady">
+        <JWTDebug />
+        <v-btn v-if="$keycloak.authenticated" color="secondary" class="login-btn" id="header-logout" @click="logout">
+          <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-logout</v-icon>
+          <span v-if="$vuetify.breakpoint.smAndUp">Logout</span>
+        </v-btn>
+        <v-btn v-else color="secondary" class="login-btn" id="header-login" @click="login">
+          <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-login</v-icon>
+          <span v-if="$vuetify.breakpoint.smAndUp">Login</span>
+        </v-btn>
+      </div>
     </v-toolbar>
   </header>
 </template>
@@ -33,6 +33,11 @@
 <script>
 import JWTDebug from './JWTDebug';
 export default {
+  computed: {
+    kcReady() {
+      return !!this.$keycloak && this.$keycloak.ready;
+    }
+  },
   data() {
     return {
       appTitle: process.env.VUE_APP_TITLE
@@ -43,66 +48,22 @@ export default {
   },
   methods: {
     login() {
-      const basePath = this.$configService.get('basePath');
-      const redirectUri = `${location.origin}${basePath}`;
-      const loginUrl = this.$keycloak.createLoginUrl({
-        redirectUri: redirectUri
-      });
-      window.location.replace(loginUrl);
+      window.location.replace(this.$keycloak.createLoginUrl());
     },
     logout() {
-      const basePath = this.$configService.get('basePath');
-      const redirectUri = `${location.origin}${basePath}`;
-      const logoutUrl = this.$keycloak.createLogoutUrl({
-        redirectUri: redirectUri
-      });
-      window.location.replace(logoutUrl);
+      window.location.replace(this.$keycloak.createLogoutUrl());
     }
   }
 };
 </script>
 
 <style scoped>
-.gov-header .title {
-  color: #fff;
-  text-decoration: none;
+.title {
+  color: rgb(255, 255, 255);
 }
 
-.gov-header .v-toolbar {
+.v-toolbar {
   background-color: rgb(0, 51, 102);
   border-bottom: 2px solid rgb(252, 186, 25);
-}
-
-.gov-header .v-btn,
-.v-btn--active.title:before,
-.v-btn.title:focus:before,
-.v-btn.title:hover:before {
-  color: #fff;
-  background: none;
-}
-
-.gov-header .v-btn.login-btn {
-  color: #fff;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: 0.375rem 0.75rem;
-  font-size: 1em;
-  line-height: 1.5;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  display: inline-block;
-  background-color: #fcba19;
-  text-transform: none;
-}
-
-.secondary_color {
-  background-color: var(--v-secondary-base);
 }
 </style>

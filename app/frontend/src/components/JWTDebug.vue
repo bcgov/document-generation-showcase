@@ -1,7 +1,10 @@
 <template>
   <v-bottom-sheet v-if="devMode" inset v-model="sheet">
     <template v-slot:activator="{ on }">
-      <v-btn outlined dark v-on="on">Debug</v-btn>
+      <v-btn outlined dark v-on="on">
+        <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-wrench</v-icon>
+        <span v-if="$vuetify.breakpoint.smAndUp">Debug</span>
+      </v-btn>
     </template>
     <v-sheet class="text-center">
       <v-btn class="sheet-close ma-2" color="primary" @click="sheet = !sheet">close</v-btn>
@@ -27,6 +30,6 @@ export default {
       devMode: process.env.NODE_ENV === 'development',
       sheet: false
     };
-  },
+  }
 };
 </script>

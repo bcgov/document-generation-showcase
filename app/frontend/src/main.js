@@ -77,4 +77,7 @@ configService.load(CONFIG_URL)
         initializeApp(router, store);
       }
     });
+  })
+  .catch(err => {
+    console.error(err.message);
   });
