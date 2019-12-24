@@ -5,26 +5,30 @@ const ClientConnection = require('./clientConnection');
 
 const errorToProblem = (e) => {
   if (e.response) {
-    log.error(`Error from CDOGS: status = ${e.response.status}, data : ${JSON.stringify(e.response.data, null, 2)}`);
-    let errors = [];
+    log.error(`Error from CDOGS: status = ${e.response.status}, data : ${e.response.data}`);
+    // Validation Error
     if (e.response.status === 422) {
-      errors = e.response.data.errors;
+      throw new Problem(e.response.status, {
+        detail: e.response.data.detail,
+        errors: JSON.parse(e.response.data).errors
+      });
     }
-    throw new Problem(e.response.status, {detail: e.response.data.detail, errors: errors});
+    // Something else happened but there's a response
+    throw new Problem(e.response.status, { detail: e.response.data.toString() });
   } else {
     log.error(`Unknown error calling CDOGS: ${e.message}`);
-    throw new Problem(500, 'Unknown CDOGS Error', {detail: e.message});
+    throw new Problem(502, 'Unknown CDOGS Error', { detail: e.message });
   }
 };
 
 class CdogsService {
-  constructor({tokenUrl, clientId, clientSecret, apiUrl}) {
+  constructor({ tokenUrl, clientId, clientSecret, apiUrl }) {
     log.verbose('CdogsService', `Constructed with ${tokenUrl}, ${clientId}, clientSecret, ${apiUrl}`);
     if (!tokenUrl || !clientId || !clientSecret || !apiUrl) {
       log.error('CdogsService', 'Invalid configuration.');
       throw new Error('CdogsService is not configured. Check configuration.');
     }
-    this.connection = new ClientConnection({tokenUrl, clientId, clientSecret});
+    this.connection = new ClientConnection({ tokenUrl, clientId, clientSecret });
     this.axios = this.connection.axios;
     this.apiUrl = apiUrl;
   }
@@ -51,11 +55,11 @@ class CdogsService {
       const endpoint = `${this.apiUrl}/docGen`;
       log.debug('docGen', `POST to ${endpoint}`);
 
-      const { data, status } = await this.axios.post(endpoint, body, {
+      const { data, headers, status } = await this.axios.post(endpoint, body, {
         responseType: 'arraybuffer' // Needed for binaries unless you want pain
       });
 
-      return { data, status };
+      return { data, headers, status };
     } catch (e) {
       errorToProblem(e);
     }
