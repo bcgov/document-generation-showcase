@@ -129,7 +129,7 @@
       </v-tooltip>
     </v-card-actions>
 
-    <v-snackbar v-model="snack" timeout="3000" :color="snackColor">
+    <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
       {{ snackText }}
       <v-btn text @click="snack = false">
         <v-icon>close</v-icon>
@@ -253,7 +253,7 @@ export default {
           this.notifySuccess('Parsed successfully');
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         this.notifyError(e.message);
       }
     },
@@ -299,7 +299,7 @@ export default {
       try {
         this.form.contexts = JSON.stringify(obj);
       } catch (e) {
-        console.log(e, obj);
+        console.error(e, obj);
       }
     },
     async upload() {
@@ -330,8 +330,13 @@ export default {
           this.notifySuccess('Submitted successfully');
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         this.notifyError(e.message);
+        if (e.response) {
+          const data = new TextDecoder().decode(e.response.data);
+          const parsed = JSON.parse(data);
+          console.warn('CDOGS Response:', parsed);
+        }
       } finally {
         this.loading = false;
       }
