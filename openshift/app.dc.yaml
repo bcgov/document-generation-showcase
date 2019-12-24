@@ -15,21 +15,21 @@ objects:
       description: |
         Allow pods to talk to the internal K8S api
       source:
-        - - app="${APP_NAME}-${JOB_NAME}"
-          - deploymentconfig="${APP_NAME}-app-${JOB_NAME}"
+        - - "app=${APP_NAME}-${JOB_NAME}"
+          - "deploymentconfig=${APP_NAME}-app-${JOB_NAME}"
           - role=app
       destination:
         - - int:network=internal-cluster-api-endpoint
   - kind: NetworkSecurityPolicy
     apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
     metadata:
-      name: "${APP_NAME}-app-${JOB_NAME}-to-egress"
+      name: "${APP_NAME}-app-${JOB_NAME}-pods-to-egress"
     spec:
       description: |
         Allow pods to open connections to the internet
       source:
-        - - app="${APP_NAME}-${JOB_NAME}"
-          - deploymentconfig="${APP_NAME}-app-${JOB_NAME}"
+        - - "app=${APP_NAME}-${JOB_NAME}"
+          - "deploymentconfig=${APP_NAME}-app-${JOB_NAME}"
           - role=app
       destination:
         - - ext:network=any
