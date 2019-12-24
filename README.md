@@ -10,7 +10,7 @@
 
 Documentation, Code Templates and a Showcase application to demonstrate features of the Natural Resources Common Document Generation Service
 
-To learn more about **Common Services** available including [hosted email](https://github.com/bcgov/common-hosted-email-service), [messaging](https://github.com/bcgov/nr-messaging-service-showcase) and [document generation](https://github.com/bcgov/document-generation-showcase) and to see them in action, visit the [Common Services Showcase](https://bcgov.github.io/common-service-showcase/) page.
+To learn more about the **Common Services** that are available visit the [Common Services Showcase](https://bcgov.github.io/common-service-showcase/) page.
 
 ## Directory Structure
 
