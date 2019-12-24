@@ -19,9 +19,12 @@ const healthCheck = async (_req, res, next) => {
 const docGen = async (req, res, next) => {
   const svc = getService();
   try {
-    const { data, status } = await svc.docGen(req.body);
+    const { data, headers, status } = await svc.docGen(req.body);
+    const contentDisposition = headers['content-disposition'];
+
     res.status(status).set({
-      'Content-Disposition': 'attachment'
+      'Content-Disposition': contentDisposition ? contentDisposition : 'attachment',
+      'Content-Type': headers['content-type']
     }).send(data);
   } catch (error) {
     next(error);

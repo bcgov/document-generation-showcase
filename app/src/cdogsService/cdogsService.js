@@ -51,11 +51,11 @@ class CdogsService {
       const endpoint = `${this.apiUrl}/docGen`;
       log.debug('docGen', `POST to ${endpoint}`);
 
-      const { data, status } = await this.axios.post(endpoint, body, {
+      const { data, headers, status } = await this.axios.post(endpoint, body, {
         responseType: 'arraybuffer' // Needed for binaries unless you want pain
       });
 
-      return { data, status };
+      return { data, headers, status };
     } catch (e) {
       errorToProblem(e);
     }
