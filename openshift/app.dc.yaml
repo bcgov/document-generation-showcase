@@ -10,7 +10,7 @@ objects:
   - apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
     kind: NetworkSecurityPolicy
     metadata:
-      name: "${APP_NAME}-app-${JOB_NAME}-pods-to-k8s-api"
+      name: "${APP_NAME}-app-${JOB_NAME}-pods-to-k8s-api-${NAMESPACE}"
     spec:
       description: |
         Allow pods to talk to the internal K8S api
@@ -21,7 +21,7 @@ objects:
   - kind: NetworkSecurityPolicy
     apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
     metadata:
-      name: "${APP_NAME}-app-${JOB_NAME}-pods-to-egress"
+      name: "${APP_NAME}-app-${JOB_NAME}-pods-to-egress-${NAMESPACE}"
     spec:
       description: |
         Allow pods to open connections to the internet
