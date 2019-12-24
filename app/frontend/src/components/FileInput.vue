@@ -20,7 +20,7 @@
                   counter
                   :clearable="false"
                   label="Upload template file"
-                  :mandatory="true"
+                  mandatory
                   prepend-icon="attachment"
                   required
                   :rules="notEmpty"
@@ -30,8 +30,16 @@
 
                 <v-text-field
                   hint="(Optional) Desired output filename"
-                  label="Filename"
-                  v-model="form.filename"
+                  label="Output File Name"
+                  persistent-hint
+                  v-model="form.outputFileName"
+                />
+
+                <v-text-field
+                  hint="(Optional) Desired output filetype (i.e. pdf)"
+                  label="Output File Type"
+                  persistent-hint
+                  v-model="form.outputFileType"
                 />
               </v-card-text>
             </v-card>
@@ -58,7 +66,7 @@
                       :clearable="false"
                       hint="(Optional) JSON file with key-value pairs"
                       label="Upload contexts file"
-                      :persistent-hint="true"
+                      persistent-hint
                       prepend-icon="attachment"
                       show-size
                       v-model="form.contextFiles"
@@ -68,7 +76,7 @@
                       auto-grow
                       hint="JSON format for key-value pairs"
                       label="Contexts"
-                      :mandatory="true"
+                      mandatory
                       required
                       rows="1"
                       :rules="contextsRules"
@@ -179,7 +187,9 @@ export default {
         contexts: null,
         contextFiles: null,
         files: null,
-        filename: null
+        contentFileType: null,
+        outputFileName: null,
+        outputFileType: null
       },
       loading: false,
       notEmpty: [v => !!v || 'Cannot be empty'],
@@ -190,13 +200,15 @@ export default {
     };
   },
   methods: {
-    createBody(contexts, content, filename = undefined) {
+    createBody(contexts, content) {
       return {
         contexts: contexts,
         template: {
           content: content,
           contentEncodingType: 'base64',
-          filename: filename
+          contentFileType: this.form.contentFileType,
+          outputFileName: this.form.outputFileName,
+          outputFileType: this.form.outputFileType
         }
       };
     },
@@ -209,6 +221,13 @@ export default {
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
+    },
+    getDispositionFilename(disposition) {
+      let filename = undefined;
+      if (disposition) {
+        filename = disposition.substring(disposition.indexOf('filename=') + 9);
+      }
+      return filename;
     },
     notifyError(errMsg) {
       this.snack = true;
@@ -234,7 +253,7 @@ export default {
           this.notifySuccess('Parsed successfully');
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         this.notifyError(e.message);
       }
     },
@@ -247,6 +266,18 @@ export default {
       // Reset validation results
       this.$refs.form.resetValidation();
       this.notifyInfo('Form reset');
+    },
+    splitFileName(filename = undefined) {
+      let name = undefined;
+      let extension = undefined;
+
+      if (filename) {
+        const filenameArray = filename.split('.');
+        name = filenameArray.slice(0, -1).join('.');
+        extension = filenameArray.slice(-1).join('.');
+      }
+
+      return { name, extension };
     },
     toBase64(file) {
       return new Promise((resolve, reject) => {
@@ -268,7 +299,7 @@ export default {
       try {
         this.form.contexts = JSON.stringify(obj);
       } catch (e) {
-        console.log(e, obj);
+        console.error(e, obj);
       }
     },
     async upload() {
@@ -279,13 +310,16 @@ export default {
           // Parse Contents
           const parsedContexts = JSON.parse(this.form.contexts);
           const content = await this.toBase64(this.form.files);
-          const filename = this.form.filename || this.form.files.name;
-          const body = this.createBody(parsedContexts, content, filename);
+          const body = this.createBody(parsedContexts, content);
 
           // Perform API Call
           const response = await this.$httpApi.post('/docGen', body, {
             responseType: 'arraybuffer' // Needed for binaries unless you want pain
           });
+
+          const filename = this.getDispositionFilename(
+            response.headers['content-disposition']
+          );
 
           const blob = new Blob([response.data], {
             type: 'attachment'
@@ -296,8 +330,13 @@ export default {
           this.notifySuccess('Submitted successfully');
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         this.notifyError(e.message);
+        if (e.response) {
+          const data = new TextDecoder().decode(e.response.data);
+          const parsed = JSON.parse(data);
+          console.warn('CDOGS Response:', parsed);
+        }
       } finally {
         this.loading = false;
       }
@@ -308,13 +347,9 @@ export default {
       this.parseContextFiles();
     },
     files() {
-      // Only update the filename field if it is empty
-      if (
-        this.form.files &&
-        this.form.files instanceof File &&
-        !this.form.filename
-      ) {
-        this.form.filename = this.files.name;
+      if (this.form.files && this.form.files instanceof File) {
+        const { extension } = this.splitFileName(this.files.name);
+        this.form.contentFileType = extension;
       }
     }
   }
