@@ -1,10 +1,10 @@
 <template>
   <v-data-table
     class="json-builder"
-    :disable-pagination="true"
+    disable-pagination
     :headers="headers"
-    :hide-default-header="true"
-    :hide-default-footer="true"
+    hide-default-header
+    hide-default-footer
     :items="items"
   >
     <template v-slot:item.key="props">

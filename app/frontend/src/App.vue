@@ -9,8 +9,8 @@
     <Footer />
     <v-snackbar
       v-model="snack"
-      :absolute="true"
-      :bottom="true"
+      absolute
+      bottom
       color="error"
       :timeout="0"
     >Something important failed while loading... :(</v-snackbar>
