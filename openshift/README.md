@@ -13,13 +13,13 @@ Login to [dev](https://sso-dev.pathfinder.gov.bc.ca/auth/admin/98r0z7rz/console/
 
 #### Client Scope
 
-**dgrsc** - note that there maybe alternatives to what we want to do (login to the frontend/ui with ability to call protected endpoints on our host).  Just starting out with scope approach.  Seemed most logical, although I ran into an issue in the frontend keycloak-js implementation.  If you use an additional scope (have the app specifically ask for it), it is simple enough to pass that additional scope to the login function, however, when this javascript client does additional lookups (to refresh and auto-renew), it doesn't include this additional scope.  So, both the backend and frontend clients include **dgrsc** as a default client scope.
+**dgrsc** - Both the backend and frontend clients include **dgrsc** as a default client scope.
 
 #### Groups
 
 **DGRSC Users** - maps to the dgrsc (client) role: user.  Add keycloak users to this group to get access to secured areas in DGRSC and to call the DGRSC backend (protects CDOGS calls).
 
-Either add yourself to DGRSC Users group, or login with user@user/password.
+Add users to the **DGRSC Users** group.  
 
 ### Openshift Manual Configuration and Deployment
 
