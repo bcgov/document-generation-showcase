@@ -348,7 +348,10 @@ export default {
     },
     files() {
       if (this.form.files && this.form.files instanceof File) {
-        const { extension } = this.splitFileName(this.files.name);
+        const { name, extension } = this.splitFileName(this.files.name);
+        if(!this.form.outputFileName) {
+          this.form.outputFileName = name;
+        }
         this.form.contentFileType = extension;
       }
     }
