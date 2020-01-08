@@ -314,7 +314,8 @@ export default {
 
           // Perform API Call
           const response = await this.$httpApi.post('/docGen', body, {
-            responseType: 'arraybuffer' // Needed for binaries unless you want pain
+            responseType: 'arraybuffer', // Needed for binaries unless you want pain
+            timeout: 30000 // Override default timeout as this call could take a while
           });
 
           const filename = this.getDispositionFilename(
