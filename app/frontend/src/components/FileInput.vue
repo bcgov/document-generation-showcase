@@ -52,7 +52,7 @@
               <v-card-text>
                 <v-tabs-items v-model="contextTab">
                   <v-tab-item>
-                    <JsonBuilder @json-object="updateContexts" ref="jsonBuilder" />
+                    <JsonBuilder @json-object="buildContexts" ref="jsonBuilder" />
                   </v-tab-item>
 
                   <v-tab-item>
@@ -195,6 +195,10 @@ export default {
     };
   },
   methods: {
+    buildContexts(obj) {
+      this.form.contextFiles = null;
+      this.updateContexts(obj);
+    },
     createBody(contexts, content) {
       return {
         contexts: contexts,
