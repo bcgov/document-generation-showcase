@@ -35,12 +35,7 @@
                   v-model="form.outputFileName"
                 />
 
-                <v-text-field
-                  hint="(Optional) Desired output filetype (i.e. pdf)"
-                  label="Output File Type"
-                  persistent-hint
-                  v-model="form.outputFileType"
-                />
+                <v-checkbox v-model="form.convertToPDF" label="Convert to PDF" />
               </v-card-text>
             </v-card>
           </v-col>
@@ -186,10 +181,10 @@ export default {
       form: {
         contexts: null,
         contextFiles: null,
+        convertToPDF: null,
         files: null,
         contentFileType: null,
-        outputFileName: null,
-        outputFileType: null
+        outputFileName: null
       },
       loading: false,
       notEmpty: [v => !!v || 'Cannot be empty'],
@@ -208,7 +203,7 @@ export default {
           contentEncodingType: 'base64',
           contentFileType: this.form.contentFileType,
           outputFileName: this.form.outputFileName,
-          outputFileType: this.form.outputFileType
+          outputFileType: this.form.convertToPDF ? 'pdf' : undefined
         }
       };
     },
