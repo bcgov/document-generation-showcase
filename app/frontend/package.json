@@ -14,7 +14,7 @@
     "serve": "node_modules/.bin/vue-cli-service serve",
     "build": "node_modules/.bin/vue-cli-service build",
     "test": "npm run test:unit",
-    "test:unit": "node_modules/.bin/vue-cli-service test:unit",
+    "test:unit": "node_modules/.bin/vue-cli-service test:unit --verbose",
     "lint": "node_modules/.bin/vue-cli-service lint . --no-fix --ext .js,vue",
     "lint:fix": "node_modules/.bin/vue-cli-service lint . --fix --ext .js,vue",
     "pretest": "npm run lint",

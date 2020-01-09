@@ -1,22 +1,17 @@
-import Vuetify from 'vuetify';
-import Vuex from 'vuex';
 import { mount, createLocalVue } from '@vue/test-utils';
+import Vuetify from 'vuetify';
+
 import Header from '@/components/Header';
 
 const localVue = createLocalVue();
 localVue.use(Vuetify);
-localVue.use(Vuex);
 
 describe('Header.vue', () => {
-  let store;
   let vuetify;
   let wrapper;
 
   beforeEach(() => {
     vuetify = new Vuetify();
-
-    store = new Vuex.Store({
-    });
 
     // need to add in our keycloak service
     Object.defineProperty(localVue.prototype, '$keycloak', {
@@ -40,8 +35,7 @@ describe('Header.vue', () => {
 
     wrapper = mount(Header, {
       localVue,
-      vuetify,
-      store
+      vuetify
     });
   });
 

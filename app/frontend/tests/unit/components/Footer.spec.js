@@ -1,5 +1,6 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuetify from 'vuetify';
+
 import Footer from '@/components/Footer.vue';
 
 describe('Footer.vue', () => {

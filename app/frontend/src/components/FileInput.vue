@@ -35,12 +35,7 @@
                   v-model="form.outputFileName"
                 />
 
-                <v-text-field
-                  hint="(Optional) Desired output filetype (i.e. pdf)"
-                  label="Output File Type"
-                  persistent-hint
-                  v-model="form.outputFileType"
-                />
+                <v-checkbox v-model="form.convertToPDF" label="Convert to PDF" />
               </v-card-text>
             </v-card>
           </v-col>
@@ -57,7 +52,7 @@
               <v-card-text>
                 <v-tabs-items v-model="contextTab">
                   <v-tab-item>
-                    <JsonBuilder @json-object="updateContexts" ref="jsonBuilder" />
+                    <JsonBuilder @json-object="buildContexts" ref="jsonBuilder" />
                   </v-tab-item>
 
                   <v-tab-item>
@@ -186,10 +181,10 @@ export default {
       form: {
         contexts: null,
         contextFiles: null,
+        convertToPDF: null,
         files: null,
         contentFileType: null,
-        outputFileName: null,
-        outputFileType: null
+        outputFileName: null
       },
       loading: false,
       notEmpty: [v => !!v || 'Cannot be empty'],
@@ -200,6 +195,10 @@ export default {
     };
   },
   methods: {
+    buildContexts(obj) {
+      this.form.contextFiles = null;
+      this.updateContexts(obj);
+    },
     createBody(contexts, content) {
       return {
         contexts: contexts,
@@ -208,7 +207,7 @@ export default {
           contentEncodingType: 'base64',
           contentFileType: this.form.contentFileType,
           outputFileName: this.form.outputFileName,
-          outputFileType: this.form.outputFileType
+          outputFileType: this.form.convertToPDF ? 'pdf' : undefined
         }
       };
     },
@@ -314,7 +313,8 @@ export default {
 
           // Perform API Call
           const response = await this.$httpApi.post('/docGen', body, {
-            responseType: 'arraybuffer' // Needed for binaries unless you want pain
+            responseType: 'arraybuffer', // Needed for binaries unless you want pain
+            timeout: 30000 // Override default timeout as this call could take a while
           });
 
           const filename = this.getDispositionFilename(
@@ -348,7 +348,10 @@ export default {
     },
     files() {
       if (this.form.files && this.form.files instanceof File) {
-        const { extension } = this.splitFileName(this.files.name);
+        const { name, extension } = this.splitFileName(this.files.name);
+        if(!this.form.outputFileName) {
+          this.form.outputFileName = name;
+        }
         this.form.contentFileType = extension;
       }
     }
