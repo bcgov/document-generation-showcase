@@ -8,6 +8,9 @@
         <li>
           <router-link :to="{ name: 'cdogs' }">CDOGS v1</router-link>
         </li>
+        <li>
+          <router-link :to="{ name: 'dashboard' }">Dashboard</router-link>
+        </li>
       </ul>
     </div>
   </nav>
