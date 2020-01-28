@@ -27,20 +27,20 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .dashboard-container {
-  height: calc(100vh);
-  overflow: hidden;
-  /* Based on aspect ratio (in case of 16:9 it is 9/16 = 0.5625) */
-  /* padding-top: calc(80%); */
-  /* position: relative; */
+  @media only screen and (min-width: 810px) {
+    height: calc(100vh);
+  }
+  @media only screen and (max-width: 809px) {
+    height: calc(100vh * 2.5);
+  }
 }
 
 .dashboard-container iframe {
   border: 0;
   height: 100%;
   left: 0;
-  /* position: relative; */
   top: 0;
   width: 100%;
 }

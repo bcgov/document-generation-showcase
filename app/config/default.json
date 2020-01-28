@@ -6,7 +6,8 @@
       "serverUrl": "https://sso-dev.pathfinder.gov.bc.ca/auth"
     },
     "apiPath": "api/v1",
-    "basePath" : "/app"
+    "basePath" : "/app",
+    "dashboardUrl": "https://kibana-master-ixhmbm-dev.pathfinder.gov.bc.ca/app/kibana#/dashboard/b7d840e0-4130-11ea-8f5a-f5f23f43ae28?embed=true&_g=(refreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3A'2020-01-22T08%3A00%3A00.000Z'%2Cto%3Anow))"
   },
   "server": {
     "keycloak": {
