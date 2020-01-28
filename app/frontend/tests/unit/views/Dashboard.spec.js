@@ -16,6 +16,15 @@ describe('Dashboard.vue', () => {
   beforeEach(() => {
     vuetify = new Vuetify();
 
+    // need to add in our config service
+    Object.defineProperty(localVue.prototype, '$configService', {
+      get() {
+        return {
+          get: (v) => { return `Value of ${v}`; }
+        };
+      }
+    });
+
     wrapper = mount(Dashboard, {
       localVue,
       router,
@@ -25,5 +34,6 @@ describe('Dashboard.vue', () => {
 
   it('renders', () => {
     expect(wrapper.html()).toContain('Performance Dashboard');
+    expect(wrapper.contains('iframe')).toBeTruthy();
   });
 });
