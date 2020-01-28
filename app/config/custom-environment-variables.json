@@ -6,7 +6,8 @@
       "serverUrl": "FRONTEND_KC_SERVERURL"
     },
     "apiPath": "FRONTEND_APIPATH",
-    "basePath": "FRONTEND_BASEPATH"
+    "basePath": "FRONTEND_BASEPATH",
+    "dashboardUrl": "FRONTEND_DASHBOARDURL"
   },
   "server": {
     "keycloak": {
