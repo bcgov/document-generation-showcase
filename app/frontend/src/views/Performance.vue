@@ -1,13 +1,13 @@
 <template>
-  <v-container class="dashboard text-center">
+  <v-container class="performance text-center">
     <h1>Performance Dashboard</h1>
-    <div v-if="dashboardUrl" class="dashboard-container">
+    <div v-if="dashboardUrl" class="performance-container">
       <iframe :src="dashboardUrl" />
     </div>
     <div v-else>
       <p>No dashboard has been configured.</p>
       <router-link :to="{ name: 'home' }">
-        <v-btn color="primary" class="home-btn" id="dashboard-home" large>
+        <v-btn color="primary" class="home-btn" id="performance-home" large>
           <v-icon left>home</v-icon>
           <span>Home</span>
         </v-btn>
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'dashboard',
+  name: 'performance',
   computed: {
     dashboardUrl() {
       return this.$configService.get('dashboardUrl');
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard-container {
+.performance-container {
   @media only screen and (min-width: 810px) {
     height: calc(100vh);
   }
@@ -37,7 +37,7 @@ export default {
   }
 }
 
-.dashboard-container iframe {
+.performance-container iframe {
   border: 0;
   height: 100%;
   left: 0;

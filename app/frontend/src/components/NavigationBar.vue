@@ -9,7 +9,7 @@
           <router-link :to="{ name: 'cdogs' }">CDOGS v1</router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'dashboard' }">Dashboard</router-link>
+          <router-link :to="{ name: 'performance' }">CDOGS Performance</router-link>
         </li>
       </ul>
     </div>

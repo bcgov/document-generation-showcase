@@ -2,7 +2,7 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import Vuetify from 'vuetify';
 
 import getRouter from '@/router';
-import Dashboard from '@/views/Dashboard.vue';
+import Performance from '@/views/Performance.vue';
 
 const router = getRouter();
 const localVue = createLocalVue();
@@ -25,7 +25,7 @@ describe('Dashboard.vue', () => {
       }
     });
 
-    wrapper = mount(Dashboard, {
+    wrapper = mount(Performance, {
       localVue,
       router,
       vuetify

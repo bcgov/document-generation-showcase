@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import CDOGS from '../views/CDOGS.vue';
-import Dashboard from '../views/Dashboard.vue';
-import Home from '../views/Home.vue';
-import NotFound from '../views/NotFound.vue';
+const CDOGS = () => import('../views/CDOGS.vue');
+const Home = () => import('../views/Home.vue');
+const NotFound = () => import('../views/NotFound.vue');
+const Performance = () => import('../views/Performance.vue');
 
 Vue.use(VueRouter);
 
@@ -23,9 +23,9 @@ const getRouter = (pathRoot = '/') => {
         component: CDOGS
       },
       {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: Dashboard
+        path: '/performance',
+        name: 'performance',
+        component: Performance
       },
       {
         path: '/404',
