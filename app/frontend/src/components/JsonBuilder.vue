@@ -43,7 +43,7 @@
 
 <script>
 export default {
-  name: 'jsonbuilder',
+  name: 'jsonBuilder',
   data() {
     return {
       headers: [

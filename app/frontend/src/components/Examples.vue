@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import exampleTable from '../assets/exampleTable.json';
+import exampleTable from '@/assets/exampleTable.json';
 
 export default {
   name: 'examples',

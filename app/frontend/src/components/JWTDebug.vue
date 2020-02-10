@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: 'jwtdebug',
+  name: 'jwtDebug',
   data() {
     return {
       // TODO: Consider slot pattern or determining logic higher up in layout chain

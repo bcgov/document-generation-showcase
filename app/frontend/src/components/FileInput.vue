@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import JsonBuilder from './JsonBuilder.vue';
+import JsonBuilder from '@/components/JsonBuilder.vue';
 
 export default {
   name: 'fileInput',

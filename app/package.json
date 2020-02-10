@@ -1,6 +1,6 @@
 {
   "name": "document-generation-showcase-backend",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "description": "Documentation, Code Templates and a Showcase application to demonstrate features of the Natural Resources' Document Generation Service",
   "repository": {
@@ -58,7 +58,7 @@
     "eslint-config-recommended": "^4.0.0",
     "eslint-plugin-flowtype": "^4.6.0",
     "eslint-plugin-jest": "^23.6.0",
-    "jest": "^25.1.0",
+    "jest": "^24.9.0",
     "nodemon": "^2.0.2",
     "supertest": "^4.0.2"
   },

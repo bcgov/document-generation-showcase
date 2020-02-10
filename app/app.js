@@ -24,7 +24,7 @@ log.level = config.get('server.logLevel');
 log.addLevel('debug', 1500, { fg: 'cyan' });
 
 // Print out configuration settings in verbose startup
-log.debug('Config', utils.prettyStringify(config));
+log.verbose('Config', utils.prettyStringify(config));
 
 // Skip if running tests
 if (process.env.NODE_ENV !== 'test') {

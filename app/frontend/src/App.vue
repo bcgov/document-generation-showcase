@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import Header from './components/Header';
-import NavigationBar from './components/NavigationBar';
-import Footer from './components/Footer';
+import Header from '@/components/bcgov/Header';
+import NavigationBar from '@/components/bcgov/NavigationBar';
+import Footer from '@/components/bcgov/Footer';
 
 export default {
   name: 'app',
