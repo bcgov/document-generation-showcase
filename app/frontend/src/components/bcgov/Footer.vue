@@ -19,7 +19,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'bcgovFooter'
+};
 </script>
 
 <style scoped>

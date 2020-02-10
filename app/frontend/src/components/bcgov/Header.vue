@@ -31,8 +31,9 @@
 </template>
 
 <script>
-import JWTDebug from './JWTDebug';
+import JWTDebug from '@/components/JWTDebug';
 export default {
+  name: 'bcgovHeader',
   computed: {
     kcReady() {
       return !!this.$keycloak && this.$keycloak.ready;

@@ -1,6 +1,6 @@
 {
   "name": "document-generation-showcase-backend",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "description": "Documentation, Code Templates and a Showcase application to demonstrate features of the Natural Resources' Document Generation Service",
   "repository": {

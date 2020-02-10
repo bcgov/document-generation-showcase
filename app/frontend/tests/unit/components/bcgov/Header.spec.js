@@ -1,7 +1,7 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuetify from 'vuetify';
 
-import Header from '@/components/Header';
+import Header from '@/components/bcgov/Header';
 
 const localVue = createLocalVue();
 localVue.use(Vuetify);

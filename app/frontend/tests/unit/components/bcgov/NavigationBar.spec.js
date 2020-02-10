@@ -2,7 +2,7 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import Vuetify from 'vuetify';
 
 import getRouter from '@/router';
-import NavigationBar from '@/components/NavigationBar.vue';
+import NavigationBar from '@/components/bcgov/NavigationBar.vue';
 
 const router = getRouter();
 const localVue = createLocalVue();
