@@ -1,6 +1,6 @@
 <template>
   <header class="gov-header">
-    <v-toolbar>
+    <v-toolbar color="rgb(0, 51, 102)" flat>
       <!-- Navbar content -->
       <a href="https://www2.gov.bc.ca">
         <v-img
@@ -58,12 +58,11 @@ export default {
 </script>
 
 <style scoped>
-.title {
-  color: rgb(255, 255, 255);
+.gov-header {
+  border-bottom: 2px solid rgb(252, 186, 25);
 }
 
-.v-toolbar {
-  background-color: rgb(0, 51, 102);
-  border-bottom: 2px solid rgb(252, 186, 25);
+.title {
+  color: rgb(255, 255, 255);
 }
 </style>
