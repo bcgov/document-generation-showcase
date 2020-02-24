@@ -20,7 +20,7 @@
             <v-icon>delete</v-icon>
           </v-btn>
         </template>
-        <span>Add Key/Value Pair</span>
+        <span>Delete Key/Value Pair</span>
       </v-tooltip>
     </template>
     <template v-slot:footer>
@@ -62,6 +62,12 @@ export default {
       const index = this.items.indexOf(item);
       this.items.splice(index, 1);
     },
+    updateItems(json) {
+      console.log(json);
+      // json.forEach(function(element){
+      //   vm.addItem(element, json[element]);
+      // });
+    },
     emitJson() {
       // https://stackoverflow.com/a/44325124
       const obj = this.items.reduce(
@@ -75,6 +81,12 @@ export default {
     }
   },
   mounted() {
+    // add sample data
+    this.items.push(
+      { key: 'firstName', value: 'Jane' },
+      { key: 'lastName', value: 'Smith' }
+    );
+    // let parent component watch for changes
     this.emitJson();
   },
   watch: {

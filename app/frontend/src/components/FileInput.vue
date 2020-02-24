@@ -1,51 +1,60 @@
 <template>
   <v-card class="file-input pa-2 my-2">
-    <v-card-title>
-      <p>Document Generation Form</p>
-    </v-card-title>
+    <v-card-title>Document Generation Form</v-card-title>
 
     <v-card-text>
-      <p>A successful submission requires both a template file and a valid JSON object in an array.</p>
       <v-form ref="form" v-model="validFileInput">
         <v-row>
-          <v-col cols="12" md="4">
+          <v-col cols="12">
+            <h4>STEP 1: Add your Template</h4>
+            <p>Type in your Template contents containing 'Contexts' (eg: {d.firstName}) that are defined in the next step.<br />You can also upload a template file. See below for examples.</P>
             <v-card>
               <v-toolbar light flat>
-                <v-tabs>
+                <v-tabs v-model="templateTab">
+                  <v-tab>Template Builder</v-tab>
                   <v-tab>Template Upload</v-tab>
                 </v-tabs>
               </v-toolbar>
               <v-card-text>
-                <v-file-input
-                  counter
-                  :clearable="false"
-                  label="Upload template file"
-                  mandatory
-                  prepend-icon="attachment"
-                  required
-                  :rules="notEmpty"
-                  show-size
-                  v-model="form.files"
-                />
+                <v-tabs-items v-model="templateTab">
+                  <v-tab-item>
+                    <TemplateBuilder @template-object="buildTemplates" ref="templateBuilder" />
+                  </v-tab-item>
+                  <v-tab-item>
+                    <v-file-input
+                      counter
+                      :clearable="false"
+                      label="Upload template file"
+                      mandatory
+                      prepend-icon="attachment"
+                      required
+                      :rules="notEmpty"
+                      show-size
+                      v-model="form.files"
+                    />
 
-                <v-text-field
-                  hint="(Optional) Desired output filename"
-                  label="Output File Name"
-                  persistent-hint
-                  v-model="form.outputFileName"
-                />
-
+                    <v-text-field
+                      hint="(Optional) Desired output filename"
+                      label="Output File Name"
+                      persistent-hint
+                      v-model="form.outputFileName"
+                    />
+                  </v-tab-item>
+                </v-tabs-items>
                 <v-checkbox v-model="form.convertToPDF" label="Convert to PDF" />
               </v-card-text>
             </v-card>
           </v-col>
-
-          <v-col cols="12" md="8">
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <h4>STEP 2: Define your Contexts</h4>
+            <p>Add key/value pairs for each of the Contexts in your template.<br />You can also upload your Contexts in a file.</p>
             <v-card>
               <v-toolbar light flat>
                 <v-tabs v-model="contextTab">
-                  <v-tab>JSON Builder</v-tab>
-                  <v-tab>Contexts JSON</v-tab>
+                  <v-tab>Contexts Builder</v-tab>
+                  <v-tab>Contexts Upload</v-tab>
                 </v-tabs>
               </v-toolbar>
 
@@ -54,7 +63,6 @@
                   <v-tab-item>
                     <JsonBuilder @json-object="buildContexts" ref="jsonBuilder" />
                   </v-tab-item>
-
                   <v-tab-item>
                     <v-file-input
                       counter
@@ -135,11 +143,13 @@
 
 <script>
 import JsonBuilder from '@/components/JsonBuilder.vue';
+import TemplateBuilder from '@/components/TemplateBuilder.vue';
 
 export default {
   name: 'fileInput',
   components: {
-    JsonBuilder
+    JsonBuilder,
+    TemplateBuilder
   },
   computed: {
     contextFiles() {
@@ -177,6 +187,7 @@ export default {
           }
         }
       ],
+      templateTab: null,
       contextTab: null,
       form: {
         contexts: null,
@@ -250,6 +261,8 @@ export default {
           const content = await this.toTextObject(this.form.contextFiles);
           this.updateContexts(JSON.parse(content));
           this.notifySuccess('Parsed successfully');
+          // show key/value pairs in contexts builder
+          //this.$refs.jsonBuilder.updateItems(JSON.parse(content));
         }
       } catch (e) {
         console.error(e);
