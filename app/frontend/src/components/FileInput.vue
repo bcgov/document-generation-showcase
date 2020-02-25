@@ -7,7 +7,8 @@
         <v-row>
           <v-col cols="12">
             <h4>STEP 1: Add your Template</h4>
-            <p>Type in your Template contents containing 'Contexts' (eg: {d.firstName}) that are defined in the next step.<br />You can also upload a template file. See below for examples.</P>
+            <p>Type in your Template contents containing 'contexts' that are defined in the next step. For example: 'Welcome {d.firstName}!'.
+              <br />You can also choose to upload your template file. See below for sample template files.</P>
             <v-card>
               <v-toolbar light flat>
                 <v-tabs v-model="templateTab">
@@ -18,29 +19,37 @@
               <v-card-text>
                 <v-tabs-items v-model="templateTab">
                   <v-tab-item>
-                    <TemplateBuilder @template-object="buildTemplates" ref="templateBuilder" />
+                    <v-textarea
+                      class="template-builder"
+                      auto-grow
+                      hint="Enter your template text with 'contexts' (tokens like {d.firstName})"
+                      rows="3"
+                      :rules="templateBuilderRules"
+                      v-model="form.templateContent"
+                      solo
+                      dense
+                      single-line
+                      outlined
+                      flat
+                    />
                   </v-tab-item>
                   <v-tab-item>
                     <v-file-input
                       counter
-                      :clearable="false"
+                      :clearable="true"
                       label="Upload template file"
-                      mandatory
                       prepend-icon="attachment"
-                      required
-                      :rules="notEmpty"
                       show-size
                       v-model="form.files"
                     />
-
-                    <v-text-field
-                      hint="(Optional) Desired output filename"
-                      label="Output File Name"
-                      persistent-hint
-                      v-model="form.outputFileName"
-                    />
                   </v-tab-item>
                 </v-tabs-items>
+                <v-text-field
+                  hint="(Optional) Desired output filename"
+                  label="Output File Name"
+                  persistent-hint
+                  v-model="form.outputFileName"
+                />
                 <v-checkbox v-model="form.convertToPDF" label="Convert to PDF" />
               </v-card-text>
             </v-card>
@@ -49,7 +58,7 @@
         <v-row>
           <v-col cols="12">
             <h4>STEP 2: Define your Contexts</h4>
-            <p>Add key/value pairs for each of the Contexts in your template.<br />You can also upload your Contexts in a file.</p>
+            <p>Add key/value pairs for each of the contexts in your template.<br />You can also upload your contexts in a file (sample contexts files blow), or enter your contexts in a JSON Array.</p>
             <v-card>
               <v-toolbar light flat>
                 <v-tabs v-model="contextTab">
@@ -98,6 +107,7 @@
       <v-tooltip top>
         <template v-slot:activator="{ on }">
           <v-btn
+            outlined
             color="info"
             class="btn-file-input-reset"
             id="file-input-reset"
@@ -118,10 +128,9 @@
           <v-btn
             color="primary"
             class="btn-file-input-submit"
-            :disabled="!validFileInput"
             id="file-input-submit"
             :loading="loading"
-            @click="upload"
+            @click="generate"
             v-on="on"
           >
             <v-icon :left="$vuetify.breakpoint.smAndUp">save</v-icon>
@@ -143,13 +152,11 @@
 
 <script>
 import JsonBuilder from '@/components/JsonBuilder.vue';
-import TemplateBuilder from '@/components/TemplateBuilder.vue';
 
 export default {
   name: 'fileInput',
   components: {
-    JsonBuilder,
-    TemplateBuilder
+    JsonBuilder
   },
   computed: {
     contextFiles() {
@@ -187,6 +194,9 @@ export default {
           }
         }
       ],
+      templateBuilderRules: [
+        v => !RegExp(/^.*?{(?!.*?})[^}]*$|^[^{\r\n]*}.*?$/).test(v) || 'Contexts should be enclosed by curly braces'
+      ],
       templateTab: null,
       contextTab: null,
       form: {
@@ -194,6 +204,7 @@ export default {
         contextFiles: null,
         convertToPDF: null,
         files: null,
+        templateContent : 'Hello {d.firstName} {d.lastName}!',
         contentFileType: null,
         outputFileName: null
       },
@@ -210,15 +221,15 @@ export default {
       this.form.contextFiles = null;
       this.updateContexts(obj);
     },
-    createBody(contexts, content) {
+    createBody(contexts, content, contentFileType, outputFileType) {
       return {
         contexts: contexts,
         template: {
           content: content,
           contentEncodingType: 'base64',
-          contentFileType: this.form.contentFileType,
+          contentFileType: contentFileType,
           outputFileName: this.form.outputFileName,
-          outputFileType: this.form.convertToPDF ? 'pdf' : undefined
+          outputFileType: this.form.convertToPDF ? 'pdf' : outputFileType
         }
       };
     },
@@ -261,8 +272,6 @@ export default {
           const content = await this.toTextObject(this.form.contextFiles);
           this.updateContexts(JSON.parse(content));
           this.notifySuccess('Parsed successfully');
-          // show key/value pairs in contexts builder
-          //this.$refs.jsonBuilder.updateItems(JSON.parse(content));
         }
       } catch (e) {
         console.error(e);
@@ -274,6 +283,9 @@ export default {
       Object.keys(this.form).forEach(key => {
         this.form[key] = null;
       });
+      // clear template builder textarea
+      this.form.templateContent = '';
+      // clear json builder items
       this.$refs.jsonBuilder.reset();
       // Reset validation results
       this.$refs.form.resetValidation();
@@ -291,13 +303,16 @@ export default {
 
       return { name, extension };
     },
-    toBase64(file) {
+    fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result.replace(/^.*,/, ''));
         reader.onerror = error => reject(error);
       });
+    },
+    textToBase64(text) {
+      return btoa(text);
     },
     toTextObject(file) {
       return new Promise((resolve, reject) => {
@@ -314,34 +329,56 @@ export default {
         console.error(e, obj);
       }
     },
-    async upload() {
+    // document generation form is finally submitted
+    async generate() {
       try {
         this.loading = true;
+        let content = '';
+        let contentFileType = '';
+        let outputFileType = '';
+        let parsedContexts = '';
 
-        if (this.form.files && this.form.files instanceof File) {
-          // Parse Contents
-          const parsedContexts = JSON.parse(this.form.contexts);
-          const content = await this.toBase64(this.form.files);
-          const body = this.createBody(parsedContexts, content);
+        // parse contexts into JSON
+        parsedContexts = JSON.parse(this.form.contexts);
 
-          // Perform API Call
-          const response = await this.$httpApi.post('/docGen', body, {
-            responseType: 'arraybuffer', // Needed for binaries unless you want pain
-            timeout: 30000 // Override default timeout as this call could take a while
-          });
-
-          const filename = this.getDispositionFilename(
-            response.headers['content-disposition']
-          );
-
-          const blob = new Blob([response.data], {
-            type: 'attachment'
-          });
-
-          // Generate Temporary Download Link
-          this.createDownload(blob, filename);
-          this.notifySuccess('Submitted successfully');
+        // convert template to Base64
+        // if using template builder (tab is visible)
+        if(this.templateTab == '0'){
+          content = await this.textToBase64(this.form.templateContent);
+          contentFileType = 'txt';
+          outputFileType = this.form.convertToPDF ? 'pdf' : 'txt';
         }
+        // if uploading template file
+        else if(this.templateTab == '1'){
+          if (this.form.files && this.form.files instanceof File) {
+            content = await this.fileToBase64(this.form.files);
+            contentFileType = this.form.contentFileType;
+            outputFileType = this.form.convertToPDF ? 'pdf' : this.form.outputFileType;
+          }
+        }
+
+        // create payload to send to CDOGS API
+        const body = this.createBody(parsedContexts, content, contentFileType, outputFileType);
+
+        // Perform API Call
+        const response = await this.$httpApi.post('/docGen', body, {
+          responseType: 'arraybuffer', // Needed for binaries unless you want pain
+          timeout: 30000 // Override default timeout as this call could take a while
+        });
+
+        // create file to download
+        const filename = this.getDispositionFilename(
+          response.headers['content-disposition']
+        );
+
+        const blob = new Blob([response.data], {
+          type: 'attachment'
+        });
+
+        // Generate Temporary Download Link
+        this.createDownload(blob, filename);
+        this.notifySuccess('Submitted successfully');
+
       } catch (e) {
         console.error(e);
         this.notifyError(e.message);
