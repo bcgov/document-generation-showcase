@@ -17,21 +17,23 @@
               <v-card-text>
                 <v-tabs-items v-model="templateTab">
                   <v-tab-item>
-                    <p>Upload your template file.</p>
                     <v-file-input
                       counter
                       :clearable="true"
                       label="Upload template file"
+                      hint="See below for sample templates and supported formats"
+                      persistent-hint
                       prepend-icon="attachment"
                       required
-                      :rules="notEmpty"
+                      mandatory
+                      :rules="(this.templateTab === 1) ? [] : notEmpty"
                       show-size
                       v-model="form.files"
                     />
                   </v-tab-item>
                   <v-tab-item md6>
                     <p>
-                      Type in your Template contents containing 'contexts' that are defined in the next step. For example: 'Welcome {d.firstName}!'. See
+                      Type in your Template contents, for example: 'Welcome {d.firstName}!'.<br />See
                       <a
                         href="https://carbone.io/documentation.html#substitutions"
                       >Carbone documentation</a> for more details.
@@ -53,7 +55,7 @@
                 </v-tabs-items>
                 <v-text-field
                   hint="(Optional) Desired output filename"
-                  label="Output File Name"
+                  label="Output file name"
                   persistent-hint
                   v-model="form.outputFileName"
                 />
@@ -62,7 +64,7 @@
             </v-card>
           </v-col>
           <v-col lg="6" cols="12">
-            <h3 class="pb-3">STEP 2: Create or upload your data file</h3>
+            <h3 class="pb-3">STEP 2: Upload or create your Data File</h3>
             <v-spacer />
             <v-card>
               <v-toolbar light flat>
@@ -75,7 +77,6 @@
               <v-card-text>
                 <v-tabs-items v-model="contextTab">
                   <v-tab-item>
-                    <p>Upload your contexts in a JSON file</p>
                     <v-file-input
                       counter
                       :clearable="false"
@@ -85,7 +86,7 @@
                       prepend-icon="attachment"
                       show-size
                       v-model="form.contextFiles"
-                      class="mb-5"
+                      class="mb-8"
                     />
                     <v-textarea
                       auto-grow
@@ -136,6 +137,7 @@
           <v-btn
             color="primary"
             class="btn-file-input-submit"
+            :disabled="!validFileInput"
             id="file-input-submit"
             :loading="loading"
             @click="generate"
@@ -210,7 +212,7 @@ export default {
       templateTab: null,
       contextTab: null,
       form: {
-        contexts: null,
+        contexts: '[{}]',
         contextFiles: null,
         convertToPDF: null,
         files: null,
@@ -223,7 +225,7 @@ export default {
       snack: false,
       snackColor: '',
       snackText: '',
-      validFileInput: false
+      validFileInput: null
     };
   },
   methods: {
@@ -418,7 +420,12 @@ export default {
         }
         this.form.contentFileType = extension;
       }
+    },
+    /*
+    validTemplate(){
+      this.validTemplate;
     }
+    */
   }
 };
 </script>

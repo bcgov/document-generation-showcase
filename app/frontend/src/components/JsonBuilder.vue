@@ -30,7 +30,7 @@
             <template v-slot:activator="{ on }">
               <v-btn small color="info" @click="addItem()" class="mb-2" v-on="on">
                 <v-icon :left="$vuetify.breakpoint.smAndUp">playlist_add</v-icon>
-                <span v-if="$vuetify.breakpoint.smAndUp">Add Entry</span>
+                <span v-if="$vuetify.breakpoint.smAndUp">Add Context</span>
               </v-btn>
             </template>
             <span>Add Key/Value Pair</span>
