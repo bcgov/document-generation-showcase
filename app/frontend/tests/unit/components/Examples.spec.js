@@ -20,6 +20,6 @@ describe('Examples.vue', () => {
   });
 
   it('renders', () => {
-    expect(wrapper.html()).toContain('Example Templates and Sample Data');
+    expect(wrapper.html()).toContain('Example Templates and Data Files');
   });
 });
