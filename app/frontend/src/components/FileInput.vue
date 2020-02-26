@@ -4,21 +4,38 @@
 
     <v-card-text>
       <v-form ref="form" v-model="validFileInput">
-        <v-row>
-          <v-col cols="12">
-            <h4>STEP 1: Add your Template</h4>
-            <p>Type in your Template contents containing 'contexts' that are defined in the next step. For example: 'Welcome {d.firstName}!'.
-              <br />You can also choose to upload your template file. See below for sample template files.</P>
+        <v-row class="docgen-row">
+          <v-col cols="12" lg="6">
+            <h3 class="pb-3">STEP 1: Add your Template</h3>
             <v-card>
               <v-toolbar light flat>
                 <v-tabs v-model="templateTab">
-                  <v-tab>Template Builder</v-tab>
                   <v-tab>Template Upload</v-tab>
+                  <v-tab>Template Builder</v-tab>
                 </v-tabs>
               </v-toolbar>
               <v-card-text>
                 <v-tabs-items v-model="templateTab">
                   <v-tab-item>
+                    <p>Upload your template file.</p>
+                    <v-file-input
+                      counter
+                      :clearable="true"
+                      label="Upload template file"
+                      prepend-icon="attachment"
+                      required
+                      :rules="notEmpty"
+                      show-size
+                      v-model="form.files"
+                    />
+                  </v-tab-item>
+                  <v-tab-item md6>
+                    <p>
+                      Type in your Template contents containing 'contexts' that are defined in the next step. For example: 'Welcome {d.firstName}!'. See
+                      <a
+                        href="https://ssbc-client.gov.bc.ca/servicenews/service_bulletin_1274.html"
+                      >Carbone documentation</a> for more details.
+                    </p>
                     <v-textarea
                       class="template-builder"
                       auto-grow
@@ -33,16 +50,6 @@
                       flat
                     />
                   </v-tab-item>
-                  <v-tab-item>
-                    <v-file-input
-                      counter
-                      :clearable="true"
-                      label="Upload template file"
-                      prepend-icon="attachment"
-                      show-size
-                      v-model="form.files"
-                    />
-                  </v-tab-item>
                 </v-tabs-items>
                 <v-text-field
                   hint="(Optional) Desired output filename"
@@ -54,46 +61,49 @@
               </v-card-text>
             </v-card>
           </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <h4>STEP 2: Define your Contexts</h4>
-            <p>Add key/value pairs for each of the contexts in your template.<br />You can also upload your contexts in a file (sample contexts files blow), or enter your contexts in a JSON Array.</p>
+          <v-col lg="6" cols="12">
+            <h3 class="pb-3">STEP 2: Create or upload your data file</h3>
+            <v-spacer />
             <v-card>
               <v-toolbar light flat>
                 <v-tabs v-model="contextTab">
-                  <v-tab>Contexts Builder</v-tab>
-                  <v-tab>Contexts Upload</v-tab>
+                  <v-tab>Data File Upload</v-tab>
+                  <v-tab>Data File Builder</v-tab>
                 </v-tabs>
               </v-toolbar>
 
               <v-card-text>
                 <v-tabs-items v-model="contextTab">
                   <v-tab-item>
-                    <JsonBuilder @json-object="buildContexts" ref="jsonBuilder" />
-                  </v-tab-item>
-                  <v-tab-item>
+                    <p>Upload your contexts in a JSON file</p>
                     <v-file-input
                       counter
                       :clearable="false"
                       hint="(Optional) JSON file with key-value pairs"
-                      label="Upload contexts file"
+                      label="Upload data file"
                       persistent-hint
                       prepend-icon="attachment"
                       show-size
                       v-model="form.contextFiles"
+                      class="mb-5"
                     />
-
                     <v-textarea
                       auto-grow
                       hint="JSON format for key-value pairs"
-                      label="Contexts"
+                      label="JSON data containing an array of contexts"
                       mandatory
                       required
-                      rows="1"
+                      rows="3"
                       :rules="contextsRules"
                       v-model="form.contexts"
+                      dense
+                      outlined
+                      flat
                     />
+                  </v-tab-item>
+                  <v-tab-item>
+                    <p>Add key/value pairs for each of the contexts in your template.</p>
+                    <JsonBuilder @json-object="buildContexts" ref="jsonBuilder" />
                   </v-tab-item>
                 </v-tabs-items>
               </v-card-text>
@@ -120,9 +130,7 @@
         </template>
         <span>Reset Form</span>
       </v-tooltip>
-
       <v-spacer />
-
       <v-tooltip top>
         <template v-slot:activator="{ on }">
           <v-btn
@@ -195,7 +203,9 @@ export default {
         }
       ],
       templateBuilderRules: [
-        v => !RegExp(/^.*?{(?!.*?})[^}]*$|^[^{\r\n]*}.*?$/).test(v) || 'Contexts should be enclosed by curly braces'
+        v =>
+          !RegExp(/^.*?{(?!.*?})[^}]*$|^[^{\r\n]*}.*?$/).test(v) ||
+          'Contexts should be enclosed by curly braces'
       ],
       templateTab: null,
       contextTab: null,
@@ -204,7 +214,7 @@ export default {
         contextFiles: null,
         convertToPDF: null,
         files: null,
-        templateContent : 'Hello {d.firstName} {d.lastName}!',
+        templateContent: 'Hello {d.firstName} {d.lastName}!',
         contentFileType: null,
         outputFileName: null
       },
@@ -283,8 +293,6 @@ export default {
       Object.keys(this.form).forEach(key => {
         this.form[key] = null;
       });
-      // clear template builder textarea
-      this.form.templateContent = '';
       // clear json builder items
       this.$refs.jsonBuilder.reset();
       // Reset validation results
@@ -342,23 +350,30 @@ export default {
         parsedContexts = JSON.parse(this.form.contexts);
 
         // convert template to Base64
-        // if using template builder (tab is visible)
-        if(this.templateTab == '0'){
+        // if uploading template file (tab is visible)
+        if (this.templateTab === 0) {
+          if (this.form.files && this.form.files instanceof File) {
+            content = await this.fileToBase64(this.form.files);
+            contentFileType = this.form.contentFileType;
+            outputFileType = this.form.convertToPDF
+              ? 'pdf'
+              : this.form.outputFileType;
+          }
+        }
+        // else sing template builder
+        else {
           content = await this.textToBase64(this.form.templateContent);
           contentFileType = 'txt';
           outputFileType = this.form.convertToPDF ? 'pdf' : 'txt';
         }
-        // if uploading template file
-        else if(this.templateTab == '1'){
-          if (this.form.files && this.form.files instanceof File) {
-            content = await this.fileToBase64(this.form.files);
-            contentFileType = this.form.contentFileType;
-            outputFileType = this.form.convertToPDF ? 'pdf' : this.form.outputFileType;
-          }
-        }
 
         // create payload to send to CDOGS API
-        const body = this.createBody(parsedContexts, content, contentFileType, outputFileType);
+        const body = this.createBody(
+          parsedContexts,
+          content,
+          contentFileType,
+          outputFileType
+        );
 
         // Perform API Call
         const response = await this.$httpApi.post('/docGen', body, {
@@ -378,7 +393,6 @@ export default {
         // Generate Temporary Download Link
         this.createDownload(blob, filename);
         this.notifySuccess('Submitted successfully');
-
       } catch (e) {
         console.error(e);
         this.notifyError(e.message);
@@ -399,7 +413,7 @@ export default {
     files() {
       if (this.form.files && this.form.files instanceof File) {
         const { name, extension } = this.splitFileName(this.files.name);
-        if(!this.form.outputFileName) {
+        if (!this.form.outputFileName) {
           this.form.outputFileName = name;
         }
         this.form.contentFileType = extension;
@@ -408,3 +422,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+@media screen and (min-width: 1264px) {
+  .docgen-row .v-card {
+    height: 100%;
+  }
+  .docgen-row {
+    margin-bottom: 30px;
+  }
+}
+</style>

@@ -62,12 +62,6 @@ export default {
       const index = this.items.indexOf(item);
       this.items.splice(index, 1);
     },
-    updateItems(json) {
-      console.log(json);
-      // json.forEach(function(element){
-      //   vm.addItem(element, json[element]);
-      // });
-    },
     emitJson() {
       // https://stackoverflow.com/a/44325124
       const obj = this.items.reduce(
