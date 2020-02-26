@@ -51,7 +51,10 @@ export default {
         { text: 'Value', value: 'value' },
         { text: 'Action', value: 'action' }
       ],
-      items: []
+      items: [
+        { key: 'firstName', value: 'Jane' },
+        { key: 'lastName', value: 'Smith' }
+      ]
     };
   },
   methods: {
@@ -75,11 +78,6 @@ export default {
     }
   },
   mounted() {
-    // add sample data
-    this.items.push(
-      { key: 'firstName', value: 'Jane' },
-      { key: 'lastName', value: 'Smith' }
-    );
     // let parent component watch for changes
     this.emitJson();
   },
