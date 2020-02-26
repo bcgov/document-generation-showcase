@@ -33,7 +33,7 @@
                     <p>
                       Type in your Template contents containing 'contexts' that are defined in the next step. For example: 'Welcome {d.firstName}!'. See
                       <a
-                        href="https://ssbc-client.gov.bc.ca/servicenews/service_bulletin_1274.html"
+                        href="https://carbone.io/documentation.html#substitutions"
                       >Carbone documentation</a> for more details.
                     </p>
                     <v-textarea
@@ -422,14 +422,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-@media screen and (min-width: 1264px) {
-  .docgen-row .v-card {
-    height: 100%;
-  }
-  .docgen-row {
-    margin-bottom: 30px;
-  }
-}
-</style>
