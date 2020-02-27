@@ -20,7 +20,7 @@
             <v-icon>delete</v-icon>
           </v-btn>
         </template>
-        <span>Add Key/Value Pair</span>
+        <span>Delete Key/Value Pair</span>
       </v-tooltip>
     </template>
     <template v-slot:footer>
@@ -28,9 +28,9 @@
         <v-row justify="end">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
-              <v-btn color="info" @click="addItem()" class="mb-2" v-on="on">
+              <v-btn small color="info" @click="addItem()" class="mb-2" v-on="on">
                 <v-icon :left="$vuetify.breakpoint.smAndUp">playlist_add</v-icon>
-                <span v-if="$vuetify.breakpoint.smAndUp">Add Entry</span>
+                <span v-if="$vuetify.breakpoint.smAndUp">Add Context</span>
               </v-btn>
             </template>
             <span>Add Key/Value Pair</span>
@@ -51,7 +51,10 @@ export default {
         { text: 'Value', value: 'value' },
         { text: 'Action', value: 'action' }
       ],
-      items: []
+      items: [
+        { key: 'firstName', value: 'Jane' },
+        { key: 'lastName', value: 'Smith' }
+      ]
     };
   },
   methods: {
@@ -75,6 +78,7 @@ export default {
     }
   },
   mounted() {
+    // let parent component watch for changes
     this.emitJson();
   },
   watch: {

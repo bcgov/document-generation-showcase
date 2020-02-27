@@ -1,82 +1,111 @@
 <template>
   <v-card class="file-input pa-2 my-2">
-    <v-card-title>
-      <p>Document Generation Form</p>
-    </v-card-title>
+    <v-card-title>Document Generation Form</v-card-title>
 
     <v-card-text>
-      <p>A successful submission requires both a template file and a valid JSON object in an array.</p>
       <v-form ref="form" v-model="validFileInput">
-        <v-row>
-          <v-col cols="12" md="4">
+        <v-row class="docgen-row">
+          <v-col cols="12" lg="6">
+            <h3 class="pb-3">STEP 1: Add your Template</h3>
             <v-card>
               <v-toolbar light flat>
-                <v-tabs>
+                <v-tabs v-model="templateTab">
                   <v-tab>Template Upload</v-tab>
+                  <v-tab>Template Builder</v-tab>
                 </v-tabs>
               </v-toolbar>
               <v-card-text>
-                <v-file-input
-                  counter
-                  :clearable="false"
-                  label="Upload template file"
-                  mandatory
-                  prepend-icon="attachment"
-                  required
-                  :rules="notEmpty"
-                  show-size
-                  v-model="form.files"
-                />
-
+                <v-tabs-items v-model="templateTab">
+                  <v-tab-item>
+                    <v-file-input
+                      counter
+                      :clearable="true"
+                      label="Upload template file"
+                      hint="See below for sample templates and supported formats"
+                      persistent-hint
+                      prepend-icon="attachment"
+                      required
+                      mandatory
+                      :rules="(this.templateTab === 0) ? notEmpty : []"
+                      show-size
+                      v-model="form.files"
+                    />
+                  </v-tab-item>
+                  <v-tab-item>
+                    <p>
+                      Type in your Template contents, for example: 'Welcome {d.firstName}!'.
+                      <br />See
+                      <a
+                        href="https://carbone.io/documentation.html#substitutions"
+                      >Carbone documentation</a> for more details.
+                    </p>
+                    <v-textarea
+                      class="template-builder"
+                      auto-grow
+                      hint="Enter your template text with 'contexts' (tokens like {d.firstName})"
+                      rows="3"
+                      :rules="templateBuilderRules"
+                      v-model="form.templateContent"
+                      solo
+                      dense
+                      single-line
+                      outlined
+                      flat
+                    />
+                  </v-tab-item>
+                </v-tabs-items>
                 <v-text-field
                   hint="(Optional) Desired output filename"
-                  label="Output File Name"
+                  label="Output file name"
                   persistent-hint
                   v-model="form.outputFileName"
                 />
-
                 <v-checkbox v-model="form.convertToPDF" label="Convert to PDF" />
               </v-card-text>
             </v-card>
           </v-col>
-
-          <v-col cols="12" md="8">
+          <v-col lg="6" cols="12">
+            <h3 class="pb-3">STEP 2: Upload or create your Data File</h3>
+            <v-spacer />
             <v-card>
               <v-toolbar light flat>
                 <v-tabs v-model="contextTab">
-                  <v-tab>JSON Builder</v-tab>
-                  <v-tab>Contexts JSON</v-tab>
+                  <v-tab>Data File Upload</v-tab>
+                  <v-tab>Data File Builder</v-tab>
                 </v-tabs>
               </v-toolbar>
 
               <v-card-text>
                 <v-tabs-items v-model="contextTab">
                   <v-tab-item>
-                    <JsonBuilder @json-object="buildContexts" ref="jsonBuilder" />
-                  </v-tab-item>
-
-                  <v-tab-item>
                     <v-file-input
                       counter
                       :clearable="false"
                       hint="(Optional) JSON file with key-value pairs"
-                      label="Upload contexts file"
+                      label="Upload data file"
                       persistent-hint
                       prepend-icon="attachment"
                       show-size
                       v-model="form.contextFiles"
+                      class="mb-8"
                     />
-
                     <v-textarea
                       auto-grow
                       hint="JSON format for key-value pairs"
-                      label="Contexts"
+                      label="JSON data containing an array of contexts"
                       mandatory
                       required
-                      rows="1"
+                      rows="3"
                       :rules="contextsRules"
                       v-model="form.contexts"
+                      dense
+                      outlined
+                      flat
                     />
+                  </v-tab-item>
+                  <v-tab-item>
+                    <p>Add key/value pairs for each of the contexts in your template.</p>
+                    <JsonBuilder @json-object="buildContexts" ref="jsonBuilder" />
                   </v-tab-item>
                 </v-tabs-items>
               </v-card-text>
@@ -90,6 +119,7 @@
       <v-tooltip top>
         <template v-slot:activator="{ on }">
           <v-btn
+            outlined
             color="info"
             class="btn-file-input-reset"
             id="file-input-reset"
@@ -102,9 +132,7 @@
         </template>
         <span>Reset Form</span>
       </v-tooltip>
-
       <v-spacer />
-
       <v-tooltip top>
         <template v-slot:activator="{ on }">
           <v-btn
@@ -113,7 +141,7 @@
             :disabled="!validFileInput"
             id="file-input-submit"
             :loading="loading"
-            @click="upload"
+            @click="generate"
             v-on="on"
           >
             <v-icon :left="$vuetify.breakpoint.smAndUp">save</v-icon>
@@ -177,12 +205,19 @@ export default {
           }
         }
       ],
+      templateBuilderRules: [
+        v =>
+          !RegExp(/^.*?{(?!.*?})[^}]*$|^[^{\r\n]*}.*?$/).test(v) ||
+          'Contexts should be enclosed by curly braces'
+      ],
+      templateTab: null,
       contextTab: null,
       form: {
-        contexts: null,
+        contexts: '[{}]',
         contextFiles: null,
         convertToPDF: null,
         files: null,
+        templateContent: 'Hello {d.firstName} {d.lastName}!',
         contentFileType: null,
         outputFileName: null
       },
@@ -191,7 +226,7 @@ export default {
       snack: false,
       snackColor: '',
       snackText: '',
-      validFileInput: false
+      validFileInput: null
     };
   },
   methods: {
@@ -199,15 +234,15 @@ export default {
       this.form.contextFiles = null;
       this.updateContexts(obj);
     },
-    createBody(contexts, content) {
+    createBody(contexts, content, contentFileType, outputFileType) {
       return {
         contexts: contexts,
         template: {
           content: content,
           contentEncodingType: 'base64',
-          contentFileType: this.form.contentFileType,
+          contentFileType: contentFileType,
           outputFileName: this.form.outputFileName,
-          outputFileType: this.form.convertToPDF ? 'pdf' : undefined
+          outputFileType: this.form.convertToPDF ? 'pdf' : outputFileType
         }
       };
     },
@@ -261,9 +296,12 @@ export default {
       Object.keys(this.form).forEach(key => {
         this.form[key] = null;
       });
-      this.$refs.jsonBuilder.reset();
+      this.form.contexts = '[{}]';
+      // clear json builder items
+      if (this.$refs.jsonBuilder) this.$refs.jsonBuilder.reset();
       // Reset validation results
       this.$refs.form.resetValidation();
+
       this.notifyInfo('Form reset');
     },
     splitFileName(filename = undefined) {
@@ -278,13 +316,16 @@ export default {
 
       return { name, extension };
     },
-    toBase64(file) {
+    fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result.replace(/^.*,/, ''));
         reader.onerror = error => reject(error);
       });
+    },
+    textToBase64(text) {
+      return btoa(text);
     },
     toTextObject(file) {
       return new Promise((resolve, reject) => {
@@ -301,34 +342,60 @@ export default {
         console.error(e, obj);
       }
     },
-    async upload() {
+    async generate() {
       try {
         this.loading = true;
+        let content = '';
+        let contentFileType = '';
+        let outputFileType = '';
+        let parsedContexts = '';
 
-        if (this.form.files && this.form.files instanceof File) {
-          // Parse Contents
-          const parsedContexts = JSON.parse(this.form.contexts);
-          const content = await this.toBase64(this.form.files);
-          const body = this.createBody(parsedContexts, content);
+        parsedContexts = JSON.parse(this.form.contexts);
 
-          // Perform API Call
-          const response = await this.$httpApi.post('/docGen', body, {
-            responseType: 'arraybuffer', // Needed for binaries unless you want pain
-            timeout: 30000 // Override default timeout as this call could take a while
-          });
-
-          const filename = this.getDispositionFilename(
-            response.headers['content-disposition']
-          );
-
-          const blob = new Blob([response.data], {
-            type: 'attachment'
-          });
-
-          // Generate Temporary Download Link
-          this.createDownload(blob, filename);
-          this.notifySuccess('Submitted successfully');
+        // convert template to Base64
+        // if uploading template file (tab is visible)
+        if (this.templateTab === 0) {
+          if (this.form.files && this.form.files instanceof File) {
+            content = await this.fileToBase64(this.form.files);
+            contentFileType = this.form.contentFileType;
+            outputFileType = this.form.convertToPDF
+              ? 'pdf'
+              : this.form.outputFileType;
+          }
         }
+        // else using template builder
+        else {
+          content = await this.textToBase64(this.form.templateContent);
+          contentFileType = 'txt';
+          outputFileType = this.form.convertToPDF ? 'pdf' : 'txt';
+        }
+
+        // create payload to send to CDOGS API
+        const body = this.createBody(
+          parsedContexts,
+          content,
+          contentFileType,
+          outputFileType
+        );
+
+        // Perform API Call
+        const response = await this.$httpApi.post('/docGen', body, {
+          responseType: 'arraybuffer', // Needed for binaries unless you want pain
+          timeout: 30000 // Override default timeout as this call could take a while
+        });
+
+        // create file to download
+        const filename = this.getDispositionFilename(
+          response.headers['content-disposition']
+        );
+
+        const blob = new Blob([response.data], {
+          type: 'attachment'
+        });
+
+        // Generate Temporary Download Link
+        this.createDownload(blob, filename);
+        this.notifySuccess('Submitted successfully');
       } catch (e) {
         console.error(e);
         this.notifyError(e.message);
@@ -349,7 +416,7 @@ export default {
     files() {
       if (this.form.files && this.form.files instanceof File) {
         const { name, extension } = this.splitFileName(this.files.name);
-        if(!this.form.outputFileName) {
+        if (!this.form.outputFileName) {
           this.form.outputFileName = name;
         }
         this.form.contentFileType = extension;

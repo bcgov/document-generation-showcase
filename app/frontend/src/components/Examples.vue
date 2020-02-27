@@ -1,7 +1,7 @@
 <template>
   <v-card class="file-input pa-2 my-2">
     <v-card-title>
-      <p>Example Templates and Sample Data</p>
+      <p>Example Templates and Data Files</p>
     </v-card-title>
 
     <v-card-text>
@@ -13,7 +13,7 @@
               <th v-if="$vuetify.breakpoint.mdAndUp" class="text-left">Type</th>
               <th class="text-left">Extension</th>
               <th class="text-left">Template</th>
-              <th class="text-left">Contexts</th>
+              <th class="text-left">Data File</th>
             </tr>
           </thead>
           <tbody>
