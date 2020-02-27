@@ -26,14 +26,15 @@
                       prepend-icon="attachment"
                       required
                       mandatory
-                      :rules="(this.templateTab === 1) ? [] : notEmpty"
+                      :rules="(this.templateTab === 0) ? notEmpty : []"
                       show-size
                       v-model="form.files"
                     />
                   </v-tab-item>
-                  <v-tab-item md6>
+                  <v-tab-item>
                     <p>
-                      Type in your Template contents, for example: 'Welcome {d.firstName}!'.<br />See
+                      Type in your Template contents, for example: 'Welcome {d.firstName}!'.
+                      <br />See
                       <a
                         href="https://carbone.io/documentation.html#substitutions"
                       >Carbone documentation</a> for more details.
@@ -295,10 +296,12 @@ export default {
       Object.keys(this.form).forEach(key => {
         this.form[key] = null;
       });
+      this.form.contexts = '[{}]';
       // clear json builder items
-      this.$refs.jsonBuilder.reset();
+      if (this.$refs.jsonBuilder) this.$refs.jsonBuilder.reset();
       // Reset validation results
       this.$refs.form.resetValidation();
+
       this.notifyInfo('Form reset');
     },
     splitFileName(filename = undefined) {
@@ -339,7 +342,6 @@ export default {
         console.error(e, obj);
       }
     },
-    // document generation form is finally submitted
     async generate() {
       try {
         this.loading = true;
@@ -348,7 +350,6 @@ export default {
         let outputFileType = '';
         let parsedContexts = '';
 
-        // parse contexts into JSON
         parsedContexts = JSON.parse(this.form.contexts);
 
         // convert template to Base64
@@ -362,7 +363,7 @@ export default {
               : this.form.outputFileType;
           }
         }
-        // else sing template builder
+        // else using template builder
         else {
           content = await this.textToBase64(this.form.templateContent);
           contentFileType = 'txt';
@@ -420,12 +421,7 @@ export default {
         }
         this.form.contentFileType = extension;
       }
-    },
-    /*
-    validTemplate(){
-      this.validTemplate;
     }
-    */
   }
 };
 </script>
