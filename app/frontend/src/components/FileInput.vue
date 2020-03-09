@@ -219,7 +219,8 @@ export default {
         files: null,
         templateContent: 'Hello {d.firstName} {d.lastName}!',
         contentFileType: null,
-        outputFileName: null
+        outputFileName: null,
+        outputFileType: null
       },
       loading: false,
       notEmpty: [v => !!v || 'Cannot be empty'],
@@ -234,15 +235,15 @@ export default {
       this.form.contextFiles = null;
       this.updateContexts(obj);
     },
-    createBody(contexts, content, contentFileType, outputFileType) {
+    createBody(contexts, content, contentFileType, outputFileName, outputFileType) {
       return {
         contexts: contexts,
         template: {
           content: content,
           contentEncodingType: 'base64',
           contentFileType: contentFileType,
-          outputFileName: this.form.outputFileName,
-          outputFileType: this.form.convertToPDF ? 'pdf' : outputFileType
+          outputFileName: outputFileName,
+          outputFileType: outputFileType
         }
       };
     },
@@ -347,27 +348,54 @@ export default {
         this.loading = true;
         let content = '';
         let contentFileType = '';
+        let outputFileName = '';
         let outputFileType = '';
         let parsedContexts = '';
 
         parsedContexts = JSON.parse(this.form.contexts);
 
-        // convert template to Base64
         // if uploading template file (tab is visible)
         if (this.templateTab === 0) {
           if (this.form.files && this.form.files instanceof File) {
             content = await this.fileToBase64(this.form.files);
             contentFileType = this.form.contentFileType;
-            outputFileType = this.form.convertToPDF
-              ? 'pdf'
-              : this.form.outputFileType;
+
+            //if output file name has a file extension
+            if (this.form.outputFileName.includes('.')) {
+              // remove extension from input file name
+              outputFileName = this.splitFileName(this.form.outputFileName)['name'];
+              // use extension as the output file type or set as pdf
+              outputFileType = this.form.convertToPDF
+                ? 'pdf'
+                : this.splitFileName(this.form.outputFileName)['extension'];
+            }
+            // else output file name contains no extension or a new extension was enetered
+            else {
+              outputFileName = this.form.outputFileName;
+              outputFileType = this.form.convertToPDF ? 'pdf' : outputFileType;
+            }
           }
         }
+
         // else using template builder
         else {
+          // convert template to Base64
           content = await this.textToBase64(this.form.templateContent);
           contentFileType = 'txt';
-          outputFileType = this.form.convertToPDF ? 'pdf' : 'txt';
+
+          // if a file name (with extension) was entered into output file name field
+          if (this.form.outputFileName !== null) {
+            if (this.form.outputFileName.includes('.')) {
+              outputFileName = this.splitFileName(this.form.outputFileName)[
+                'name'
+              ];
+              outputFileType = this.form.convertToPDF
+                ? 'pdf'
+                : this.splitFileName(this.form.outputFileName)['extension'];
+            }
+          } else {
+            outputFileType = this.form.convertToPDF ? 'pdf' : 'txt';
+          }
         }
 
         // create payload to send to CDOGS API
@@ -375,6 +403,7 @@ export default {
           parsedContexts,
           content,
           contentFileType,
+          outputFileName,
           outputFileType
         );
 
