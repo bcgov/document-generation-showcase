@@ -362,17 +362,18 @@ export default {
 
             //if output file name has a file extension
             if (this.form.outputFileName.includes('.')) {
-              // remove extension from input file name
+              // remove extension from output file name
               outputFileName = this.splitFileName(this.form.outputFileName)['name'];
-              // use extension as the output file type or set as pdf
+              // use this extension as the output file type (or set as pdf if pdf checkbox was checked)
               outputFileType = this.form.convertToPDF
                 ? 'pdf'
                 : this.splitFileName(this.form.outputFileName)['extension'];
             }
-            // else output file name contains no extension or a new extension was enetered
+            // else output file name contains no extension
             else {
               outputFileName = this.form.outputFileName;
-              outputFileType = this.form.convertToPDF ? 'pdf' : outputFileType;
+              // output file type is empty (or set as pdf if pdf checkbox was checked)
+              outputFileType = this.form.convertToPDF ? 'pdf' : '';
             }
           }
         }
@@ -383,17 +384,22 @@ export default {
           content = await this.textToBase64(this.form.templateContent);
           contentFileType = 'txt';
 
-          // if a file name (with extension) was entered into output file name field
+          // if output file name was enered
           if (this.form.outputFileName !== null) {
+            // if output file name has extension
             if (this.form.outputFileName.includes('.')) {
+              // get name
               outputFileName = this.splitFileName(this.form.outputFileName)[
                 'name'
               ];
+              // get extension
               outputFileType = this.form.convertToPDF
                 ? 'pdf'
                 : this.splitFileName(this.form.outputFileName)['extension'];
             }
-          } else {
+          }
+          // else no output file name was entered
+          else {
             outputFileType = this.form.convertToPDF ? 'pdf' : 'txt';
           }
         }
