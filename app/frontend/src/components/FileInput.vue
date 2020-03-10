@@ -235,7 +235,13 @@ export default {
       this.form.contextFiles = null;
       this.updateContexts(obj);
     },
-    createBody(contexts, content, contentFileType, outputFileName, outputFileType) {
+    createBody(
+      contexts,
+      content,
+      contentFileType,
+      outputFileName,
+      outputFileType
+    ) {
       return {
         contexts: contexts,
         template: {
@@ -363,7 +369,9 @@ export default {
             //if output file name has a file extension
             if (this.form.outputFileName.includes('.')) {
               // remove extension from output file name
-              outputFileName = this.splitFileName(this.form.outputFileName)['name'];
+              outputFileName = this.splitFileName(this.form.outputFileName)[
+                'name'
+              ];
               // use this extension as the output file type (or set as pdf if pdf checkbox was checked)
               outputFileType = this.form.convertToPDF
                 ? 'pdf'
@@ -384,23 +392,21 @@ export default {
           content = await this.textToBase64(this.form.templateContent);
           contentFileType = 'txt';
 
-          // if output file name was enered
-          if (this.form.outputFileName !== null) {
-            // if output file name has extension
+          // if output file name was entered
+          if (this.form.outputFileName) {
             if (this.form.outputFileName.includes('.')) {
-              // get name
               outputFileName = this.splitFileName(this.form.outputFileName)[
                 'name'
               ];
-              // get extension
               outputFileType = this.form.convertToPDF
                 ? 'pdf'
                 : this.splitFileName(this.form.outputFileName)['extension'];
             }
-          }
-          // else no output file name was entered
-          else {
-            outputFileType = this.form.convertToPDF ? 'pdf' : 'txt';
+            // else no output file name was entered
+            else {
+              outputFileName = this.form.outputFileName;
+              outputFileType = this.form.convertToPDF ? 'pdf' : 'txt';
+            }
           }
         }
 
