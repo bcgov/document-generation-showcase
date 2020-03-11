@@ -365,49 +365,28 @@ export default {
           if (this.form.files && this.form.files instanceof File) {
             content = await this.fileToBase64(this.form.files);
             contentFileType = this.form.contentFileType;
-
-            //if output file name has a file extension
-            if (this.form.outputFileName.includes('.')) {
-              // remove extension from output file name
-              outputFileName = this.splitFileName(this.form.outputFileName)[
-                'name'
-              ];
-              // use this extension as the output file type (or set as pdf if pdf checkbox was checked)
-              outputFileType = this.form.convertToPDF
-                ? 'pdf'
-                : this.splitFileName(this.form.outputFileName)['extension'];
-            }
-            // else output file name contains no extension
-            else {
-              outputFileName = this.form.outputFileName;
-              // output file type is empty (or set as pdf if pdf checkbox was checked)
-              outputFileType = this.form.convertToPDF ? 'pdf' : '';
-            }
           }
         }
-
         // else using template builder
         else {
-          // convert template to Base64
           content = await this.textToBase64(this.form.templateContent);
           contentFileType = 'txt';
+        }
 
-          // if output file name was entered
-          if (this.form.outputFileName) {
-            if (this.form.outputFileName.includes('.')) {
-              outputFileName = this.splitFileName(this.form.outputFileName)[
-                'name'
-              ];
-              outputFileType = this.form.convertToPDF
-                ? 'pdf'
-                : this.splitFileName(this.form.outputFileName)['extension'];
-            }
-            // else no output file name was entered
-            else {
-              outputFileName = this.form.outputFileName;
-              outputFileType = this.form.convertToPDF ? 'pdf' : 'txt';
-            }
-          }
+        //if output file name has a file extension
+        if (this.form.outputFileName.includes('.')) {
+          // remove extension from output file name
+          outputFileName = this.splitFileName(this.form.outputFileName)['name'];
+          // use this extension as the output file type (or set as pdf if pdf checkbox was checked)
+          outputFileType = this.form.convertToPDF
+            ? 'pdf'
+            : this.splitFileName(this.form.outputFileName)['extension'];
+        }
+        // else output file name contains no extension
+        else {
+          outputFileName = this.form.outputFileName;
+          // output file type is empty (or set as pdf if pdf checkbox was checked)
+          outputFileType = this.form.convertToPDF ? 'pdf' : '';
         }
 
         // create payload to send to CDOGS API
