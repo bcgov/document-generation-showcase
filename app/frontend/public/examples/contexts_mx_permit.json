@@ -1,50 +1,48 @@
-[
-  {
-    "permitNumber": "101119",
-    "permitAddress": "Attn: Mine Manager \r\n 1234 Quarry Narrows \r\n Gold Rush, BC \r\n D1G 0R3 Canada",
-    "telephone": "250-999-9999",
-    "fax": "250-999-9999",
-    "propertyName": "Ryan's Super Cool Mine",
-    "mineNumber": "1234500",
-    "approvalNumber": "9876543",
-    "reclamationAmount": "About tree-fiddy",
-    "tenures": [
-      "Some place",
-      "Another place"
-    ],
-    "noticeOfWork": {
-      "nowNumber": "8675309",
-      "permitType": "Multi-year",
-      "permitDuration": "July 2014 to Sept 2019",
-      "permitRange": "5 years",
-      "approvedDisturbanceArea": "5.00",
-      "reclamationAndSecurity": "Yes",
-      "exploration": "Yes",
-      "mechanicalTrenching": "Yes",
-      "blasting": "Yes",
-      "merp": "Yes",
-      "archaeology": "Yes",
-      "surfaceDrilling": "Yes",
-      "explorationAccess": "Yes",
-      "timberCutting": "No",
-      "bulkSample": "Yes",
-      "undergroundExploration": "Yes",
-      "offTenureAccess": "No",
-      "streamCrossing": "No"
+{
+  "permitNumber": "101119",
+  "permitAddress": "Attn: Mine Manager \r\n 1234 Quarry Narrows \r\n Gold Rush, BC \r\n D1G 0R3 Canada",
+  "telephone": "250-999-9999",
+  "fax": "250-999-9999",
+  "propertyName": "Ryan's Super Cool Mine",
+  "mineNumber": "1234500",
+  "approvalNumber": "9876543",
+  "reclamationAmount": "About tree-fiddy",
+  "tenures": [
+    "Some place",
+    "Another place"
+  ],
+  "noticeOfWork": {
+    "nowNumber": "8675309",
+    "permitType": "Multi-year",
+    "permitDuration": "July 2014 to Sept 2019",
+    "permitRange": "5 years",
+    "approvedDisturbanceArea": "5.00",
+    "reclamationAndSecurity": "Yes",
+    "exploration": "Yes",
+    "mechanicalTrenching": "Yes",
+    "blasting": "Yes",
+    "merp": "Yes",
+    "archaeology": "Yes",
+    "surfaceDrilling": "Yes",
+    "explorationAccess": "Yes",
+    "timberCutting": "No",
+    "bulkSample": "Yes",
+    "undergroundExploration": "Yes",
+    "offTenureAccess": "No",
+    "streamCrossing": "No"
+  },
+  "dateOfIssuance": "Today",
+  "dateOfAmendment": "Tomorrow",
+  "inspector": "Inspector Gadget",
+  "inspectorTitle": "Super Inspector",
+  "permitConditions": [
+    {
+      "condition": "Compliance with Mines Act and Code",
+      "description": "All exploration activities must be conducted in a manner that complies with the Mines Act and the Health, Safety and Reclamation Code for Mines in British Columbia."
     },
-    "dateOfIssuance": "Today",
-    "dateOfAmendment": "Tomorrow",
-    "inspector": "Inspector Gadget",
-    "inspectorTitle": "Super Inspector",
-    "permitConditions": [
-      {
-        "condition": "Compliance with Mines Act and Code",
-        "description": "All exploration activities must be conducted in a manner that complies with the Mines Act and the Health, Safety and Reclamation Code for Mines in British Columbia."
-      },
-      {
-        "condition": "Start of Exploration Activities Notification",
-        "description": "Verbal or written notification to the regional Inspector of Mines is required prior to the start date of exploration activity."
-      }
-    ]
-  }
-]
+    {
+      "condition": "Start of Exploration Activities Notification",
+      "description": "Verbal or written notification to the regional Inspector of Mines is required prior to the start date of exploration activity."
+    }
+  ]
+}

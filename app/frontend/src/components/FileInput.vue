@@ -190,15 +190,15 @@ export default {
         },
         v => {
           try {
-            if (!Array.isArray(JSON.parse(v))) throw new Error();
+            JSON.parse(v);
             return true;
           } catch (e) {
-            return 'Must be an Array object';
+            return 'Must be an JSON object';
           }
         },
         v => {
           try {
-            if (!JSON.parse(v).length) throw new Error();
+            if (Array.isArray(JSON.parse(v)).length) throw new Error();
             return true;
           } catch (e) {
             return 'Array must have at least one element';
@@ -213,7 +213,7 @@ export default {
       templateTab: null,
       contextTab: null,
       form: {
-        contexts: '[{}]',
+        contexts: '{}',
         contextFiles: null,
         convertToPDF: null,
         files: null,
@@ -243,13 +243,16 @@ export default {
       outputFileType
     ) {
       return {
-        contexts: contexts,
+        data: contexts,
+        options: {
+          reportName: outputFileName,
+          convertTo: outputFileType,
+          overwrite: true
+        },
         template: {
           content: content,
-          contentEncodingType: 'base64',
-          contentFileType: contentFileType,
-          outputFileName: outputFileName,
-          outputFileType: outputFileType
+          encodingType: 'base64',
+          fileType: contentFileType
         }
       };
     },
@@ -399,7 +402,7 @@ export default {
         );
 
         // Perform API Call
-        const response = await this.$httpApi.post('/docGen', body, {
+        const response = await this.$httpApi.post('/template/render', body, {
           responseType: 'arraybuffer', // Needed for binaries unless you want pain
           timeout: 30000 // Override default timeout as this call could take a while
         });

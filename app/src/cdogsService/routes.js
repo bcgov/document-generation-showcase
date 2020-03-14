@@ -26,7 +26,7 @@ routes.get('/health', keycloak.protect(protector), (req, res, next) => {
   healthCheck(req, res, next);
 });
 
-routes.post('/docGen', keycloak.protect(protector), (req, res, next) => {
+routes.post('/template/render', keycloak.protect(protector), (req, res, next) => {
   docGen(req, res, next);
 });
 

@@ -5,7 +5,7 @@
       "realm": "98r0z7rz",
       "serverUrl": "https://sso-dev.pathfinder.gov.bc.ca/auth"
     },
-    "apiPath": "api/v1",
+    "apiPath": "api/v2",
     "basePath" : "/app",
     "dashboardUrl": "https://reverse-proxy-ixhmbm-dev.pathfinder.gov.bc.ca/app/kibana#/dashboard/b7d840e0-4130-11ea-8f5a-f5f23f43ae28?embed=true"
   },
@@ -15,7 +15,7 @@
       "realm": "98r0z7rz",
       "serverUrl": "https://sso-dev.pathfinder.gov.bc.ca/auth"
     },
-    "apiPath": "/api/v1",
+    "apiPath": "/api/v2",
     "basePath" : "/app",
     "bodyLimit": "30mb",
     "hostUrl": "http://localhost:8888",
