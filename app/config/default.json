@@ -25,7 +25,7 @@
   },
   "services": {
     "cdogs": {
-      "apiHost": "set in custom environment variables...",
+      "apiUrl": "set in custom environment variables...",
       "clientId": "DGRSC_SERVICE_CLIENT",
       "clientSecret": "set in custom environment variables...",
       "tokenUrl": "set in custom environment variables..."
