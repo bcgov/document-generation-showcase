@@ -22,20 +22,20 @@ const errorToProblem = (e) => {
 };
 
 class CdogsService {
-  constructor({ tokenUrl, clientId, clientSecret, apiUrl }) {
-    log.verbose('CdogsService', `Constructed with ${tokenUrl}, ${clientId}, clientSecret, ${apiUrl}`);
-    if (!tokenUrl || !clientId || !clientSecret || !apiUrl) {
+  constructor({ tokenUrl, clientId, clientSecret, apiHost }) {
+    log.verbose('CdogsService', `Constructed with ${tokenUrl}, ${clientId}, clientSecret, ${apiHost}`);
+    if (!tokenUrl || !clientId || !clientSecret || !apiHost) {
       log.error('CdogsService', 'Invalid configuration.');
       throw new Error('CdogsService is not configured. Check configuration.');
     }
     this.connection = new ClientConnection({ tokenUrl, clientId, clientSecret });
     this.axios = this.connection.axios;
-    this.apiUrl = apiUrl;
+    this.apiHost = apiHost;
   }
 
   async health() {
     try {
-      const endpoint = `${this.apiUrl}/health`;
+      const endpoint = `${this.apiHost}/api/v2/health`;
       log.debug('health', `GET to ${endpoint}`);
 
       const { data, status } = await this.axios.get(endpoint, {
@@ -52,7 +52,7 @@ class CdogsService {
 
   async docGen(body) {
     try {
-      const endpoint = `${this.apiUrl}/template/render`;
+      const endpoint = `${this.apiHost}/api/v2/template/render`;
       log.debug('docGen', `POST to ${endpoint}`);
 
       const { data, headers, status } = await this.axios.post(endpoint, body, {

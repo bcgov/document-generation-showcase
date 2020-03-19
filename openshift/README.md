@@ -56,7 +56,8 @@ export SERVER_PORT=8888
 export SERVER_BODYLIMIT=30mb
 export SERVER_APIPATH=/api/v1
 export CDOGS_TOKENURL=https://sso-dev.pathfinder.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
-export CDOGS_APIURL=https://cdogs-manual-idcqvl-dev.pathfinder.gov.bc.ca/api/v1
+export CDOGS_APIHOST=https://cdogs-manual-idcqvl-dev.pathfinder.gov.bc.ca
+
 ```
 
 #### Create secrets and config map
@@ -78,7 +79,7 @@ oc create configmap -n $NAMESPACE dgrsc-server-config --from-literal=SERVER_KC_R
 ```
 
 ``` sh
-oc create configmap -n $NAMESPACE dgrsc-services-config --from-literal=CDOGS_TOKENURL=$CDOGS_TOKENURL --from-literal=CDOGS_APIURL=$CDOGS_APIURL
+oc create configmap -n $NAMESPACE dgrsc-services-config --from-literal=CDOGS_TOKENURL=$CDOGS_TOKENURL --from-literal=CDOGS_APIHOST=$CDOGS_APIHOST
 ```
 
 #### Run the build config

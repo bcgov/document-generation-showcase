@@ -26,7 +26,7 @@
   },
   "services": {
     "cdogs": {
-      "apiUrl": "CDOGS_APIURL",
+      "apiHost": "CDOGS_APIHOST",
       "clientId": "CDOGS_CLIENTID",
       "clientSecret": "CDOGS_CLIENTSECRET",
       "tokenUrl": "CDOGS_TOKENURL"
