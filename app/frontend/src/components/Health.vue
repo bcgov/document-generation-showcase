@@ -32,7 +32,7 @@ export default {
   computed: {
     health: function() {
       return (
-        this.response && this.response.endpoints && this.response.endpoints[0]
+        this.response && this.response === 'OK'
       );
     }
   },

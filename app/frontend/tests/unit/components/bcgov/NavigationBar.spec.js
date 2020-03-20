@@ -25,7 +25,7 @@ describe('NavigationBar.vue', () => {
 
   it('renders', () => {
     expect(wrapper.html()).toContain('Home');
-    expect(wrapper.html()).toContain('CDOGS v1');
+    expect(wrapper.html()).toContain('CDOGS v2');
     expect(wrapper.html()).toContain('CDOGS Performance');
   });
 });

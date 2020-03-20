@@ -47,16 +47,17 @@ export CDOGS_CLIENTSECRET=<get the secret from keycloak>
 export FRONTEND_KC_CLIENTID=dgrsc-frontend
 export FRONTEND_KC_REALM=98r0z7rz
 export FRONTEND_KC_SERVERURL=https://sso-dev.pathfinder.gov.bc.ca/auth
-export FRONTEND_APIPATH=api/v1
+export FRONTEND_APIPATH=api/v2
 export SERVER_KC_REALM=98r0z7rz
 export SERVER_KC_SERVERURL=https://sso-dev.pathfinder.gov.bc.ca/auth
 export SERVER_LOGLEVEL=info
 export SERVER_MORGANFORMAT=dev
 export SERVER_PORT=8888
 export SERVER_BODYLIMIT=30mb
-export SERVER_APIPATH=/api/v1
+export SERVER_APIPATH=/api/v2
 export CDOGS_TOKENURL=https://sso-dev.pathfinder.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
-export CDOGS_APIURL=https://cdogs-manual-idcqvl-dev.pathfinder.gov.bc.ca/api/v1
+export CDOGS_APIURL=https://cdogs-manual-idcqvl-dev.pathfinder.gov.bc.ca/api/v2
+
 ```
 
 #### Create secrets and config map

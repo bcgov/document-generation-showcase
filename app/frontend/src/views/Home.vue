@@ -59,7 +59,7 @@
         <li>
           You can find the OpenAPI 3.0 Specification of the CDOGS API
           <a
-            href="https://cdogs-master-idcqvl-dev.pathfinder.gov.bc.ca/api/v1/docs"
+            href="https://cdogs-master-idcqvl-prod.pathfinder.gov.bc.ca/api/v2/docs"
             target="_blank"
           >here</a>.
         </li>

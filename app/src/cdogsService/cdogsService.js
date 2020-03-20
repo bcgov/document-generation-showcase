@@ -52,7 +52,7 @@ class CdogsService {
 
   async docGen(body) {
     try {
-      const endpoint = `${this.apiUrl}/docGen`;
+      const endpoint = `${this.apiUrl}/template/render`;
       log.debug('docGen', `POST to ${endpoint}`);
 
       const { data, headers, status } = await this.axios.post(endpoint, body, {
