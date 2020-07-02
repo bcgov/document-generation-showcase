@@ -59,6 +59,7 @@
     "eslint-plugin-flowtype": "^4.6.0",
     "eslint-plugin-jest": "^23.6.0",
     "jest": "^24.9.0",
+    "minimist": "^1.2.5",
     "nodemon": "^2.0.2",
     "supertest": "^4.0.2"
   },
