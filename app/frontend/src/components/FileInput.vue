@@ -219,7 +219,7 @@ export default {
         files: null,
         templateContent: 'Hello {d.firstName} {d.lastName}!',
         contentFileType: null,
-        outputFileName: null,
+        outputFileName: '',
         outputFileType: null
       },
       loading: false,
@@ -307,6 +307,7 @@ export default {
         this.form[key] = null;
       });
       this.form.contexts = '[{}]';
+      this.form.outputFileName = '';
       // clear json builder items
       if (this.$refs.jsonBuilder) this.$refs.jsonBuilder.reset();
       // Reset validation results

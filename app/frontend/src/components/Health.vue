@@ -31,7 +31,7 @@ export default {
   name: 'health',
   computed: {
     health() {
-      return this.response && this.response.endpoints[0];
+      return this.response && this.response === 'OK';
     }
   },
   data: () => ({
@@ -42,7 +42,6 @@ export default {
     this.$httpApi
       .get('/health')
       .then(response => {
-        console.log(response);
         this.response = response.data;
       })
       .catch(err => {
