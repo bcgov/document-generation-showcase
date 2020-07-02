@@ -30,22 +30,19 @@
 export default {
   name: 'health',
   computed: {
-    health: function() {
-      return (
-        this.response && this.response === 'OK'
-      );
+    health() {
+      return this.response && this.response.endpoints[0];
     }
   },
-  data() {
-    return {
-      response: null,
-      sheet: false
-    };
-  },
+  data: () => ({
+    response: null,
+    sheet: false
+  }),
   mounted() {
     this.$httpApi
       .get('/health')
       .then(response => {
+        console.log(response);
         this.response = response.data;
       })
       .catch(err => {

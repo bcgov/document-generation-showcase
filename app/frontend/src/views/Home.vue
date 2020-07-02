@@ -32,7 +32,7 @@
       </router-link>
       <a href="https://github.com/bcgov/common-document-generation-service" target="_blank">
         <v-btn class="github-btn mx-2" id="github" large >
-          <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-github-circle</v-icon>
+          <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-github</v-icon>
           <span v-if="$vuetify.breakpoint.smAndUp">Github</span>
         </v-btn>
       </a>

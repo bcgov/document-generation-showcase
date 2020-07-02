@@ -12,7 +12,7 @@
       absolute
       bottom
       color="error"
-      :timeout="0"
+      :timeout="-1"
     >Something important failed while loading... :(</v-snackbar>
   </v-app>
 </template>
