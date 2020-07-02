@@ -4,7 +4,9 @@
     <v-progress-circular v-if="!$router" color="primary" indeterminate size="64" />
     <div v-else>
       <NavigationBar />
-      <router-view id="router-view-content" />
+      <transition name="component-fade" mode="out-in">
+        <router-view id="router-view-content" />
+      </transition>
     </div>
     <Footer />
     <v-snackbar
@@ -12,7 +14,7 @@
       absolute
       bottom
       color="error"
-      :timeout="0"
+      :timeout="-1"
     >Something important failed while loading... :(</v-snackbar>
   </v-app>
 </template>
@@ -73,5 +75,14 @@ body {
   @media only screen and (max-width: 319px) {
     margin-bottom: 10rem;
   }
+}
+
+.component-fade-enter-active,
+.component-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.component-fade-enter,
+.component-fade-leave-to {
+  opacity: 0;
 }
 </style>

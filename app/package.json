@@ -20,6 +20,7 @@
     "test": "node_modules/.bin/jest --verbose --env=jsdom --passWithNoTests",
     "lint": "node_modules/.bin/eslint . **/www --no-fix --ext .js",
     "lint:fix": "node_modules/.bin/eslint . **/www --fix --ext .js",
+    "posttest": "node ./lcov-fix.js",
     "pretest": "npm run lint",
     "clean": "rm -rf coverage dist",
     "purge": "rm -rf node_modules",
@@ -58,8 +59,8 @@
     "eslint-config-recommended": "^4.0.0",
     "eslint-plugin-flowtype": "^4.6.0",
     "eslint-plugin-jest": "^23.6.0",
-    "jest": "^24.9.0",
-    "nodemon": "^2.0.2",
+    "jest": "^26.1.0",
+    "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
   },
   "eslintConfig": {
