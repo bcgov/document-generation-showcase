@@ -2,7 +2,7 @@
   <v-container class="secure">
     <Authenticated>
       <h1 class="text-center">
-        Common Document Generation Service (v1)
+        Common Document Generation Service (v2)
         <Health />
       </h1>
       <p class="text-center">
