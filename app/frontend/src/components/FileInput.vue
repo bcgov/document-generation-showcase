@@ -343,7 +343,7 @@ export default {
     updateContexts(obj) {
       try {
         // create a JSON object of context(s)
-        this.form.contexts = JSON.stringify(obj);
+        this.form.contexts = Array.isArray(obj) ? JSON.stringify(obj[0]) : JSON.stringify(obj);
       } catch (e) {
         console.error(e, obj);
       }
