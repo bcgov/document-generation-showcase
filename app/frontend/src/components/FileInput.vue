@@ -196,15 +196,9 @@ export default {
             return 'Must be an JSON object';
           }
         },
-        v => {
-          try {
-            if (Array.isArray(JSON.parse(v)).length) throw new Error();
-            return true;
-          } catch (e) {
-            return 'Array must have at least one element';
-          }
-        }
+        v => !Array.isArray(JSON.parse(v)) || 'Should not be an array'
       ],
+
       templateBuilderRules: [
         v =>
           !RegExp(/^.*?{(?!.*?})[^}]*$|^[^{\r\n]*}.*?$/).test(v) ||
@@ -349,7 +343,7 @@ export default {
     updateContexts(obj) {
       try {
         // create a JSON object of context(s)
-        this.form.contexts = Array.isArray(obj) ? JSON.stringify(obj[0]) : JSON.stringify(obj);
+        this.form.contexts = JSON.stringify(obj);
       } catch (e) {
         console.error(e, obj);
       }
