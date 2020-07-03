@@ -92,7 +92,7 @@
                     <v-textarea
                       auto-grow
                       hint="JSON format for key-value pairs"
-                      label="JSON data containing an array of contexts"
+                      label="The JSON object with key-value pairs"
                       mandatory
                       required
                       rows="3"
@@ -306,7 +306,7 @@ export default {
       Object.keys(this.form).forEach(key => {
         this.form[key] = null;
       });
-      this.form.contexts = '[{}]';
+      this.form.contexts = '{}';
       this.form.outputFileName = '';
       // clear json builder items
       if (this.$refs.jsonBuilder) this.$refs.jsonBuilder.reset();
@@ -348,7 +348,8 @@ export default {
     },
     updateContexts(obj) {
       try {
-        this.form.contexts = JSON.stringify(obj);
+        // create a JSON object of context(s)
+        this.form.contexts = Array.isArray(obj) ? JSON.stringify(obj[0]) : JSON.stringify(obj);
       } catch (e) {
         console.error(e, obj);
       }

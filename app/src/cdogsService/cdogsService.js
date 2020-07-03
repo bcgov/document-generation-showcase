@@ -51,13 +51,6 @@ class CdogsService {
   }
 
   async docGen(body) {
-
-    // After change to CDOGS V2
-    // The JSON data (replacements) shouldn't be enclosed in an array
-    if(Array.isArray(body.data)) {
-      body.data = body.data[0];
-    }
-
     try {
       const endpoint = `${this.apiUrl}/template/render`;
       log.debug('docGen', `POST to ${endpoint}`);
