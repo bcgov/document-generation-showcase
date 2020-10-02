@@ -2,6 +2,32 @@
   {
     "contexts": {
       "color": "teal",
+      "link": "./examples/contexts_carbone_2.json"
+    },
+    "description": "Carbone 2 Features",
+    "template": {
+      "color": "blue",
+      "icon": "mdi-file-word",
+      "link": "./examples/template_carbone_2.docx"
+    },
+    "type": "Microsoft Word Document"
+  },
+  {
+    "contexts": {
+      "color": "teal",
+      "link": "./examples/contexts_header_footer_watermark.json"
+    },
+    "description": "Header/Footer/Watermark",
+    "template": {
+      "color": "blue",
+      "icon": "mdi-file-word",
+      "link": "./examples/template_header_footer_watermark.docx"
+    },
+    "type": "Microsoft Word Document"
+  },
+  {
+    "contexts": {
+      "color": "teal",
       "link": "./examples/contexts_hello_world.json"
     },
     "description": "Hello World",
