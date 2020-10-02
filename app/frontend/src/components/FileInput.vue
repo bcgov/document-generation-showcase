@@ -197,15 +197,11 @@ export default {
           }
         },
         v => {
-          try {
-            const o = JSON.parse(v); // this should not fail due to earlier rules.
-            if (Array.isArray(o)) {
-              if (!o.length) throw Error();
-            }
-            return true;
-          } catch (e) {
-            return 'Array must have at least one element';
+          const o = JSON.parse(v); // this should not fail due to earlier rules.
+          if (Array.isArray(o)) {
+            if (!o.length) return 'Array must have at least one element';
           }
+          return true;
         }
       ],
 
