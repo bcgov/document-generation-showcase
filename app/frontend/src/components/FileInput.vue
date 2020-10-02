@@ -196,7 +196,17 @@ export default {
             return 'Must be an JSON object';
           }
         },
-        v => !Array.isArray(JSON.parse(v)) || 'Should not be an array'
+        v => {
+          try {
+            const o = JSON.parse(v); // this should not fail due to earlier rules.
+            if (Array.isArray(o)) {
+              if (!o.length) throw Error();
+            }
+            return true;
+          } catch (e) {
+            return 'Array must have at least one element';
+          }
+        }
       ],
 
       templateBuilderRules: [
