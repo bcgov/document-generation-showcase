@@ -196,7 +196,13 @@ export default {
             return 'Must be an JSON object';
           }
         },
-        v => !Array.isArray(JSON.parse(v)) || 'Should not be an array'
+        v => {
+          const o = JSON.parse(v); // this should not fail due to earlier rules.
+          if (Array.isArray(o)) {
+            if (!o.length) return 'Array must have at least one element';
+          }
+          return true;
+        }
       ],
 
       templateBuilderRules: [
@@ -372,8 +378,10 @@ export default {
           contentFileType = 'txt';
         }
 
-        //if output file name has a file extension
-        if (this.form.outputFileName.includes('.')) {
+        //if output file name field has a file extension, we need to separate out the name from the extension for conversion
+        // may have templates in the output file name, so only look for separator AFTER templates...
+        const _postTemplatesOutputFileName = this.form.outputFileName.substring(this.form.outputFileName.lastIndexOf('}')+1);
+        if (_postTemplatesOutputFileName.lastIndexOf('.') > -1) {
           // remove extension from output file name
           outputFileName = this.splitFileName(this.form.outputFileName)['name'];
           // use this extension as the output file type (or set as pdf if pdf checkbox was checked)
@@ -386,6 +394,14 @@ export default {
           outputFileName = this.form.outputFileName;
           // output file type is empty (or set as pdf if pdf checkbox was checked)
           outputFileType = this.form.convertToPDF ? 'pdf' : '';
+        }
+
+        // if the outputFileName has a template string...
+        // then it needs an extension in order to populate the template correctly.
+        // it does not matter what the extension is, but outputFileName requires an extension for logic to kick in.
+        // outputFileType still determines what type of file is generated.
+        if (outputFileName.lastIndexOf('}') > -1) {
+          outputFileName = `${outputFileName}.txt`;
         }
 
         // create payload to send to CDOGS API
