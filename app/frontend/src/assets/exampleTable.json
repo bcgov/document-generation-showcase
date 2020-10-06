@@ -2,6 +2,19 @@
   {
     "contexts": {
       "color": "teal",
+      "link": "./examples/contexts_attestation.json"
+    },
+    "description": "Sample HTML (must start with <!DOCTYPE html>)",
+    "template": {
+      "color": "blue",
+      "icon": "mdi-code-tags",
+      "link": "./examples/template_attestation.html"
+    },
+    "type": "HTML Document"
+  },
+  {
+    "contexts": {
+      "color": "teal",
       "link": "./examples/contexts_carbone_2.json"
     },
     "description": "Carbone 2 Features",
