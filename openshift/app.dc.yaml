@@ -7,10 +7,10 @@ labels:
 metadata:
   name: "${REPO_NAME}-app-dc"
 objects:
-  - apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
+  - apiVersion: security.devops.gov.bc.ca/v1alpha1
     kind: NetworkSecurityPolicy
     metadata:
-      name: "${APP_NAME}-${JOB_NAME}-sa-deployer-to-k8s-api-${NAMESPACE}"
+      name: "sa-deployer-k8s-api-comms"
     spec:
       description: |
         Allow deployer pods to talk to the internal K8S api
@@ -20,9 +20,9 @@ objects:
       destination:
         - - int:network=internal-cluster-api-endpoint
   - kind: NetworkSecurityPolicy
-    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
+    apiVersion: security.devops.gov.bc.ca/v1alpha1
     metadata:
-      name: "${APP_NAME}-app-${JOB_NAME}-pods-to-egress-${NAMESPACE}"
+      name: "${APP_NAME}-app-${JOB_NAME}-pods-to-egress-internet"
     spec:
       description: |
         Allow pods to open connections to the internet
@@ -57,7 +57,7 @@ objects:
             role: app
         spec:
           containers:
-            - image: docker-registry.default.svc:5000/${NAMESPACE}/${REPO_NAME}-app:${JOB_NAME}
+            - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/${REPO_NAME}-app:${JOB_NAME}
               imagePullPolicy: IfNotPresent
               livenessProbe:
                 failureThreshold: 3
@@ -69,7 +69,7 @@ objects:
                 periodSeconds: 60
                 successThreshold: 1
                 timeoutSeconds: 1
-              name: "${APP_NAME}-app-${JOB_NAME}"
+              name: app
               ports:
                 - containerPort: 8888
                   protocol: TCP
@@ -132,7 +132,7 @@ objects:
         - imageChangeParams:
             automatic: true
             containerNames:
-              - "${APP_NAME}-app-${JOB_NAME}"
+              - app
             from:
               kind: ImageStreamTag
               name: "${REPO_NAME}-app:${JOB_NAME}"
