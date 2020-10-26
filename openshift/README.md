@@ -1,8 +1,8 @@
-### Keycloak
+# Keycloak
 
 Login to [dev](https://sso-dev.pathfinder.gov.bc.ca/auth/admin/98r0z7rz/console/#/realms/98r0z7rz/clients) to get client secrets or add users to groups.
 
-#### Clients
+## Clients
 
 | Name | Description |
 | ---- | --- |
@@ -11,21 +11,21 @@ Login to [dev](https://sso-dev.pathfinder.gov.bc.ca/auth/admin/98r0z7rz/console/
 | dgrsc-local | configured for localhost:8888, local development. |
 | dgrsc-frontend-local | configured for localhost:8888, local development.|
 
-#### Client Scope
+## Client Scope
 
 **dgrsc** - Both the backend and frontend clients include **dgrsc** as a default client scope.
 
-#### Groups
+## Groups
 
 **DGRSC Users** - maps to the dgrsc (client) role: user.  Add keycloak users to this group to get access to secured areas in DGRSC and to call the DGRSC backend (protects CDOGS calls).
 
-Add users to the **DGRSC Users** group.  
+Add users to the **DGRSC Users** group.
 
-### Openshift Manual Configuration and Deployment
+## Openshift Manual Configuration and Deployment
 
 Assume you are logged into OpenShift and are in the repo/openshift local directory.  We will run the scripts from there.  We will use the [Document Generation Showcase (dev)](https://console.pathfinder.gov.bc.ca:8443/console/project/wfezkf-dev/overview) namespace.
 
-#### Set up environment parameters
+### Set up environment parameters
 
 Some notes:
 **FRONTEND\_APIPATH** has no beginning '/', that is so it will always call the relative api.
@@ -46,21 +46,22 @@ export CDOGS_CLIENTSECRET=<get the secret from keycloak>
 
 export FRONTEND_KC_CLIENTID=dgrsc-frontend
 export FRONTEND_KC_REALM=98r0z7rz
-export FRONTEND_KC_SERVERURL=https://sso-dev.pathfinder.gov.bc.ca/auth
+export FRONTEND_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
 export FRONTEND_APIPATH=api/v2
+export FRONTEND_DASHBOARDURL=https://cdogs-dashboard-dev.pathfinder.gov.bc.ca/s/cdogs/app/kibana#/dashboard/00000000-0000-0000-0000-000000000000?embed=true
 export SERVER_KC_REALM=98r0z7rz
-export SERVER_KC_SERVERURL=https://sso-dev.pathfinder.gov.bc.ca/auth
+export SERVER_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
 export SERVER_LOGLEVEL=info
 export SERVER_MORGANFORMAT=dev
 export SERVER_PORT=8888
 export SERVER_BODYLIMIT=30mb
 export SERVER_APIPATH=/api/v2
 export CDOGS_TOKENURL=https://sso-dev.pathfinder.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
-export CDOGS_APIURL=https://cdogs-manual-idcqvl-dev.pathfinder.gov.bc.ca/api/v2
+export CDOGS_APIURL=https://cdogs-master-idcqvl-dev.pathfinder.gov.bc.ca/api/v2
 
 ```
 
-#### Create secrets and config map
+### Create secrets and config map
 
 ``` sh
 oc create secret -n $NAMESPACE generic app-keycloak-secret --from-literal=username=$SERVER_KC_CLIENTID --from-literal=password=$SERVER_KC_CLIENTSECRET --type=kubernetes.io/basic-auth
@@ -72,6 +73,7 @@ oc create secret -n $NAMESPACE generic cdogs-service-secret --from-literal=usern
 
 ``` sh
 oc create configmap -n $NAMESPACE dgrsc-frontend-config --from-literal=FRONTEND_KC_CLIENTID=$FRONTEND_KC_CLIENTID --from-literal=FRONTEND_KC_REALM=$FRONTEND_KC_REALM --from-literal=FRONTEND_KC_SERVERURL=$FRONTEND_KC_SERVERURL --from-literal=FRONTEND_APIPATH=$FRONTEND_APIPATH
+--from-literal=FRONTEND_DASHBOARDURL=$FRONTEND_DASHBOARDURL
 ```
 
 ``` sh
@@ -82,7 +84,7 @@ oc create configmap -n $NAMESPACE dgrsc-server-config --from-literal=SERVER_KC_R
 oc create configmap -n $NAMESPACE dgrsc-services-config --from-literal=CDOGS_TOKENURL=$CDOGS_TOKENURL --from-literal=CDOGS_APIURL=$CDOGS_APIURL
 ```
 
-#### Run the build config
+### Run the build config
 
 ``` sh
 oc -n $NAMESPACE process -f app.bc.yaml -p REPO_NAME=$REPO_NAME -p JOB_NAME=$JOB_NAME -p SOURCE_REPO_URL=$SOURCE_REPO_URL -p SOURCE_REPO_REF=$SOURCE_REPO_REF -o yaml | oc -n $NAMESPACE create -f -
@@ -92,7 +94,7 @@ oc -n $NAMESPACE start-build dgrsc-pr-x-app
 oc logs build/dgrsc-pr-x-app-1 --follow
 ```
 
-#### Additional environment and pr specific configuration
+### Additional environment and pr specific configuration
 
 We will expect the following two environment variables to be created and populated in the pipeline.
 
@@ -106,7 +108,7 @@ export ROUTE_HOST=$APP_NAME-dev.pathfinder.gov.bc.ca
 export ROUTE_PATH=/pr-x
 ```
 
-#### Run the deployment config
+### Run the deployment config
 
 ``` sh
 oc -n $NAMESPACE process -f app.dc.yaml -p REPO_NAME=$REPO_NAME -p JOB_NAME=$JOB_NAME -p NAMESPACE=$NAMESPACE -p APP_NAME=$APP_NAME -p ROUTE_HOST=$ROUTE_HOST -p ROUTE_PATH=$ROUTE_PATH  -o yaml | oc -n $NAMESPACE create -f -
@@ -114,7 +116,7 @@ oc -n $NAMESPACE process -f app.dc.yaml -p REPO_NAME=$REPO_NAME -p JOB_NAME=$JOB
 oc -n $NAMESPACE rollout latest dc/dgrsc-pr-x-app
 ```
 
-#### Clean up the namespace
+### Clean up the namespace
 
 ``` sh
 oc -n $NAMESPACE delete all,template,secret,configmap,pvc,serviceaccount,rolebinding,networksecuritypolicy --selector app=$APP_NAME-$JOB_NAME
