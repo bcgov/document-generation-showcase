@@ -1,5 +1,4 @@
 #!groovy
-import bcgov.GitHubHelper
 
 // ------------------
 // Pipeline Variables
@@ -43,7 +42,7 @@ pipeline {
     TEST_HOST = "${APP_NAME}-test.${APP_DOMAIN}"
     PROD_HOST = "${APP_NAME}.${APP_DOMAIN}"
     // PATH_ROOT will be appended to ENV_HOST
-    PATH_ROOT = "/${APP_NAME}"
+    PATH_ROOT = "/${JOB_NAME.equalsIgnoreCase('master') ? APP_NAME : JOB_NAME}"
 
     // SonarQube Endpoint URL
     SONARQUBE_URL_INT = 'http://sonarqube:9000'
@@ -146,13 +145,13 @@ pipeline {
       post {
         success {
           script {
-            commonPipeline.createDeploymentStatus(DEV_PROJECT, 'SUCCESS', DEV_HOST, PATH_ROOT)
+            commonPipeline.createDeploymentStatus(DEV_PROJECT, 'SUCCESS', JOB_NAME, DEV_HOST, PATH_ROOT)
             commonPipeline.notifyStageStatus('Deploy - Dev', 'SUCCESS')
           }
         }
         unsuccessful {
           script {
-            commonPipeline.createDeploymentStatus(DEV_PROJECT, 'FAILURE', DEV_HOST, PATH_ROOT)
+            commonPipeline.createDeploymentStatus(DEV_PROJECT, 'FAILURE', JOB_NAME, DEV_HOST, PATH_ROOT)
             commonPipeline.notifyStageStatus('Deploy - Dev', 'FAILURE')
           }
         }
@@ -169,13 +168,13 @@ pipeline {
       post {
         success {
           script {
-            commonPipeline.createDeploymentStatus(TEST_PROJECT, 'SUCCESS', TEST_HOST, PATH_ROOT)
+            commonPipeline.createDeploymentStatus(TEST_PROJECT, 'SUCCESS', JOB_NAME, TEST_HOST, PATH_ROOT)
             commonPipeline.notifyStageStatus('Deploy - Test', 'SUCCESS')
           }
         }
         unsuccessful {
           script {
-            commonPipeline.createDeploymentStatus(TEST_PROJECT, 'FAILURE', TEST_HOST, PATH_ROOT)
+            commonPipeline.createDeploymentStatus(TEST_PROJECT, 'FAILURE', JOB_NAME, TEST_HOST, PATH_ROOT)
             commonPipeline.notifyStageStatus('Deploy - Test', 'FAILURE')
           }
         }
@@ -192,13 +191,13 @@ pipeline {
       post {
         success {
           script {
-            commonPipeline.createDeploymentStatus(PROD_PROJECT, 'SUCCESS', PROD_HOST, PATH_ROOT)
+            commonPipeline.createDeploymentStatus(PROD_PROJECT, 'SUCCESS', JOB_NAME, PROD_HOST, PATH_ROOT)
             commonPipeline.notifyStageStatus('Deploy - Prod', 'SUCCESS')
           }
         }
         unsuccessful {
           script {
-            commonPipeline.createDeploymentStatus(PROD_PROJECT, 'FAILURE', PROD_HOST, PATH_ROOT)
+            commonPipeline.createDeploymentStatus(PROD_PROJECT, 'FAILURE', JOB_NAME, PROD_HOST, PATH_ROOT)
             commonPipeline.notifyStageStatus('Deploy - Prod', 'FAILURE')
           }
         }
