@@ -3,7 +3,6 @@
     "keycloak": {
       "clientId": "clientId"
     },
-    "apiPath": "api/v1",
     "basePath" : "/app"
   },
   "server": {
@@ -11,8 +10,6 @@
       "clientId": "clientId",
       "clientSecret": "clientSecret"
     },
-    "bodyLimit": "30mb",
-    "hostUrl": "http://localhost:8888",
     "logLevel": "silent",
     "morganFormat": "dev",
     "port": "8888"

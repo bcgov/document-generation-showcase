@@ -48,7 +48,7 @@ export FRONTEND_KC_CLIENTID=dgrsc-frontend
 export FRONTEND_KC_REALM=98r0z7rz
 export FRONTEND_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
 export FRONTEND_APIPATH=api/v2
-export FRONTEND_DASHBOARDURL=https://cdogs-dashboard-dev.pathfinder.gov.bc.ca/s/cdogs/app/kibana#/dashboard/00000000-0000-0000-0000-000000000000?embed=true
+export FRONTEND_DASHBOARDURL=https://cdogs-dashboard-dev.pathfinder.gov.bc.ca/s/cdogs/app/kibana#/dashboard/9650e8f0-51ca-11ea-8605-0f7f1dd82992?embed=true
 export SERVER_KC_REALM=98r0z7rz
 export SERVER_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
 export SERVER_LOGLEVEL=info
