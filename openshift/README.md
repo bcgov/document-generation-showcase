@@ -23,7 +23,17 @@ Add users to the **DGRSC Users** group.
 
 ## Openshift Manual Configuration and Deployment
 
-Assume you are logged into OpenShift and are in the repo/openshift local directory.  We will run the scripts from there.  We will use the [Document Generation Showcase (dev)](https://console.pathfinder.gov.bc.ca:8443/console/project/wfezkf-dev/overview) namespace.
+Assume you are logged into OpenShift and are in the repo/openshift local directory.  We will run the scripts from there.  We will use the [Document Generation Showcase (dev)](https://console.apps.silver.devops.gov.bc.ca/k8s/cluster/projects/bb0279-dev) namespace.
+
+### Add Deployer NSP to namespace
+
+As OCP4 requires explicit NSP rules to allow network traffic, we must ensure that k8s deployer pods are able to talk to the k8s API. This must be done in all of your deployment namespaces (dev, test, prod).
+
+``` sh
+export NAMESPACE=<YOURNAMESPACE>
+
+oc -n $NAMESPACE process -f nsp.yaml -p NAMESPACE=$NAMESPACE -o yaml | oc -n $NAMESPACE apply -f -
+```
 
 ### Set up environment parameters
 
@@ -48,7 +58,7 @@ export FRONTEND_KC_CLIENTID=dgrsc-frontend
 export FRONTEND_KC_REALM=98r0z7rz
 export FRONTEND_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
 export FRONTEND_APIPATH=api/v2
-export FRONTEND_DASHBOARDURL=https://cdogs-dashboard-dev.pathfinder.gov.bc.ca/s/cdogs/app/kibana#/dashboard/00000000-0000-0000-0000-000000000000?embed=true
+export FRONTEND_DASHBOARDURL=https://cdogs-dashboard-dev.pathfinder.gov.bc.ca/s/cdogs/app/kibana#/dashboard/9650e8f0-51ca-11ea-8605-0f7f1dd82992?embed=true
 export SERVER_KC_REALM=98r0z7rz
 export SERVER_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
 export SERVER_LOGLEVEL=info
@@ -119,7 +129,7 @@ oc -n $NAMESPACE rollout latest dc/dgrsc-pr-x-app
 ### Clean up the namespace
 
 ``` sh
-oc -n $NAMESPACE delete all,template,secret,configmap,pvc,serviceaccount,rolebinding,networksecuritypolicy --selector app=$APP_NAME-$JOB_NAME
+oc -n $NAMESPACE delete all,template,secret,configmap,pvc,serviceaccount,rolebinding,nsp --selector app=$APP_NAME-$JOB_NAME
 oc -n $NAMESPACE delete configmap dgrsc-frontend-config
 oc -n $NAMESPACE delete configmap dgrsc-server-config
 oc -n $NAMESPACE delete configmap dgrsc-services-config

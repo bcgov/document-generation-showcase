@@ -1,12 +1,5 @@
 
-# Document Generation Showcase [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE) [![Quality Gate](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/api/badges/gate?key=document-generation-showcase-master)](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/dashboard?id=document-generation-showcase-master)
-
-[![Bugs](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/api/badges/measure?key=document-generation-showcase-master&metric=bugs)](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/dashboard?id=document-generation-showcase-master)
-[![Vulnerabilities](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/api/badges/measure?key=document-generation-showcase-master&metric=vulnerabilities)](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/dashboard?id=document-generation-showcase-master)
-[![Code Smells](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/api/badges/measure?key=document-generation-showcase-master&metric=code_smells)](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/dashboard?id=document-generation-showcase-master)
-[![Coverage](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/api/badges/measure?key=document-generation-showcase-master&metric=coverage)](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/dashboard?id=document-generation-showcase-master)
-[![Lines](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/api/badges/measure?key=document-generation-showcase-master&metric=lines)](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/dashboard?id=document-generation-showcase-master)
-[![Duplication](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/api/badges/measure?key=document-generation-showcase-master&metric=duplicated_lines_density)](https://sonarqube-wfezkf-tools.pathfinder.gov.bc.ca/dashboard?id=document-generation-showcase-master)
+# Document Generation Showcase [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 Documentation, Code Templates and a Showcase application to demonstrate features of the Natural Resources Common Document Generation Service
 
