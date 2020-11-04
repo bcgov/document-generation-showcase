@@ -1,6 +1,6 @@
 # Keycloak
 
-Login to [dev](https://sso-dev.pathfinder.gov.bc.ca/auth/admin/98r0z7rz/console/#/realms/98r0z7rz/clients) to get client secrets or add users to groups.
+Login to [dev](https://dev.oidc.gov.bc.ca/auth/admin/98r0z7rz/console/#/realms/98r0z7rz/clients) to get client secrets or add users to groups.
 
 ## Clients
 
@@ -66,8 +66,8 @@ export SERVER_MORGANFORMAT=dev
 export SERVER_PORT=8888
 export SERVER_BODYLIMIT=30mb
 export SERVER_APIPATH=/api/v2
-export CDOGS_TOKENURL=https://sso-dev.pathfinder.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
-export CDOGS_APIURL=https://cdogs-master-idcqvl-dev.pathfinder.gov.bc.ca/api/v2
+export CDOGS_TOKENURL=https://dev.oidc.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
+export CDOGS_APIURL=https://cdogs-dev.pathfinder.gov.bc.ca/api/v2
 
 ```
 
