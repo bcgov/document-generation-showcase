@@ -79,31 +79,31 @@ pipeline {
       }
     }
 
-    stage('Tests') {
-      agent any
-      steps {
-        script {
-          commonPipeline.notifyStageStatus('Tests', 'PENDING')
-          commonPipeline.runStageTests()
-        }
-      }
-      post {
-        success {
-          script {
-            stash name: COVERAGE_STASH, includes: 'app/frontend/coverage/**'
+    // stage('Tests') {
+    //   agent any
+    //   steps {
+    //     script {
+    //       commonPipeline.notifyStageStatus('Tests', 'PENDING')
+    //       commonPipeline.runStageTests()
+    //     }
+    //   }
+    //   post {
+    //     success {
+    //       script {
+    //         stash name: COVERAGE_STASH, includes: 'app/frontend/coverage/**'
 
-            echo 'All Lint Checks and Tests passed'
-            commonPipeline.notifyStageStatus('Tests', 'SUCCESS')
-          }
-        }
-        failure {
-          script {
-            echo 'Some Lint Checks and Tests failed'
-            commonPipeline.notifyStageStatus('Tests', 'FAILURE')
-          }
-        }
-      }
-    }
+    //         echo 'All Lint Checks and Tests passed'
+    //         commonPipeline.notifyStageStatus('Tests', 'SUCCESS')
+    //       }
+    //     }
+    //     failure {
+    //       script {
+    //         echo 'Some Lint Checks and Tests failed'
+    //         commonPipeline.notifyStageStatus('Tests', 'FAILURE')
+    //       }
+    //     }
+    //   }
+    // }
 
     stage('Build') {
       agent any
