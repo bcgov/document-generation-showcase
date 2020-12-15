@@ -37,8 +37,12 @@ oc -n $NAMESPACE process -f nsp.yaml -p NAMESPACE=$NAMESPACE -o yaml | oc -n $NA
 
 ### Set up environment parameters
 
+Replace the following values as necessary.
+
 Some notes:
-**FRONTEND\_APIPATH** has no beginning '/', that is so it will always call the relative api.
+
+- **FRONTEND\_APIPATH** has no beginning '/', that is so it will always call the relative api.
+- **SERVER\_KC\_PUBLICKEY** is the Keycloak Public Key which can be found in the Keycloak Admin Panel under Realm Settings > Keys. Look for the Public key button (normally under RS256 row), and click to see the key. The key should begin with a pattern of `MIIBIjANB...`.
 
 ``` sh
 export NAMESPACE=wfezkf-dev
@@ -59,6 +63,7 @@ export FRONTEND_KC_REALM=98r0z7rz
 export FRONTEND_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
 export FRONTEND_APIPATH=api/v2
 export FRONTEND_DASHBOARDURL=https://cdogs-dashboard-dev.pathfinder.gov.bc.ca/s/cdogs/app/kibana#/dashboard/9650e8f0-51ca-11ea-8605-0f7f1dd82992?embed=true
+export SERVER_KC_PUBLICKEY=MIIBIjANB...
 export SERVER_KC_REALM=98r0z7rz
 export SERVER_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
 export SERVER_LOGLEVEL=info
@@ -68,7 +73,6 @@ export SERVER_BODYLIMIT=30mb
 export SERVER_APIPATH=/api/v2
 export CDOGS_TOKENURL=https://dev.oidc.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
 export CDOGS_APIURL=https://cdogs-dev.pathfinder.gov.bc.ca/api/v2
-
 ```
 
 ### Create secrets and config map
@@ -87,7 +91,7 @@ oc create configmap -n $NAMESPACE dgrsc-frontend-config --from-literal=FRONTEND_
 ```
 
 ``` sh
-oc create configmap -n $NAMESPACE dgrsc-server-config --from-literal=SERVER_KC_REALM=$SERVER_KC_REALM --from-literal=SERVER_KC_SERVERURL=$SERVER_KC_SERVERURL --from-literal=SERVER_LOGLEVEL=$SERVER_LOGLEVEL --from-literal=SERVER_MORGANFORMAT=$SERVER_MORGANFORMAT --from-literal=SERVER_PORT=$SERVER_PORT --from-literal=SERVER_BODYLIMIT=$SERVER_BODYLIMIT --from-literal=SERVER_APIPATH=$SERVER_APIPATH
+oc create configmap -n $NAMESPACE dgrsc-server-config --from-literal=SERVER_KC_PUBLICKEY=$SERVER_KC_PUBLICKEY  --from-literal=SERVER_KC_REALM=$SERVER_KC_REALM --from-literal=SERVER_KC_SERVERURL=$SERVER_KC_SERVERURL --from-literal=SERVER_LOGLEVEL=$SERVER_LOGLEVEL --from-literal=SERVER_MORGANFORMAT=$SERVER_MORGANFORMAT --from-literal=SERVER_PORT=$SERVER_PORT --from-literal=SERVER_BODYLIMIT=$SERVER_BODYLIMIT --from-literal=SERVER_APIPATH=$SERVER_APIPATH
 ```
 
 ``` sh

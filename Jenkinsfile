@@ -5,7 +5,7 @@
 // ------------------
 
 // Stash Names
-COVERAGE_STASH = 'test-coverage'
+// COVERAGE_STASH = 'test-coverage'
 
 // --------------------
 // Declarative Pipeline
