@@ -6,24 +6,24 @@ import bcgov.GitHubHelper
 // ---------------
 
 // Run Tests
-def runStageTests() {
-  timeout(time: 10, unit: 'MINUTES') {
-    dir('app/frontend') {
-      try {
-        echo 'Installing NPM Dependencies...'
-        sh 'npm ci'
+// def runStageTests() {
+//   timeout(time: 10, unit: 'MINUTES') {
+//     dir('app/frontend') {
+//       try {
+//         echo 'Installing NPM Dependencies...'
+//         sh 'npm ci'
 
-        echo 'Linting and Testing App...'
-        sh 'npm run test'
+//         echo 'Linting and Testing App...'
+//         sh 'npm run test'
 
-        echo 'App Lint Checks and Tests passed'
-      } catch (e) {
-        echo 'App Lint Checks and Tests failed'
-        throw e
-      }
-    }
-  }
-}
+//         echo 'App Lint Checks and Tests passed'
+//       } catch (e) {
+//         echo 'App Lint Checks and Tests failed'
+//         throw e
+//       }
+//     }
+//   }
+// }
 
 // Build Images & SonarQube Report
 def runStageBuild() {
@@ -33,49 +33,49 @@ def runStageBuild() {
         echo "DEBUG - Using project: ${openshift.project()}"
       }
 
-      parallel(
-        App: {
-          try {
-            notifyStageStatus('Build App', 'PENDING')
+      // parallel(
+      //   App: {
+      try {
+        notifyStageStatus('Build App', 'PENDING')
 
-            echo "Processing BuildConfig ${REPO_NAME}-app-${JOB_NAME}..."
-            def bcApp = openshift.process('-f',
-              'openshift/app.bc.yaml',
-              "REPO_NAME=${REPO_NAME}",
-              "JOB_NAME=${JOB_NAME}",
-              "SOURCE_REPO_URL=${SOURCE_REPO_URL}",
-              "SOURCE_REPO_REF=${SOURCE_REPO_REF}"
-            )
+        echo "Processing BuildConfig ${REPO_NAME}-app-${JOB_NAME}..."
+        def bcApp = openshift.process('-f',
+          'openshift/app.bc.yaml',
+          "REPO_NAME=${REPO_NAME}",
+          "JOB_NAME=${JOB_NAME}",
+          "SOURCE_REPO_URL=${SOURCE_REPO_URL}",
+          "SOURCE_REPO_REF=${SOURCE_REPO_REF}"
+        )
 
-            echo "Building ImageStream..."
-            openshift.apply(bcApp).narrow('bc').startBuild('-w').logs('-f')
+        echo "Building ImageStream..."
+        openshift.apply(bcApp).narrow('bc').startBuild('-w').logs('-f')
 
-            echo "Tagging Image ${REPO_NAME}-app:latest..."
-            openshift.tag("${REPO_NAME}-app:latest",
-              "${REPO_NAME}-app:${JOB_NAME}"
-            )
+        echo "Tagging Image ${REPO_NAME}-app:latest..."
+        openshift.tag("${REPO_NAME}-app:latest",
+          "${REPO_NAME}-app:${JOB_NAME}"
+        )
 
-            echo 'App build successful'
-            notifyStageStatus('Build App', 'SUCCESS')
-          } catch (e) {
-            echo 'App build failed'
-            notifyStageStatus('Build App', 'FAILURE')
-            throw e
-          }
-        },
+        echo 'App build successful'
+        notifyStageStatus('Build App', 'SUCCESS')
+      } catch (e) {
+        echo 'App build failed'
+        notifyStageStatus('Build App', 'FAILURE')
+        throw e
+      }
+      //   },
 
-        // SonarQube: {
-        //   unstash COVERAGE_STASH
+      //   SonarQube: {
+      //     unstash COVERAGE_STASH
 
-        //   echo 'Performing SonarQube static code analysis...'
-        //   sh """
-        //   sonar-scanner \
-        //     -Dsonar.host.url='${SONARQUBE_URL_INT}' \
-        //     -Dsonar.projectKey='${REPO_NAME}-${JOB_NAME}' \
-        //     -Dsonar.projectName='${APP_NAME} (${JOB_NAME.toUpperCase()})'
-        //   """
-        // }
-      )
+      //     echo 'Performing SonarQube static code analysis...'
+      //     sh """
+      //     sonar-scanner \
+      //       -Dsonar.host.url='${SONARQUBE_URL_INT}' \
+      //       -Dsonar.projectKey='${REPO_NAME}-${JOB_NAME}' \
+      //       -Dsonar.projectName='${APP_NAME} (${JOB_NAME.toUpperCase()})'
+      //     """
+      //   }
+      // )
     }
   }
 }
