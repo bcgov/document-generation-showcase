@@ -6,6 +6,7 @@ module.exports = new Keycloak({}, {
   'confidential-port': 0,
   clientId: config.get('server.keycloak.clientId'),
   'policy-enforcer': {},
+  realmPublicKey: config.has('server.keycloak.publicKey') ? config.get('server.keycloak.publicKey') : undefined,
   realm: config.get('server.keycloak.realm'),
   secret: config.get('server.keycloak.clientSecret'),
   serverUrl: config.get('server.keycloak.serverUrl'),
