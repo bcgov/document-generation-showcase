@@ -7,15 +7,15 @@
     hide-default-footer
     :items="items"
   >
-    <template v-slot:item.key="props">
+    <template #[`item.key`]="props">
       <v-text-field placeholder="Key" single-line v-model="props.item.key" />
     </template>
-    <template v-slot:item.value="props">
+    <template #[`item.value`]="props">
       <v-text-field placeholder="Value" single-line v-model="props.item.value" />
     </template>
-    <template v-slot:item.action="{ item }">
+    <template #[`item.action`]="{ item }">
       <v-tooltip top>
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <v-btn @click="deleteItem(item)" fab class="mb-2" small text v-on="on">
             <v-icon>delete</v-icon>
           </v-btn>
@@ -23,11 +23,11 @@
         <span>Delete Key/Value Pair</span>
       </v-tooltip>
     </template>
-    <template v-slot:footer>
+    <template #footer>
       <v-container>
         <v-row justify="end">
           <v-tooltip top>
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-btn small color="info" @click="addItem()" class="mb-2" v-on="on">
                 <v-icon :left="$vuetify.breakpoint.smAndUp">playlist_add</v-icon>
                 <span v-if="$vuetify.breakpoint.smAndUp">Add Context</span>
