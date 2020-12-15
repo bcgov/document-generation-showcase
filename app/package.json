@@ -20,8 +20,8 @@
     "test": "node_modules/.bin/jest --verbose --env=jsdom --passWithNoTests",
     "lint": "node_modules/.bin/eslint . **/www --no-fix --ext .js",
     "lint:fix": "node_modules/.bin/eslint . **/www --fix --ext .js",
-    "posttest": "node ./lcov-fix.js",
     "pretest": "npm run lint",
+    "posttest": "node ./lcov-fix.js",
     "clean": "rm -rf coverage dist",
     "purge": "rm -rf node_modules",
     "rebuild": "npm run clean && npm run build",
@@ -41,27 +41,27 @@
     "frontend:purge": "cd frontend && npm run purge"
   },
   "dependencies": {
-    "api-problem": "6.0.1",
-    "axios": "^0.19.2",
-    "axios-oauth-client": "^1.2.1",
+    "api-problem": "^6.1.4",
+    "axios": "^0.21.0",
+    "axios-oauth-client": "^1.4.0",
     "axios-token-interceptor": "^0.2.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
-    "config": "^3.2.5",
+    "config": "^3.3.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "keycloak-connect": "^8.0.1",
+    "keycloak-connect": "^10.0.2",
     "morgan": "^1.9.1",
     "npmlog": "^4.1.2"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^7.15.0",
     "eslint-config-recommended": "^4.0.0",
-    "eslint-plugin-flowtype": "^4.6.0",
-    "eslint-plugin-jest": "^23.6.0",
-    "jest": "^26.1.0",
-    "nodemon": "^2.0.4",
-    "supertest": "^4.0.2"
+    "eslint-plugin-flowtype": "^5.2.0",
+    "eslint-plugin-jest": "^24.1.3",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.6",
+    "supertest": "^6.0.1"
   },
   "eslintConfig": {
     "root": true,
