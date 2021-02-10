@@ -18,7 +18,6 @@
     "lint": "node_modules/.bin/vue-cli-service lint . --no-fix --ext .js,vue",
     "lint:fix": "node_modules/.bin/vue-cli-service lint . --fix --ext .js,vue",
     "pretest": "npm run lint",
-    "posttest": "node ./lcov-fix.js",
     "clean": "rm -rf coverage dist",
     "purge": "rm -rf node_modules",
     "rebuild": "npm run clean && npm run build",
@@ -26,7 +25,7 @@
   },
   "dependencies": {
     "@dsb-norge/vue-keycloak-js": "^1.3.1",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "core-js": "^3.8.1",
     "keycloak-js": "^10.0.2",
     "vue": "^2.6.12",
@@ -46,7 +45,6 @@
     "eslint": "^7.15.0",
     "eslint-plugin-vue": "^7.2.0",
     "eslint-plugin-vuetify": "^1.0.0-beta.6",
-    "jest-sonar-reporter": "^2.0.0",
     "sass": "^1.30.0",
     "sass-loader": "^10.1.0",
     "vue-cli-plugin-vuetify": "^2.0.8",
@@ -203,10 +201,6 @@
       "src/**/*.{js,vue}",
       "!src/main.js",
       "!src/plugins/*.*"
-    ],
-    "testResultsProcessor": "jest-sonar-reporter"
-  },
-  "jestSonar": {
-    "reportPath": "coverage"
+    ]
   }
 }

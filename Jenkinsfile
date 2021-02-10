@@ -1,12 +1,5 @@
 #!groovy
 
-// ------------------
-// Pipeline Variables
-// ------------------
-
-// Stash Names
-// COVERAGE_STASH = 'test-coverage'
-
 // --------------------
 // Declarative Pipeline
 // --------------------
@@ -43,10 +36,6 @@ pipeline {
     PROD_HOST = "${APP_NAME}.${APP_DOMAIN}"
     // PATH_ROOT will be appended to ENV_HOST
     PATH_ROOT = "/${JOB_NAME.equalsIgnoreCase('master') ? APP_NAME : JOB_NAME}"
-
-    // SonarQube Endpoint URL
-    SONARQUBE_URL_INT = 'http://sonarqube:9000'
-    SONARQUBE_URL_EXT = "https://sonarqube-${TOOLS_PROJECT}.${APP_DOMAIN}"
   }
 
   options {
@@ -73,42 +62,16 @@ pipeline {
             echo sh(returnStdout: true, script: 'env')
           }
 
-          // Load Common Code as Global Variable
-          commonPipeline = load "${WORKSPACE}/openshift/commonPipeline.groovy"
+          loadCommonPipeline()
         }
       }
     }
-
-    // stage('Tests') {
-    //   agent any
-    //   steps {
-    //     script {
-    //       commonPipeline.notifyStageStatus('Tests', 'PENDING')
-    //       commonPipeline.runStageTests()
-    //     }
-    //   }
-    //   post {
-    //     success {
-    //       script {
-    //         stash name: COVERAGE_STASH, includes: 'app/frontend/coverage/**'
-
-    //         echo 'All Lint Checks and Tests passed'
-    //         commonPipeline.notifyStageStatus('Tests', 'SUCCESS')
-    //       }
-    //     }
-    //     failure {
-    //       script {
-    //         echo 'Some Lint Checks and Tests failed'
-    //         commonPipeline.notifyStageStatus('Tests', 'FAILURE')
-    //       }
-    //     }
-    //   }
-    // }
 
     stage('Build') {
       agent any
       steps {
         script {
+          loadCommonPipeline()
           commonPipeline.runStageBuild()
         }
       }
@@ -139,6 +102,7 @@ pipeline {
       agent any
       steps {
         script {
+          loadCommonPipeline()
           commonPipeline.runStageDeploy('Dev', DEV_PROJECT, DEV_HOST, PATH_ROOT)
         }
       }
@@ -162,6 +126,7 @@ pipeline {
       agent any
       steps {
         script {
+          loadCommonPipeline()
           commonPipeline.runStageDeploy('Test', TEST_PROJECT, TEST_HOST, PATH_ROOT)
         }
       }
@@ -185,6 +150,7 @@ pipeline {
       agent any
       steps {
         script {
+          loadCommonPipeline()
           commonPipeline.runStageDeploy('Prod', PROD_PROJECT, PROD_HOST, PATH_ROOT)
         }
       }
@@ -203,5 +169,16 @@ pipeline {
         }
       }
     }
+  }
+}
+
+// --------------------
+// Supporting Functions
+// --------------------
+
+// Load Common Code as Global Variable
+def loadCommonPipeline() {
+  if (!binding.hasVariable('commonPipeline')) {
+    commonPipeline = load "${WORKSPACE}/openshift/commonPipeline.groovy"
   }
 }
