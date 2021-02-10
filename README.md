@@ -1,6 +1,10 @@
 
 # Document Generation Showcase [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE) [![img](https://img.shields.io/badge/Lifecycle-Stable-97ca00)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 
+![Tests](https://github.com/bcgov/document-generation-showcase/workflows/Tests/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8faa4ba7f87ce91a429a/maintainability)](https://codeclimate.com/github/bcgov/document-generation-showcase/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8faa4ba7f87ce91a429a/test_coverage)](https://codeclimate.com/github/bcgov/document-generation-showcase/test_coverage)
+
 Documentation, Code Templates and a Showcase application to demonstrate features of the Natural Resources Common Document Generation Service
 
 To learn more about the **Common Services** that are available visit the [Common Services Showcase](https://bcgov.github.io/common-service-showcase/) page.
@@ -16,7 +20,7 @@ To learn more about the **Common Services** that are available visit the [Common
     Jenkinsfile                - Top-level Pipeline
     Jenkinsfile.cicd           - Pull-Request Pipeline
     LICENSE                    - License
-    sonar-project.properties   - SonarQube Scanner settings
+    vetur.config.js            - Vetur configuration
 
 ## Documentation
 
