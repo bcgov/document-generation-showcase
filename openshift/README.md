@@ -23,16 +23,16 @@ Add users to the **DGRSC Users** group.
 
 ## Openshift Manual Configuration and Deployment
 
-Assume you are logged into OpenShift and are in the repo/openshift local directory.  We will run the scripts from there.  We will use the [Document Generation Showcase (dev)](https://console.apps.silver.devops.gov.bc.ca/k8s/cluster/projects/bb0279-dev) namespace.
+We assume you are logged into OpenShift and are in the repo/openshift local directory.  We will run the scripts from there.
 
-### Add Deployer NSP to namespace
+### Add Default Kubernetes Network Policies
 
-As OCP4 requires explicit NSP rules to allow network traffic, we must ensure that k8s deployer pods are able to talk to the k8s API. This must be done in all of your deployment namespaces (dev, test, prod).
+Before deploying, ensure that you have the Network Policies `deny-by-default` and `allow-from-openshift-ingress` by running the following:
 
 ``` sh
-export NAMESPACE=<YOURNAMESPACE>
+export NAMESPACE=bb0279-prod
 
-oc -n $NAMESPACE process -f nsp.yaml -p NAMESPACE=$NAMESPACE -o yaml | oc -n $NAMESPACE apply -f -
+oc process -n $NAMESPACE -f https://raw.githubusercontent.com/wiki/bcgov/nr-get-token/assets/templates/default.np.yaml | oc apply -n $NAMESPACE -f -
 ```
 
 ### Set up environment parameters
@@ -133,7 +133,7 @@ oc -n $NAMESPACE rollout latest dc/dgrsc-pr-x-app
 ### Clean up the namespace
 
 ``` sh
-oc -n $NAMESPACE delete all,template,secret,configmap,pvc,serviceaccount,rolebinding,nsp --selector app=$APP_NAME-$JOB_NAME
+oc -n $NAMESPACE delete all,template,secret,configmap,pvc,serviceaccount,rolebinding --selector app=$APP_NAME-$JOB_NAME
 oc -n $NAMESPACE delete configmap dgrsc-frontend-config
 oc -n $NAMESPACE delete configmap dgrsc-server-config
 oc -n $NAMESPACE delete configmap dgrsc-services-config
