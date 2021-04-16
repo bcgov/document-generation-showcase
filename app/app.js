@@ -47,7 +47,10 @@ log.verbose('Config', utils.prettyStringify(config));
 
 // Skip if running tests
 if (process.env.NODE_ENV !== 'test') {
-  const morganOpts = {};
+  const morganOpts = {
+    // Skip logging kube-probe requests
+    skip: (req) => req.headers['user-agent'] && req.headers['user-agent'].includes('kube-probe')
+  };
   if (config.has('server.logFile')) {
     morganOpts.stream = teeStream;
   }
