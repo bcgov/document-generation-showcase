@@ -27,11 +27,11 @@ plugins:
         enabled: false
       TRAILINGSPACES:
         enabled: false
-  eslint:
-    enabled: true
-    channel: "eslint-7"
-    config:
-      config: app/.eslintrc.js
+  # eslint:
+  #   enabled: true
+  #   channel: "eslint-7"
+  #   config:
+  #     config: app/.eslintrc.js
   fixme:
     enabled: true
   git-legal:
