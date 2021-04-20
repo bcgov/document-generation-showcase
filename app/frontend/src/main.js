@@ -1,10 +1,10 @@
 import axios from 'axios';
 import Vue from 'vue';
-import VueKeycloakJs from '@dsb-norge/vue-keycloak-js';
 
 import App from './App.vue';
 import getRouter from './router';
 import store from './store';
+import VueKeycloakJs from './plugins/keycloak';
 import vuetify from './plugins/vuetify';
 
 import configService from './common/configService';
