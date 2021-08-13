@@ -20,7 +20,7 @@
           width="10rem"
         />
       </a>
-      <h1 data-test="btn-header-title" class="font-weight-bold title-text">{{ appTitle }}</h1>
+      <h1 data-test="btn-header-title" class="font-weight-bold title-text text-h6">{{ appTitle }}</h1>
       <v-spacer />
       <div v-if="kcReady">
         <JWTDebug />
