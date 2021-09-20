@@ -26,18 +26,22 @@
                       prepend-icon="attachment"
                       required
                       mandatory
-                      :rules="(this.templateTab === 0) ? notEmpty : []"
+                      :rules="this.templateTab === 0 ? notEmpty : []"
                       show-size
                       v-model="form.files"
                     />
                   </v-tab-item>
                   <v-tab-item>
                     <p>
-                      Type in your Template contents, for example: 'Welcome {d.firstName}!'.
+                      Type in your Template contents, for example: 'Welcome
+                      {d.firstName}!'.
                       <br />See
                       <a
                         href="https://carbone.io/documentation.html#substitutions"
-                      >Carbone documentation</a> for more details.
+                      >
+                        Carbone documentation
+                      </a>
+                      for more details.
                     </p>
                     <v-textarea
                       class="template-builder"
@@ -60,7 +64,10 @@
                   persistent-hint
                   v-model="form.outputFileName"
                 />
-                <v-checkbox v-model="form.convertToPDF" label="Convert to PDF" />
+                <v-checkbox
+                  v-model="form.convertToPDF"
+                  label="Convert to PDF"
+                />
               </v-card-text>
             </v-card>
           </v-col>
@@ -104,8 +111,14 @@
                     />
                   </v-tab-item>
                   <v-tab-item>
-                    <p>Add key/value pairs for each of the contexts in your template.</p>
-                    <JsonBuilder @json-object="buildContexts" ref="jsonBuilder" />
+                    <p>
+                      Add key/value pairs for each of the contexts in your
+                      template.
+                    </p>
+                    <JsonBuilder
+                      @json-object="buildContexts"
+                      ref="jsonBuilder"
+                    />
                   </v-tab-item>
                 </v-tabs-items>
               </v-card-text>
@@ -153,10 +166,19 @@
     </v-card-actions>
 
     <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
-      {{ snackText }}
-      <v-btn text @click="snack = false">
-        <v-icon>close</v-icon>
-      </v-btn>
+      <div class="d-flex align-center">
+        <div class="mr-auto">
+          {{ snackText }}
+          <ul v-if="snackErrorList && snackErrorList.length">
+            <li v-for="item in snackErrorList" :key="item.message">
+              {{ item.message }}
+            </li>
+          </ul>
+        </div>
+        <v-btn text @click="snack = false">
+          <v-icon>close</v-icon>
+        </v-btn>
+      </div>
     </v-snackbar>
   </v-card>
 </template>
@@ -227,6 +249,7 @@ export default {
       snack: false,
       snackColor: '',
       snackText: '',
+      snackErrorList: [],
       validFileInput: null
     };
   },
@@ -273,10 +296,11 @@ export default {
       }
       return filename;
     },
-    notifyError(errMsg) {
+    notifyError(errMsg, errors) {
       this.snack = true;
       this.snackColor = 'error';
       this.snackText = errMsg;
+      this.snackErrorList = errors && Array.isArray(errors) ? errors : [];
     },
     notifyInfo(infoMsg) {
       this.snack = true;
@@ -380,7 +404,9 @@ export default {
 
         //if output file name field has a file extension, we need to separate out the name from the extension for conversion
         // may have templates in the output file name, so only look for separator AFTER templates...
-        const _postTemplatesOutputFileName = this.form.outputFileName.substring(this.form.outputFileName.lastIndexOf('}')+1);
+        const _postTemplatesOutputFileName = this.form.outputFileName.substring(
+          this.form.outputFileName.lastIndexOf('}') + 1
+        );
         if (_postTemplatesOutputFileName.lastIndexOf('.') > -1) {
           // remove extension from output file name
           outputFileName = this.splitFileName(this.form.outputFileName)['name'];
@@ -433,11 +459,14 @@ export default {
         this.notifySuccess('Submitted successfully');
       } catch (e) {
         console.error(e);
-        this.notifyError(e.message);
         if (e.response) {
           const data = new TextDecoder().decode(e.response.data);
           const parsed = JSON.parse(data);
           console.warn('CDOGS Response:', parsed);
+          const errArray = parsed.status === 422 ? parsed.errors : undefined;
+          this.notifyError(e, errArray);
+        } else {
+          this.notifyError(e);
         }
       } finally {
         this.loading = false;
