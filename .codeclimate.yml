@@ -13,6 +13,7 @@ exclude_patterns:
   - "**/vendor/"
   - "**/*_test.go"
   - "**/*.d.ts"
+  - "**/examples/"
 plugins:
   csslint:
     enabled: true

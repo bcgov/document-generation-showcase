@@ -115,5 +115,18 @@
       "link": "./examples/mx_permit_{d.permitNumber}.docx"
     },
     "type": "Microsoft Word Document"
+  },
+  {
+    "contexts": {
+      "color": "teal",
+      "link": "./examples/contexts_table_stripes.json"
+    },
+    "description": "Sample Word Document with Striped Table",
+    "template": {
+      "color": "blue",
+      "icon": "mdi-file-word",
+      "link": "./examples/template_table_stripes.docx"
+    },
+    "type": "Microsoft Word Document"
   }
 ]

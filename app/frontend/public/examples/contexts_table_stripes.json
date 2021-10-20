@@ -1,0 +1,45 @@
+{
+  "header": {
+    "name": "Header Name",
+    "datePrinted": "Oct 20 2021",
+    "dateOfBirth": "Oct 31 1977",
+    "isRedacted": true,
+    "email": "nr.commonserviceshowcase@gov.bc.ca",
+    "isPie": true,
+    "text": "Say something important about your document here."
+  },
+  "records": [
+    {
+      "date": "2021-10-31",
+      "pie": "Pumpkin",
+      "store": "Rootcellar",
+      "topping": "whipped cream",
+      "heated": "no",
+      "quantity": 2
+    },
+    {
+      "date": "2021-12-25",
+      "pie": "Apple",
+      "store": "Thrifty Foods",
+      "topping": "ice-cream",
+      "heated": "yes",
+      "quantity": 5
+    },
+    {
+      "date": "2021-07-01",
+      "pie": "Rhubarb",
+      "store": "Country Grocer",
+      "topping": "ice-cream",
+      "heated": "yes",
+      "quantity": 1
+    },
+    {
+      "date": "2021-05-15",
+      "pie": "Strawberry",
+      "store": "Moss St Market",
+      "topping": "ice-cream or whipped cream",
+      "heated": "yes",
+      "quantity": 2
+    }
+  ]
+}
