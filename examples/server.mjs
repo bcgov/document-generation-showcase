@@ -14,11 +14,7 @@ const oidcResponse = await fetch(
   "https://dev.oidc.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token",
   {
     method: "POST",
-    body:
-      "grant_type=client_credentials&client_id=" +
-      client_id +
-      "&client_secret=" +
-      client_secret,
+    body: `grant_type=client_credentials&client_id=${client_id}&client_secret=${client_secret}`,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
