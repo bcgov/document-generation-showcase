@@ -15,3 +15,7 @@ npm install
 ```
 CLIENT_ID="your_keycloak_client_id" CLIENT_SECRET="your_keycloak_client_secret" node server.mjs
 ```
+
+## Curl
+
+There is an example of a simple bash script in `curl.sh`.
