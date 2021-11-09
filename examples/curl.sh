@@ -7,6 +7,8 @@ token=$(curl --request POST \
    --data client_id="$CLIENT_ID" \
    --data client_secret="$CLIENT_SECRET" | jq -r '.access_token')
 
+base64_encoded_template=$(base64 -i template.txt)
+
 curl --request POST \
    --url 'https://cdogs-dev.apps.silver.devops.gov.bc.ca/api/v2/template/render' \
    -H "Authorization: Bearer $token" \
@@ -21,7 +23,7 @@ curl --request POST \
   "template": {
     "encodingType": "base64",
     "fileType": "txt",
-    "content": "SGVsbG8ge2QuZmlyc3ROYW1lfSB7ZC5sYXN0TmFtZX0hCg=="
+    "content": "$base64_encoded_template"
   },
   "options": {
     "cacheReport": false,
@@ -31,6 +33,3 @@ curl --request POST \
   }
 }
 EOF
-
-
-# cat template.txt| bash64
