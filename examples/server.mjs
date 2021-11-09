@@ -21,9 +21,9 @@ const oidcResponse = await fetch(
   }
 );
 
-const data = await oidcResponse.json();
+const keycloak = await oidcResponse.json();
 
-console.log(data);
+console.log(keycloak);
 
 // {
 //   access_token: 'secret_token',
@@ -40,7 +40,7 @@ const templateContent = base64_encode("./template.txt");
 // Hello {d.firstName} {d.lastName}!
 
 const cdogsResponse = await fetch(
-  "http://localhost:3000/api/v2/template/render",
+  "https://cdogs-dev.apps.silver.devops.gov.bc.ca/api/v2/template/render",
   {
     method: "POST",
     body: JSON.stringify({
@@ -61,7 +61,7 @@ const cdogsResponse = await fetch(
       },
     }),
     headers: {
-      Authorization: `Bearer ${data.access_token}`,
+      Authorization: `Bearer ${keycloak.access_token}`,
       "Content-Type": "application/json",
     },
   }
