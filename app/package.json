@@ -41,106 +41,25 @@
     "frontend:purge": "cd frontend && npm run purge"
   },
   "dependencies": {
-    "api-problem": "^7.0.2",
-    "axios": "^0.21.4",
-    "axios-oauth-client": "^1.4.3",
+    "api-problem": "^7.0.3",
+    "axios": "^0.24.0",
+    "axios-oauth-client": "^1.4.4",
     "axios-token-interceptor": "^0.2.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "config": "^3.3.6",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "keycloak-connect": "^12.0.4",
+    "express": "^4.17.2",
+    "keycloak-connect": "^15.0.2",
     "morgan": "^1.9.1",
     "npmlog": "^5.0.1"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-recommended": "^4.0.0",
-    "eslint-plugin-flowtype": "^6.1.0",
-    "eslint-plugin-jest": "^24.4.2",
-    "jest": "^27.2.1",
-    "nodemon": "^2.0.12",
+    "eslint": "^8.5.0",
+    "eslint-config-recommended": "^4.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.15",
     "supertest": "^6.1.6"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "commonjs": true,
-      "es6": true,
-      "jest": true,
-      "node": true
-    },
-    "extends": [
-      "eslint:recommended"
-    ],
-    "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly",
-      "_": false
-    },
-    "parserOptions": {
-      "ecmaVersion": 9
-    },
-    "rules": {
-      "eol-last": [
-        "error",
-        "always"
-      ],
-      "indent": [
-        "error",
-        2,
-        {
-          "SwitchCase": 1
-        }
-      ],
-      "linebreak-style": [
-        "error",
-        "unix"
-      ],
-      "quotes": [
-        "error",
-        "single"
-      ],
-      "semi": [
-        "error",
-        "always"
-      ]
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json"
-    ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    },
-    "testMatch": [
-      "**/tests/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
-    ],
-    "testPathIgnorePatterns": [
-      "frontend"
-    ],
-    "testURL": "http://localhost/",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.js",
-      "!src/frontend/**/*.*"
-    ]
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "frontend/node_modules",
-      "frontend/src",
-      "frontend/tests",
-      "node_modules/**/node_modules",
-      "tests"
-    ]
   }
 }
