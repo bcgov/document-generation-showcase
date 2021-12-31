@@ -25,7 +25,7 @@ class ConfigService {
     try {
       result = this.config[propertyName];
     } catch (err) {
-      console.error(`configService.get(${propertyName})... error = ${err}`);
+      console.error(`configService.get(${propertyName})... error = ${err}`); // eslint-disable-line no-console
     }
     return result;
   }
