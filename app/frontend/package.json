@@ -11,12 +11,12 @@
     "url": "https://github.com/bcgov/document-generation-showcase/issues"
   },
   "scripts": {
-    "serve": "node_modules/.bin/vue-cli-service serve",
-    "build": "node_modules/.bin/vue-cli-service build",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
     "test": "npm run test:unit",
-    "test:unit": "node_modules/.bin/vue-cli-service test:unit --verbose",
-    "lint": "node_modules/.bin/vue-cli-service lint . --no-fix --ext .js,vue",
-    "lint:fix": "node_modules/.bin/vue-cli-service lint . --fix --ext .js,vue",
+    "test:unit": "vue-cli-service test:unit --verbose --forceExit --detectOpenHandles",
+    "lint": "vue-cli-service lint",
+    "lint:fix": "vue-cli-service lint --fix",
     "pretest": "npm run lint",
     "clean": "rm -rf coverage dist",
     "purge": "rm -rf node_modules",
@@ -24,131 +24,33 @@
     "reinstall": "npm run purge && npm install"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "core-js": "^3.16.1",
-    "keycloak-js": "^12.0.4",
+    "axios": "^0.24.0",
+    "core-js": "^3.19.1",
+    "keycloak-js": "^15.0.2",
     "vue": "^2.6.14",
-    "vue-router": "^3.5.2",
-    "vuetify": "^2.5.8",
+    "vue-router": "^3.5.3",
+    "vuetify": "^2.6.2",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.13",
-    "@vue/cli-plugin-eslint": "^4.5.13",
-    "@vue/cli-plugin-router": "^4.5.13",
-    "@vue/cli-plugin-unit-jest": "^4.5.13",
-    "@vue/cli-plugin-vuex": "^4.5.13",
-    "@vue/cli-service": "^4.5.13",
-    "@vue/test-utils": "^1.2.2",
+    "@vue/cli-plugin-babel": "^4.5.15",
+    "@vue/cli-plugin-eslint": "^4.5.15",
+    "@vue/cli-plugin-router": "^4.5.15",
+    "@vue/cli-plugin-unit-jest": "^4.5.15",
+    "@vue/cli-plugin-vuex": "^4.5.15",
+    "@vue/cli-service": "^4.5.15",
+    "@vue/test-utils": "^1.3.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^7.16.0",
+    "eslint": ">= 6.8.0 < 7",
+    "eslint-plugin-prettier": ">= 3.4.0 < 4",
+    "eslint-plugin-vue": "^8.1.1",
     "eslint-plugin-vuetify": "^1.0.1",
-    "sass": "^1.32.12",
-    "sass-loader": "^10.1.0",
+    "prettier": "^2.4.1",
+    "sass": ">= 1.32.13 < 1.33.0",
+    "sass-loader": ">= 10.2.0 < 11.0.0",
     "vue-cli-plugin-vuetify": "^2.4.2",
     "vue-template-compiler": "^2.6.14",
-    "vuetify-loader": "^1.7.2"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "es6": true,
-      "jest": true,
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "plugins": [
-      "vuetify"
-    ],
-    "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly",
-      "_": false
-    },
-    "parserOptions": {
-      "parser": "babel-eslint",
-      "ecmaVersion": 8
-    },
-    "rules": {
-      "eol-last": [
-        "error",
-        "always"
-      ],
-      "indent": [
-        "error",
-        2
-      ],
-      "linebreak-style": [
-        "error",
-        "unix"
-      ],
-      "quotes": [
-        "error",
-        "single"
-      ],
-      "semi": [
-        "error",
-        "always"
-      ],
-      "vue/html-closing-bracket-newline": [
-        "off",
-        {
-          "singleline": "never",
-          "multiline": "never"
-        }
-      ],
-      "vue/html-indent": [
-        "error",
-        2,
-        {
-          "attribute": 1,
-          "baseIndent": 1,
-          "closeBracket": 0,
-          "alignAttributesVertically": true,
-          "ignores": []
-        }
-      ],
-      "vue/max-attributes-per-line": [
-        "off",
-        {
-          "singleline": 1,
-          "multiline": {
-            "max": 1,
-            "allowFirstLine": true
-          }
-        }
-      ],
-      "vue/no-multi-spaces": [
-        "error",
-        {
-          "ignoreProperties": false
-        }
-      ],
-      "vue/no-spaces-around-equal-signs-in-attribute": [
-        "error"
-      ],
-      "vuetify/no-deprecated-classes": "error",
-      "vuetify/grid-unknown-attributes": "error",
-      "vuetify/no-legacy-grid": "error"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/__tests__/*.{j,t}s?(x)",
-          "**/tests/unit/**/*.spec.{j,t}s?(x)"
-        ],
-        "env": {
-          "jest": true
-        }
-      }
-    ]
-  },
-  "prettier": {
-    "singleQuote": true
+    "vuetify-loader": "^1.7.3"
   },
   "postcss": {
     "plugins": {
@@ -159,47 +61,5 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ],
-  "jest": {
-    "clearMocks": true,
-    "setupFiles": [
-      "<rootDir>/tests/unit/globalSetup.js"
-    ],
-    "preset": "@vue/cli-plugin-unit-jest",
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "vue",
-      "jsx"
-    ],
-    "transform": {
-      ".*\\.(vue)$": "vue-jest",
-      "^.+\\.vue$": "vue-jest",
-      ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
-      "^.+\\.jsx?$": "babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    },
-    "snapshotSerializers": [
-      "jest-serializer-vue"
-    ],
-    "testMatch": [
-      "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
-    ],
-    "testURL": "http://localhost/",
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ],
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.{js,vue}",
-      "!src/main.js",
-      "!src/plugins/*.*"
-    ]
-  }
+  ]
 }

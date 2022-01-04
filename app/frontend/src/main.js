@@ -79,5 +79,5 @@ configService.load(CONFIG_URL)
     });
   })
   .catch(err => {
-    console.error(err.message);
+    console.error(err.message); // eslint-disable-line no-console
   });

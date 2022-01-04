@@ -40,7 +40,7 @@ export default {
     setTimeout(() => {
       this.snack = !this.$router;
       if (!this.$router && this.$keycloak && !this.$keycloak.ready) {
-        console.error('Keycloak failed to initialize');
+        console.error('Keycloak failed to initialize'); // eslint-disable-line no-console
       }
     }, 5000);
   }

@@ -321,7 +321,7 @@ export default {
           this.notifySuccess('Parsed successfully');
         }
       } catch (e) {
-        console.error(e);
+        console.error(e); // eslint-disable-line no-console
         this.notifyError(e.message);
       }
     },
@@ -375,7 +375,7 @@ export default {
         // create a JSON object of context(s)
         this.form.contexts = JSON.stringify(obj);
       } catch (e) {
-        console.error(e, obj);
+        console.error(e, obj); // eslint-disable-line no-console
       }
     },
     async generate() {
@@ -458,11 +458,10 @@ export default {
         this.createDownload(blob, filename);
         this.notifySuccess('Submitted successfully');
       } catch (e) {
-        console.error(e);
+        console.error(e); // eslint-disable-line no-console
         if (e.response) {
           const data = new TextDecoder().decode(e.response.data);
           const parsed = JSON.parse(data);
-          console.warn('CDOGS Response:', parsed);
           const errArray = parsed.status === 422 ? parsed.errors : undefined;
           this.notifyError(e, errArray);
         } else {
