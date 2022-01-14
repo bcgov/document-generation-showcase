@@ -8,7 +8,6 @@ const apiRoutes = require('./src/cdogsService/routes');
 const keycloak = require('./src/components/keycloak');
 const log = require('./src/components/log')(module.filename);
 const httpLogger = require('./src/components/log').httpLogger;
-const utils = require('./src/components/utils');
 
 const state = {
   shutdown: false
@@ -20,7 +19,7 @@ app.use(express.json({ limit: config.get('server.bodyLimit') }));
 app.use(express.urlencoded({ extended: true }));
 
 // Print out configuration settings in verbose startup
-log.verbose('Config', utils.prettyStringify(config));
+log.debug('App configuration', config);
 
 // Skip if running tests
 if (process.env.NODE_ENV !== 'test') {

@@ -7,7 +7,7 @@ class ClientConnection {
   constructor({ tokenUrl, clientId, clientSecret }) {
     log.verbose('ClientConnection', `Constructed with ${tokenUrl}, ${clientId}, clientSecret`);
     if (!tokenUrl || !clientId || !clientSecret) {
-      log.error('Invalid configuration.', { function: 'ClientConnection' });
+      log.error('Invalid configuration.', { function: 'constructor' });
       throw new Error('ClientConnection is not configured. Check configuration.');
     }
 
