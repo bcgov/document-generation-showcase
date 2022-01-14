@@ -10,8 +10,7 @@
       "clientId": "clientId",
       "clientSecret": "clientSecret"
     },
-    "logLevel": "silent",
-    "morganFormat": "dev",
+    "logLevel": "http",
     "port": "8888"
   },
   "services": {

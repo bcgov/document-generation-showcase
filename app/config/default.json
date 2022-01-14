@@ -19,8 +19,7 @@
     "basePath" : "/app",
     "bodyLimit": "30mb",
     "hostUrl": "http://localhost:8888",
-    "logLevel": "info",
-    "morganFormat": "dev",
+    "logLevel": "http",
     "port": "8888"
   },
   "services": {

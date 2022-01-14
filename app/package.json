@@ -46,13 +46,16 @@
     "axios-oauth-client": "^1.4.4",
     "axios-token-interceptor": "^0.2.0",
     "body-parser": "^1.19.0",
+    "carbone": "^3.2.3",
     "compression": "^1.7.4",
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "express": "^4.17.2",
+    "express-winston": "^4.2.0",
+    "jsonwebtoken": "^8.5.1",
     "keycloak-connect": "^15.0.2",
-    "morgan": "^1.9.1",
-    "npmlog": "^5.0.1"
+    "winston": "^3.4.0",
+    "winston-transport": "^4.4.2"
   },
   "devDependencies": {
     "eslint": "^8.5.0",

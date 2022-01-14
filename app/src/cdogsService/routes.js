@@ -1,4 +1,4 @@
-const log = require('npmlog');
+const log = require('../../src/components/log')(module.filename);
 
 const keycloak = require('../components/keycloak');
 const { relatedLinks } = require('../components/relatedLinks');
@@ -9,7 +9,7 @@ const { healthCheck, docGen } = require('./controller');
 
 const protector = token => {
   const hasUser = !!token.content.resource_access && token.hasApplicationRole('dgrsc', 'user');
-  log.verbose('protector', `Token has Application Role "user" in "dgrsc" = ${hasUser}`);
+  log.verbose(`Token has Application Role "user" in "dgrsc" = ${hasUser}`, { function: 'protector' });
   return hasUser;
 };
 
