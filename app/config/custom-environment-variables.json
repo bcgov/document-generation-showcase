@@ -23,7 +23,6 @@
     "hostUrl": "SERVER_HOSTURL",
     "logFile": "SERVER_LOGFILE",
     "logLevel": "SERVER_LOGLEVEL",
-    "morganFormat": "SERVER_MORGANFORMAT",
     "port": "SERVER_PORT"
   },
   "services": {
