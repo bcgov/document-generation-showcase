@@ -18,7 +18,7 @@ app.use(compression());
 app.use(express.json({ limit: config.get('server.bodyLimit') }));
 app.use(express.urlencoded({ extended: true }));
 
-// Print out configuration settings in verbose startup
+// Print out configuration settings in debug startup
 log.debug('App configuration', config);
 
 // Skip if running tests
