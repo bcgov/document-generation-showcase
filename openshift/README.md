@@ -45,7 +45,7 @@ Some notes:
 - **SERVER\_KC\_PUBLICKEY** is the Keycloak Public Key which can be found in the Keycloak Admin Panel under Realm Settings > Keys. Look for the Public key button (normally under RS256 row), and click to see the key. The key should begin with a pattern of `MIIBIjANB...`.
 
 ``` sh
-export NAMESPACE=wfezkf-dev
+export NAMESPACE=bb0279-dev
 
 export APP_NAME=dgrsc
 export JOB_NAME=pr-x
@@ -62,7 +62,7 @@ export FRONTEND_KC_CLIENTID=dgrsc-frontend
 export FRONTEND_KC_REALM=98r0z7rz
 export FRONTEND_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
 export FRONTEND_APIPATH=api/v2
-export FRONTEND_DASHBOARDURL=https://cdogs-dashboard-dev.pathfinder.gov.bc.ca/s/cdogs/app/kibana#/dashboard/9650e8f0-51ca-11ea-8605-0f7f1dd82992?embed=true
+export FRONTEND_DASHBOARDURL=<public document generation performance dashboard URL>
 export SERVER_KC_PUBLICKEY=MIIBIjANB...
 export SERVER_KC_REALM=98r0z7rz
 export SERVER_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
@@ -72,7 +72,7 @@ export SERVER_PORT=8888
 export SERVER_BODYLIMIT=30mb
 export SERVER_APIPATH=/api/v2
 export CDOGS_TOKENURL=https://dev.oidc.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
-export CDOGS_APIURL=https://cdogs-dev.pathfinder.gov.bc.ca/api/v2
+export CDOGS_APIURL=https://cdogs-dev.apps.silver.devops.gov.bc.ca/api/v2
 ```
 
 ### Create secrets and config map
