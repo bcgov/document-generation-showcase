@@ -42,7 +42,8 @@ configService.load(CONFIG_URL)
     // and load up the application.
     Vue.use(VueKeycloakJs, {
       init: {
-        onLoad: 'check-sso'
+        onLoad: 'check-sso',
+        pkceMethod: 'S256'
       },
       config: {
         clientId: config.keycloak.clientId,

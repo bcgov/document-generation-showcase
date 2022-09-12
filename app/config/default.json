@@ -1,9 +1,9 @@
 {
   "frontend": {
     "keycloak": {
-      "clientId": "dgrsc-frontend",
-      "realm": "98r0z7rz",
-      "serverUrl": "https://dev.oidc.gov.bc.ca/auth"
+      "clientId": "cdogs-showcase-frontend-4097",
+      "realm": "standard",
+      "serverUrl": "https://dev.loginproxy.gov.bc.ca/auth"
     },
     "apiPath": "api/v2",
     "basePath" : "/app",
@@ -11,9 +11,9 @@
   },
   "server": {
     "keycloak": {
-      "clientId": "dgrsc",
-      "realm": "98r0z7rz",
-      "serverUrl": "https://dev.oidc.gov.bc.ca/auth"
+      "clientId": "cdogs-showcase-4103",
+      "realm": "standard",
+      "serverUrl": "https://dev.loginproxy.gov.bc.ca/auth"
     },
     "apiPath": "/api/v2",
     "basePath" : "/app",
