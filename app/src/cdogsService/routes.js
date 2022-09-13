@@ -3,14 +3,18 @@ const log = require('../../src/components/log')(module.filename);
 const keycloak = require('../components/keycloak');
 const { relatedLinks } = require('../components/relatedLinks');
 const routes = require('express').Router();
+const config = require('config');
 // const wrap = require('../middleware/wrap');
 
 const { healthCheck, docGen } = require('./controller');
 
 const protector = token => {
-  const hasUser = !!token.content.resource_access && token.hasApplicationRole('dgrsc', 'user');
-  log.verbose(`Token has Application Role "user" in "dgrsc" = ${hasUser}`, { function: 'protector' });
-  return hasUser;
+  if(config.has('server.keycloak.role')) {
+    const hasUser = !!token.content.resource_access && token.hasApplicationRole('dgrsc', config.get('server.keycloak.role'));
+    log.verbose(`Token has Application Role "user" in "dgrsc" = ${hasUser}`, { function: 'protector' });
+    return hasUser;
+  }
+  return true;
 };
 
 routes.get('/', (req, res) => {
