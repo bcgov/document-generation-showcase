@@ -13,19 +13,21 @@ class ClientConnection {
 
     this.tokenUrl = tokenUrl;
 
-    this.axios = axios.create();
-    this.axios.interceptors.request.use(
-      // Wraps axios-token-interceptor with oauth-specific configuration,
-      // fetches the token using the desired claim method, and caches
-      // until the token expires
-      oauth.interceptor(tokenProvider, oauth.client(axios.create(), {
-        url: this.tokenUrl,
-        grant_type: 'client_credentials',
-        client_id: clientId,
-        client_secret: clientSecret,
-        scope: ''
-      }))
+    // get access token
+    const getClientCredentials = oauth.clientCredentials(
+      axios.create(),
+      this.tokenUrl,
+      clientId,
+      clientSecret
     );
+
+    // intercept axios calls with access token
+    this.axios = axios.create();
+    this.axios.interceptors.request.use(tokenProvider({
+      getToken: () => getClientCredentials()
+        .then(response => response.access_token)
+    }));
+
   }
 }
 
