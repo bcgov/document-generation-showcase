@@ -15,24 +15,6 @@ class ClientConnection {
       );
     }
 
-    const getClientCredentials = () =>
-      axios({
-        method: 'POST',
-        url: tokenUrl,
-        data: {
-          client_id: clientId,
-          client_secret: clientSecret,
-          grant_type: 'client_credentials',
-        },
-        headers: {
-          'Content-type': 'application/x-www-form-urlencoded',
-        },
-        withCredentials: true,
-      }).then((response) => {
-        // Return token here
-        return response;
-      });
-
     // intercept axios calls with access token
     this.axios = axios.create();
     this.axios.interceptors.request.use(
