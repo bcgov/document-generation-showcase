@@ -34,6 +34,6 @@ describe('Dashboard.vue', () => {
 
   it('renders', () => {
     expect(wrapper.html()).toContain('Performance Dashboard');
-    expect(wrapper.contains('iframe')).toBeTruthy();
+    expect(wrapper.find('iframe')).toBeTruthy();
   });
 });
