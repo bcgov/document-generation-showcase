@@ -8,8 +8,8 @@ Login to [dev](https://dev.oidc.gov.bc.ca/auth/admin/98r0z7rz/console/#/realms/9
 | ---- | --- |
 | dgrsc | this is for the node backend to protect the calls to CDOGS.  this client contains roles |
 | dgrsc-frontend | this is a **public** client for the ui, it uses dgrsc scopes to return dgrsc roles the user is in.  There are no credentials for this client, it is guarded by web-origins and allowed redirects in Keycloak.|
-| dgrsc-local | configured for localhost:8888, local development. |
-| dgrsc-frontend-local | configured for localhost:8888, local development.|
+| dgrsc-local | configured for localhost:8080, local development. |
+| dgrsc-frontend-local | configured for localhost:8080, local development.|
 
 ## Client Scope
 
@@ -53,26 +53,26 @@ export REPO_NAME=document-generation-showcase
 export SOURCE_REPO_URL=https://github.com/bcgov/document-generation-showcase
 export SOURCE_REPO_REF=master
 
-export SERVER_KC_CLIENTID=dgrsc
+export SERVER_KC_CLIENTID=dgrsc-backend-1234
 export SERVER_KC_CLIENTSECRET=<get the secret from keycloak>
 export CDOGS_CLIENTID=DGRSC_SERVICE_CLIENT
 export CDOGS_CLIENTSECRET=<get the secret from keycloak>
 
-export FRONTEND_KC_CLIENTID=dgrsc-frontend
-export FRONTEND_KC_REALM=98r0z7rz
-export FRONTEND_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
+export FRONTEND_KC_CLIENTID=dgrsc-frontend-1234
+export FRONTEND_KC_REALM=standard
+export FRONTEND_KC_SERVERURL=https://dev.loginproxy.gov.bc.ca/auth
 export FRONTEND_APIPATH=api/v2
 export FRONTEND_DASHBOARDURL=<public document generation performance dashboard URL>
 export SERVER_KC_PUBLICKEY=MIIBIjANB...
-export SERVER_KC_REALM=98r0z7rz
-export SERVER_KC_SERVERURL=https://dev.oidc.gov.bc.ca/auth
+export SERVER_KC_REALM=standard
+export SERVER_KC_SERVERURL=https://dev.loginproxy.gov.bc.ca/auth
 export SERVER_LOGLEVEL=info
 export SERVER_MORGANFORMAT=dev
-export SERVER_PORT=8888
+export SERVER_PORT=8080
 export SERVER_BODYLIMIT=30mb
 export SERVER_APIPATH=/api/v2
-export CDOGS_TOKENURL=https://dev.oidc.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
-export CDOGS_APIURL=https://cdogs-dev.apps.silver.devops.gov.bc.ca/api/v2
+export CDOGS_TOKENURL=https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token
+export CDOGS_APIURL=https://cdogs-dev.api.gov.bc.ca/api/v2
 ```
 
 ### Create secrets and config map

@@ -1,0 +1,17 @@
+---
+config:
+  enabled: true
+  configMap:
+    FRONTEND_KC_CLIENTID: cdogs-showcase-frontend-4097
+    FRONTEND_KC_REALM: standard
+    FRONTEND_KC_SERVERURL: https://dev.loginproxy.gov.bc.ca/auth
+    # FRONTEND_DASHBOARDURL: https://stats.uptimerobot.com/Xky2KTnkAj/786282976
+    SERVER_KC_PUBLICKEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuy7zfh2ZgpDV5mH/aXyLDTddZK81rGakJcTy4KvCNOkDDxt1KAhW02lmbCo8YhHCOzjNZBp1+Vi6QiMRgBqAe2GTPZYEiV70aXfROGZe3Nvwcjbtki6HoyRte3SpqLJEIPL2F+hjJkw1UPGnjPTWZkEx9p74b9i3BjuE8RnjJ0Sza2MWw83zoQUZEJRGiopSL0yuVej6t2LO2btVdVf7QuZfPt9ehkcQYlPKpVvJA+pfeqPAdnNt7OjEIeYxinjurZr8Z04hz8UhkRefcWlSbFzFQYmL7O7iArjW0bsSvq8yNUd5r0KCOQkFduwZy26yTzTxj8OLFT91fEmbBBl4rQIDAQAB
+    SERVER_KC_REALM: standard
+    SERVER_KC_SERVERURL: https://dev.loginproxy.gov.bc.ca/auth
+    # SERVER_HOSTURL: https://dgrsc-dev-master.apps.silver.devops.gov.bc.ca
+    # SERVER_LOGFILE: ./app.log
+    SERVER_LOGLEVEL: http
+    SERVER_PORT: "8080"
+    CDOGS_APIURL: https://cdogs-dev.api.gov.bc.ca/api/v2
+    CDOGS_TOKENURL: https://dev.loginproxy.gov.bc.ca/auth/realms/comsvcauth/protocol/openid-connect/token
