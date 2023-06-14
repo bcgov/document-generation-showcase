@@ -38,12 +38,12 @@ app.use((_req, res, next) => {
   }
 });
 
-const apiPath = `${config.get('server.basePath')}${config.get('server.apiPath')}`;
+const apiPath = config.get('server.apiPath');
 app.use(apiPath, apiRoutes);
 
 // Handle Static Files (frontend app)
 // Expose endpoint to return frontend configuration
-app.use(`${config.get('frontend.basePath')}/config`, (_req, res, next) => {
+app.use('/config', (_req, res, next) => {
   try {
     const frontend = config.get('frontend');
     res.status(200).json(frontend);
@@ -53,7 +53,7 @@ app.use(`${config.get('frontend.basePath')}/config`, (_req, res, next) => {
 });
 
 // Host the compiled and static assets
-const staticFilesPath = config.get('frontend.basePath');
+const staticFilesPath = '/';
 app.use(staticFilesPath, express.static(path.join(__dirname, 'frontend/dist')));
 
 // Handle 500

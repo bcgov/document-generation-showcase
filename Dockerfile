@@ -31,8 +31,6 @@ WORKDIR /tmp/src/app/frontend
 USER 1001
 
 RUN npm ci && npm run build
-EXPOSE 8080
-CMD ["npm", "run", "start"]
 
 #
 # Create the final container image

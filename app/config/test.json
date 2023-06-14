@@ -2,8 +2,7 @@
   "frontend": {
     "keycloak": {
       "clientId": "clientId"
-    },
-    "basePath" : "/app"
+    }
   },
   "server": {
     "keycloak": {
@@ -11,7 +10,7 @@
       "clientSecret": "clientSecret"
     },
     "logLevel": "http",
-    "port": "8888"
+    "port": "8080"
   },
   "services": {
     "cdogs": {
