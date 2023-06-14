@@ -24,7 +24,7 @@ function initializeApp(router = undefined, store = undefined) {
 initializeApp();
 
 // application publicPath is ./ - so use relative path here, will hit the backend server using relative path to root.
-const CONFIG_URL = process.env.NODE_ENV === 'production' ? 'config' : 'app/config';
+const CONFIG_URL = process.env.NODE_ENV === 'production' ? 'config' : 'config';
 
 configService.load(CONFIG_URL)
   .then(config => {
@@ -56,7 +56,7 @@ configService.load(CONFIG_URL)
         const instance = axios.create({ timeout: timeout });
         // API focused Axios instance with timeout and authorization header insertion
         const instanceApi = axios.create({
-          baseURL: `${config.basePath}/${config.apiPath}`,
+          baseURL: `${config.apiPath}`,
           timeout: timeout
         });
 
@@ -74,7 +74,7 @@ configService.load(CONFIG_URL)
         Vue.prototype.$httpApi = instanceApi;
 
         // Remount once configuration is loaded
-        const router = getRouter(config.basePath);
+        const router = getRouter('/');
         initializeApp(router, store);
       }
     });

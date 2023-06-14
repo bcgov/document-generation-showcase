@@ -1,34 +1,12 @@
 {
   "frontend": {
-    "keycloak": {
-      "clientId": "cdogs-showcase-frontend-4097",
-      "realm": "standard",
-      "serverUrl": "https://dev.loginproxy.gov.bc.ca/auth"
-    },
-    "apiPath": "api/v2",
-    "basePath" : "/app",
-    "dashboardUrl": "https://cdogs-dashboard-dev.pathfinder.gov.bc.ca/s/cdogs/app/kibana#/dashboard/9650e8f0-51ca-11ea-8605-0f7f1dd82992?embed=true"
+    "apiPath": "api/v2"
   },
   "server": {
-    "keycloak": {
-      "clientId": "cdogs-showcase-4103",
-      "realm": "standard",
-      "serverUrl": "https://dev.loginproxy.gov.bc.ca/auth"
-    },
     "apiPath": "/api/v2",
-    "basePath" : "/app",
     "bodyLimit": "30mb",
-    "hostUrl": "http://localhost:8888",
     "logLevel": "http",
-    "port": "8888"
-  },
-  "services": {
-    "cdogs": {
-      "apiUrl": "set in custom environment variables...",
-      "clientId": "DGRSC_SERVICE_CLIENT",
-      "clientSecret": "set in custom environment variables...",
-      "tokenUrl": "set in custom environment variables..."
-    }
+    "port": "8080"
   }
 }
 

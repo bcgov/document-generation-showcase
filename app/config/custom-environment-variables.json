@@ -6,7 +6,6 @@
       "serverUrl": "FRONTEND_KC_SERVERURL"
     },
     "apiPath": "FRONTEND_APIPATH",
-    "basePath": "FRONTEND_BASEPATH",
     "dashboardUrl": "FRONTEND_DASHBOARDURL"
   },
   "server": {
@@ -18,7 +17,6 @@
       "serverUrl": "SERVER_KC_SERVERURL"
     },
     "apiPath": "SERVER_APIPATH",
-    "basePath": "SERVER_BASEPATH",
     "bodyLimit": "SERVER_BODYLIMIT",
     "hostUrl": "SERVER_HOSTURL",
     "logFile": "SERVER_LOGFILE",

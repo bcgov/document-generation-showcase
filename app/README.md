@@ -12,26 +12,23 @@ We are using the npm library: [config](https://www.npmjs.com/package/config), to
 
 | Name | Default | Description |
 | --- | --- | --- |
-| FRONTEND_KC_CLIENTID | dgrsc-frontend | The name of the frontend authorization service client - Users login to this (KeyCloak) client to get authenticated and authorized to DGRSC.  See [GetOK](https://github.com/bcgov/nr-get-token) for more information |
-| FRONTEND_KC_REALM | 98r0z7rz | The KeyCloak realm id |
-| FRONTEND_KC_SERVERURL | https://dev.oidc.gov.bc.ca/auth | The KeyCloak authorization url |
-| FRONTEND_APIPATH | api/v1 | Relative path for frontend to call backend api |
-| FRONTEND_BASEPATH | /app | Base path where frontend will be hosted |
-| CDOGS_CLIENT_ID | DGRSC_SERVICE_CLIENT | The name of the service client in the realm that has been granted access to CDOGS.  See [GetOK](https://github.com/bcgov/nr-get-token.git) for more information |
+| FRONTEND_KC_CLIENTID | | The name of the frontend authorization service client - Users login to this (KeyCloak) client to get authenticated and authorized to DGRSC. |
+| FRONTEND_KC_REALM | | The KeyCloak realm id |
+| FRONTEND_KC_SERVERURL | | The KeyCloak authorization url |
+| FRONTEND_APIPATH | api/v2 | Relative path for frontend to call backend api |
+| CDOGS_CLIENT_ID | | The name of the service client in the realm that has been granted access to CDOGS. |
 | CDOGS_CLIENT_SECRET | | The service client's password |
 | CDOGS_TOKEN_URL | | The OpenID token url to authenticate this client |
 | CDOGS_API_URL | | The CDOGS url |
-| SERVER_APIPATH | | |
-| SERVER_BASEPATH | | |
+| SERVER_APIPATH | /api/v2 | |
 | SERVER_BODYLIMIT | 30mb | Set the allowed request body size (will include encoded attachments). See [body-parser limit](https://github.com/expressjs/body-parser#limit) and [bytes lib](https://www.npmjs.com/package/bytes) |
-| SERVER_HOSTURL | http://localhost:8888 | The domain/base url where we will expose the api. |
+| SERVER_HOSTURL | http://localhost:8080 | The domain/base url where we will expose the api. |
 | SERVER_LOGLEVEL | info | set the npm log level (verbose, debug, info, warn, error). |
-| SERVER_MORGANFORMAT | dev | set the logging format for Morgan. |
-| SERVER_PORT | 8888 | port for node to listen on. |
-| SERVER_KC_CLIENTID | dgrsc | The name of the backend authorization service client - users authorized using frontend client, but will have backend roles.  See [GetOK](https://github.com/bcgov/nr-get-token) for more information |
+| SERVER_PORT | 8080 | port for node to listen on. |
+| SERVER_KC_CLIENTID | | The name of the backend authorization service client |
 | SERVER_KC_CLIENTSECRET | | The KeyCloak service client's password |
-| SERVER_KC_REALM | 98r0z7rz | The KeyCloak realm id |
-| SERVER_KC_SERVERURL | https://dev.oidc.gov.bc.ca/auth | The KeyCloak authorization url |
+| SERVER_KC_REALM | | The KeyCloak realm id |
+| SERVER_KC_SERVERURL | | The KeyCloak authorization url |
 
 ## Super Quickstart
 ```
