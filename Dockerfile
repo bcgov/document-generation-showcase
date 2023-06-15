@@ -41,7 +41,7 @@ ENV APP_PORT=8080 \
     NO_UPDATE_NOTIFIER=true
 
 COPY --from=application /tmp/src/app ${HOME}
-COPY --from=frontend /tmp/src/app/frontend/dist ${HOME}/dist
+COPY --from=frontend /tmp/src/app/frontend/dist ${HOME}/frontend/dist
 COPY .git ${HOME}/.git
 WORKDIR ${HOME}
 
