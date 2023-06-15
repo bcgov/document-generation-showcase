@@ -1,4 +1,4 @@
-# dgrsc
+# document-generation-showcase
 
 ![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
@@ -38,23 +38,9 @@ Kubernetes: `>= 1.13.0`
 | autoscaling.maxReplicas | int | `16` |  |
 | autoscaling.minReplicas | int | `2` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| config.configMap.CDOGS_APIURL | string | `nil` |  |
-| config.configMap.CDOGS_TOKENURL | string | `nil` |  |
 | config.configMap.FRONTEND_APIPATH | string | `"api/v2"` |  |
-| config.configMap.FRONTEND_BASEPATH | string | `"/app"` |  |
-| config.configMap.FRONTEND_DASHBOARDURL | string | `nil` |  |
-| config.configMap.FRONTEND_KC_CLIENTID | string | `nil` |  |
-| config.configMap.FRONTEND_KC_REALM | string | `nil` |  |
-| config.configMap.FRONTEND_KC_SERVERURL | string | `nil` |  |
 | config.configMap.SERVER_APIPATH | string | `"/api/v2"` |  |
-| config.configMap.SERVER_BASEPATH | string | `"/app"` |  |
 | config.configMap.SERVER_BODYLIMIT | string | `"30mb"` |  |
-| config.configMap.SERVER_HOSTURL | string | `nil` |  |
-| config.configMap.SERVER_KC_PUBLICKEY | string | `nil` |  |
-| config.configMap.SERVER_KC_REALM | string | `nil` |  |
-| config.configMap.SERVER_KC_SERVERURL | string | `nil` |  |
-| config.configMap.SERVER_LOGLEVEL | string | `"http"` |  |
-| config.configMap.SERVER_PORT | string | `"8080"` |  |
 | config.enabled | bool | `false` |  |
 | config.releaseScoped | bool | `false` |  |
 | failurePolicy | string | `"Retry"` |  |

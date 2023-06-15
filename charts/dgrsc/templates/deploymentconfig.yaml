@@ -39,22 +39,22 @@ spec:
           ports:
             - containerPort: {{ .Values.service.port }}
               protocol: TCP
-          # livenessProbe:
-          #   failureThreshold: 3
-          #   httpGet:
-          #     path: {{ .Values.route.path }}
-          #     port: {{ .Values.service.port }}
-          #     scheme: HTTP
-          #   initialDelaySeconds: 10
-          #   timeoutSeconds: 1
-          # readinessProbe:
-          #   failureThreshold: 3
-          #   httpGet:
-          #     path: {{ .Values.route.path }}
-          #     port: {{ .Values.service.port }}
-          #     scheme: HTTP
-          #   initialDelaySeconds: 10
-          #   timeoutSeconds: 1
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: {{ .Values.route.path }}
+              port: {{ .Values.service.port }}
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: {{ .Values.route.path }}
+              port: {{ .Values.service.port }}
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
           resources: {{ toYaml .Values.resources | nindent 12 }}
           env:
             - name: NODE_ENV
@@ -64,12 +64,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: username
-                  name: app-keycloak-secret
+                  name: {{ include "dgrsc.name" . }}-keycloak-secret
             - name: SERVER_KC_CLIENTSECRET
               valueFrom:
                 secretKeyRef:
                   key: password
-                  name: app-keycloak-secret
+                  name: {{ include "dgrsc.name" . }}-keycloak-secret
             - name: CDOGS_CLIENTID
               valueFrom:
                 secretKeyRef:
