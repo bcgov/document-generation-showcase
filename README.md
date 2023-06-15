@@ -17,8 +17,6 @@ To learn more about the **Common Services** that are available visit the [Common
     openshift/                 - OpenShift-deployment specific files
     CODE-OF-CONDUCT.md         - Code of Conduct
     CONTRIBUTING.md            - Contributing Guidelines
-    Jenkinsfile                - Top-level Pipeline
-    Jenkinsfile.cicd           - Pull-Request Pipeline
     LICENSE                    - License
     vetur.config.js            - Vetur configuration
 
