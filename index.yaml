@@ -1,0 +1,30 @@
+apiVersion: v1
+entries:
+  document-generation-showcase:
+  - apiVersion: v2
+    appVersion: 2.0.0
+    created: "2023-06-15T21:21:36.633408925Z"
+    description: A Showcase application to demonstrate features of the Common Document
+      Generation Service
+    digest: ceccbe670f2929261df3f96ccf97c9e19367c4ee6ff60c102e5180c6b5867605
+    home: https://bcgov.github.io/document-generation-showcase
+    keywords:
+    - nodejs
+    - javascript
+    - docker
+    - microservice
+    - document-generation
+    - vue
+    kubeVersion: '>= 1.13.0'
+    maintainers:
+    - email: NR.CommonServiceShowcase@gov.bc.ca
+      name: NR Common Service Showcase Team
+      url: https://bcgov.github.io/common-service-showcase/team.html
+    name: document-generation-showcase
+    sources:
+    - https://github.com/bcgov/document-generation-showcase
+    type: application
+    urls:
+    - https://github.com/bcgov/document-generation-showcase/releases/download/document-generation-showcase-0.0.1/document-generation-showcase-0.0.1.tgz
+    version: 0.0.1
+generated: "2023-06-15T21:21:36.633457631Z"
