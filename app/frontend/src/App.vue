@@ -20,8 +20,10 @@
 </template>
 
 <script>
+// eslint-disable-next-line vue/no-reserved-component-names
 import Header from '@/components/bcgov/Header';
 import NavigationBar from '@/components/bcgov/NavigationBar';
+// eslint-disable-next-line vue/no-reserved-component-names
 import Footer from '@/components/bcgov/Footer';
 
 export default {
@@ -32,8 +34,10 @@ export default {
     };
   },
   components: {
+    // eslint-disable-next-line vue/no-reserved-component-names
     Header,
     NavigationBar,
+    // eslint-disable-next-line vue/no-reserved-component-names
     Footer
   },
   mounted() {
