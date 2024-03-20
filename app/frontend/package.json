@@ -18,6 +18,7 @@
     "lint": "vue-cli-service lint",
     "lint:fix": "vue-cli-service lint --fix",
     "pretest": "npm run lint",
+    "posttest": "node ./lcov-fix.mjs",
     "clean": "rm -rf coverage dist",
     "purge": "rm -rf node_modules",
     "rebuild": "npm run clean && npm run build",

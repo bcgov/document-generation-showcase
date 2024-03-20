@@ -1,19 +1,23 @@
-ARG BASE_IMAGE=docker.io/node:20.9.0-alpine
+ARG APP_ROOT=/opt/app-root/src
+ARG BASE_IMAGE=docker.io/node:20.11.1-alpine
 
 #
-# Build the application
+# Build the app
 #
-FROM ${BASE_IMAGE} as application
+FROM ${BASE_IMAGE} as app
 
+ARG APP_ROOT
 ENV NO_UPDATE_NOTIFIER=true
 
+# NPM Permission Fix
 RUN mkdir -p /.npm
 RUN chown -R 1001:0 /.npm
 
-USER 0
-COPY --chown=1001:0 app /tmp/src/app
-WORKDIR /tmp/src/app
+# Build App
+COPY app ${APP_ROOT}
+RUN chown -R 1001:0 ${APP_ROOT}
 USER 1001
+WORKDIR ${APP_ROOT}
 RUN npm ci --omit=dev
 
 #
@@ -21,17 +25,18 @@ RUN npm ci --omit=dev
 #
 FROM ${BASE_IMAGE} as frontend
 
+ARG APP_ROOT
 ENV NO_UPDATE_NOTIFIER=true
 
+# NPM Permission Fix
 RUN mkdir -p /.npm
 RUN chown -R 1001:0 /.npm
 
-USER 0
-COPY --chown=1001:0 app/frontend /tmp/src/app/frontend
-
-WORKDIR /tmp/src/app/frontend
+# Build Frontend
+COPY app/frontend ${APP_ROOT}
+RUN chown -R 1001:0 ${APP_ROOT}
 USER 1001
-
+WORKDIR ${APP_ROOT}
 RUN npm ci && npm run build
 
 #
@@ -39,16 +44,19 @@ RUN npm ci && npm run build
 #
 FROM ${BASE_IMAGE}
 
+ARG APP_ROOT
 ENV APP_PORT=8080 \
     NO_UPDATE_NOTIFIER=true
 
+# NPM Permission Fix
 RUN mkdir -p /.npm
 RUN chown -R 1001:0 /.npm
 
-COPY --from=application /tmp/src/app ${HOME}
-COPY --from=frontend /tmp/src/app/frontend/dist ${HOME}/frontend/dist
-COPY .git ${HOME}/.git
-WORKDIR ${HOME}
+# Install File Structure
+COPY --from=app ${APP_ROOT} ${APP_ROOT}
+COPY --from=frontend ${APP_ROOT}/dist ${APP_ROOT}/frontend/dist
+COPY .git ${APP_ROOT}/.git
+WORKDIR ${APP_ROOT}
 
 EXPOSE ${APP_PORT}
-CMD ["npm", "run", "start"]
+CMD ["node", "./bin/www"]
