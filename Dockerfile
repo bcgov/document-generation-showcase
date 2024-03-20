@@ -1,16 +1,14 @@
-# FROM docker.io/node:16.15.0-alpine # Last known working alpine image
-
-# RedHat Image Catalog references
-# https://catalog.redhat.com/software/containers/ubi9/nodejs-18/62e8e7ed22d1d3c2dfe2ca01
-# https://catalog.redhat.com/software/containers/ubi8/nodejs-16/615aee9fc739c0a4123a87e1
-# https://catalog.redhat.com/software/containers/ubi9/nodejs-18-minimal/62e8e919d4f57d92a9dee838
+ARG BASE_IMAGE=docker.io/node:20.9.0-alpine
 
 #
 # Build the application
 #
-FROM registry.access.redhat.com/ubi9/nodejs-18:1-48 as application
+FROM ${BASE_IMAGE} as application
 
 ENV NO_UPDATE_NOTIFIER=true
+
+RUN mkdir -p /.npm
+RUN chown -R 1001:0 /.npm
 
 USER 0
 COPY --chown=1001:0 app /tmp/src/app
@@ -21,9 +19,13 @@ RUN npm ci --omit=dev
 #
 # Build the frontend
 #
-FROM registry.access.redhat.com/ubi8/nodejs-16:1-105.1684740145 as frontend
+FROM ${BASE_IMAGE} as frontend
 
 ENV NO_UPDATE_NOTIFIER=true
+
+RUN mkdir -p /.npm
+RUN chown -R 1001:0 /.npm
+
 USER 0
 COPY --chown=1001:0 app/frontend /tmp/src/app/frontend
 
@@ -35,10 +37,13 @@ RUN npm ci && npm run build
 #
 # Create the final container image
 #
-FROM registry.access.redhat.com/ubi9/nodejs-18-minimal:1-51
+FROM ${BASE_IMAGE}
 
 ENV APP_PORT=8080 \
     NO_UPDATE_NOTIFIER=true
+
+RUN mkdir -p /.npm
+RUN chown -R 1001:0 /.npm
 
 COPY --from=application /tmp/src/app ${HOME}
 COPY --from=frontend /tmp/src/app/frontend/dist ${HOME}/frontend/dist
