@@ -1,6 +1,7 @@
 const compression = require('compression');
 const config = require('config');
 const express = require('express');
+const helmet = require('helmet');
 const path = require('path');
 const Problem = require('api-problem');
 
@@ -17,6 +18,18 @@ const app = express();
 app.use(compression());
 app.use(express.json({ limit: config.get('server.bodyLimit') }));
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        'default-src': [
+          "'self'", // eslint-disable-line
+          new URL(config.get('frontend.keycloak.serverUrl')).origin
+        ]
+      }
+    }
+  })
+);
 
 // Print out configuration settings in debug startup
 log.debug('App configuration', config);
