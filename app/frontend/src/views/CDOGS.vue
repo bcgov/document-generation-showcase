@@ -1,5 +1,25 @@
 <template>
   <v-container class="secure">
+    <v-alert
+      class="mt-5 mb-5 pl-7 alert"
+      type="warning"
+      icon="mdi-alert"
+      border="left"
+      color="#d9a300"
+      colored-border
+      outlined
+      dismissible
+    >
+      <p class="text-h6 mb-2">This website is to be used only for test purposes</p>
+      <p class="mb-1">
+        This is a demonstration tool meant to be used with test data.
+        Do not use it to create documents with sensitive information.
+      </p>
+      <p class="mb-1">
+        For that, you will call the CDOGS API from within your own application (using your own service account) and
+        complete a <strong>Privacy Impact Assessment (PIA)</strong> and <strong>Threat and Risk Assessment (STRA)</strong>.
+      </p>
+    </v-alert>
     <Authenticated>
       <h1 class="text-center">
         Common Document Generation Service (v2)
@@ -34,3 +54,12 @@ export default {
   }
 };
 </script>
+
+<!-- Vuetify uses !important internally, so we have to override ALL of them same way -->
+<style lang="scss" scoped>
+.alert {
+  color: #6c4a00 !important;
+  border-color: #faebcc !important;
+  background-color: #f9f1c6 !important;
+}
+</style>
