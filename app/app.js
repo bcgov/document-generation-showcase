@@ -6,7 +6,6 @@ const path = require('path');
 const Problem = require('api-problem');
 
 const apiRoutes = require('./src/cdogsService/routes');
-const keycloak = require('./src/components/keycloak');
 const log = require('./src/components/log')(module.filename);
 const httpLogger = require('./src/components/log').httpLogger;
 
@@ -38,9 +37,6 @@ log.debug('App configuration', config);
 if (process.env.NODE_ENV !== 'test') {
   app.use(httpLogger);
 }
-
-// Use Keycloak OIDC Middleware
-app.use(keycloak.middleware());
 
 // Block requests if server is shutting down
 app.use((_req, res, next) => {
